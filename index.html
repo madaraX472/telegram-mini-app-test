@@ -351,4 +351,223 @@ update();
 </body>
 
 </html>
+<script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 
+<script>
+
+let points = Number(localStorage.getItem("points")) || 0;
+let ads = Number(localStorage.getItem("ads")) || 0;
+
+
+// تحديث البيانات
+
+function updateData(){
+
+document.getElementById("points").innerHTML = points;
+
+if(document.getElementById("ads")){
+document.getElementById("ads").innerHTML = ads;
+}
+
+localStorage.setItem("points",points);
+localStorage.setItem("ads",ads);
+
+}
+
+updateData();
+
+
+
+
+// تشغيل AdsGram
+
+const AdController = window.Adsgram.init({
+
+blockId:"40248"
+
+});
+
+
+
+
+
+// زر الإعلان
+
+const adButton = document.querySelector(".ad");
+
+
+if(adButton){
+
+adButton.onclick = async function(){
+
+
+adButton.innerHTML="⏳ جاري تحميل الإعلان...";
+
+adButton.disabled=true;
+
+
+try{
+
+
+await AdController.show();
+
+
+// الإعلان اكتمل
+
+points += 10;
+
+ads++;
+
+
+updateData();
+
+
+alert("🎉 حصلت على 10 نقاط");
+
+
+}
+
+
+catch(error){
+
+
+console.log(error);
+
+
+alert("❌ لا يوجد إعلان متاح الآن، حاول لاحقاً");
+
+
+}
+
+
+adButton.innerHTML="🎬 مشاهدة إعلان +10 نقاط";
+
+adButton.disabled=false;
+
+
+
+};
+
+
+}
+
+
+
+
+
+
+// نظام السحب
+
+const withdrawButton =
+document.querySelector(".withdraw");
+
+
+if(withdrawButton){
+
+withdrawButton.onclick=function(){
+
+
+if(points < 1000){
+
+alert(
+"⚠️ الحد الأدنى للسحب هو 1000 نقطة"
+);
+
+return;
+
+}
+
+
+alert(
+"💸 تم إرسال طلب السحب"
+);
+
+
+}
+
+
+}
+
+
+
+
+
+
+
+// نظام الإحالة
+
+
+const inviteButton =
+document.querySelector(".invite");
+
+
+if(inviteButton){
+
+
+inviteButton.onclick=function(){
+
+
+let link =
+"https://t.me/test_rewards_libya_bot";
+
+
+navigator.clipboard.writeText(link);
+
+
+alert(
+"✅ تم نسخ رابط الدعوة"
+);
+
+
+}
+
+
+}
+
+
+
+
+
+
+// Telegram Mini App
+
+
+if(window.Telegram && Telegram.WebApp){
+
+
+Telegram.WebApp.ready();
+
+
+let user =
+Telegram.WebApp.initDataUnsafe.user;
+
+
+if(user){
+
+
+let name =
+user.first_name || "مستخدم";
+
+
+let userElement =
+document.querySelector(".user");
+
+
+if(userElement){
+
+userElement.innerHTML =
+"👤 "+name;
+
+}
+
+
+}
+
+
+}
+
+
+
+
+
+</script>
