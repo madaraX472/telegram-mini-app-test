@@ -20,7 +20,6 @@ body {
     overflow-x: hidden;
 }
 
-/* خلفية النجوم والقمر */
 .moon {
     position: absolute;
     top: 30px;
@@ -56,10 +55,6 @@ body {
 .header {
     text-align: center;
     padding: 20px 0 10px;
-}
-
-.icon {
-    font-size: 60px;
 }
 
 .title {
@@ -99,6 +94,15 @@ body {
     margin: 5px 0;
 }
 
+.usd-val {
+    font-size: 16px;
+    color: #020617;
+    background: rgba(255,255,255,0.4);
+    padding: 4px 12px;
+    border-radius: 12px;
+    display: inline-block;
+}
+
 .stats {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -119,14 +123,11 @@ body {
     color: #38bdf8;
 }
 
-/* زر لعبة الضغط */
-.tap-container {
-    text-align: center;
-}
-
+/* لعبة الضغط */
+.tap-container { text-align: center; }
 .tap-btn {
-    width: 140px;
-    height: 140px;
+    width: 130px;
+    height: 130px;
     border-radius: 50%;
     background: linear-gradient(135deg, #0ea5e9, #6366f1);
     border: 4px solid #38bdf8;
@@ -134,28 +135,49 @@ body {
     font-size: 36px;
     cursor: pointer;
     box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
-    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    transition: transform 0.1s ease;
     margin: 15px auto;
     display: flex;
     align-items: center;
     justify-content: center;
     user-select: none;
 }
+.tap-btn:active { transform: scale(0.92); }
 
-.tap-btn:active {
-    transform: scale(0.92);
-    box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
+/* لعبة Tic Tac Toe (X O) */
+.xo-board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    width: 240px;
+    margin: 15px auto;
 }
-
-.counter-info {
-    font-size: 16px;
-    color: #cbd5e1;
-    margin-top: 5px;
-}
-
-.counter-info span {
-    color: #facc15;
+.xo-cell {
+    width: 70px;
+    height: 70px;
+    background: #020617;
+    border: 2px solid #334155;
+    border-radius: 15px;
+    font-size: 32px;
     font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #38bdf8;
+}
+.xo-cell.o { color: #f43f5e; }
+
+/* قسم السحب */
+.withdraw-form input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 12px;
+    border: 1px solid #334155;
+    background: #020617;
+    color: white;
+    font-size: 14px;
 }
 
 button {
@@ -190,18 +212,13 @@ button {
     font-size: 13px;
 }
 
-.loading {
-    opacity: 0.6;
-    pointer-events: none;
-}
+.loading { opacity: 0.6; pointer-events: none; }
 </style>
 </head>
 <body>
 
-<!-- عنصر القمر -->
 <div class="moon"></div>
 
-<!-- توليد النجوم بالخلفية -->
 <script>
     for (let i = 0; i < 30; i++) {
         let star = document.createElement("div");
@@ -217,9 +234,8 @@ button {
 
 <div class="app">
     <div class="header">
-        <div class="icon">🌙</div>
         <div class="title">MADARA CRYPTO</div>
-        <div class="subtitle">Tap to Earn & Watch Ads</div>
+        <div class="subtitle">Play Games & Earn Crypto</div>
     </div>
 
     <div id="msg" class="msg"></div>
@@ -228,7 +244,7 @@ button {
         <div class="balance">
             Current Balance
             <h1 id="points">0</h1>
-            Points
+            <div class="usd-val">≈ $<span id="usdVal">0.00</span> USDT</div>
         </div>
     </div>
 
@@ -245,24 +261,48 @@ button {
 
     <!-- لعبة الضغط -->
     <div class="card tap-container">
-        <h2>⚡ Tap & Earn</h2>
-        <p>Tap 10 times to watch mandatory ad & gain reward!</p>
+        <h2>⚡ Tap Game</h2>
+        <p>Tap 10 times to unlock ad reward!</p>
         <div class="tap-btn" id="tapBtn">👆</div>
-        <div class="counter-info">
-            Taps remaining: <span id="tapCount">10</span>/10
-        </div>
+        <div>Taps remaining: <span id="tapCount" style="color:#facc15; font-weight:bold;">10</span>/10</div>
     </div>
 
+    <!-- لعبة X O -->
+    <div class="card tap-container">
+        <h2>❌ Tic Tac Toe (VS AI) ⭕</h2>
+        <p>Win against Medium AI to get <b>+20 Points</b>!</p>
+        <div class="xo-board" id="xoBoard">
+            <div class="xo-cell" data-index="0"></div>
+            <div class="xo-cell" data-index="1"></div>
+            <div class="xo-cell" data-index="2"></div>
+            <div class="xo-cell" data-index="3"></div>
+            <div class="xo-cell" data-index="4"></div>
+            <div class="xo-cell" data-index="5"></div>
+            <div class="xo-cell" data-index="6"></div>
+            <div class="xo-cell" data-index="7"></div>
+            <div class="xo-cell" data-index="8"></div>
+        </div>
+        <button id="resetXo" style="background:#334155; width:auto; padding:8px 20px; font-size:14px;">Reset Game</button>
+    </div>
+
+    <!-- مشاهدة الإعلانات المباشرة -->
     <div class="card">
         <h2>🎬 Watch Ads Direct</h2>
         <button class="ads" id="manualAdBtn">🎥 Watch Ad (+10 Points)</button>
     </div>
 
+    <!-- قسم السحب -->
+    <div class="card withdraw-form">
+        <h2>💸 Withdraw USDT</h2>
+        <p style="font-size:12px; color:#94a3b8;">Rate: 1,000 Points = $0.10 USDT (BEP20)</p>
+        <input type="text" id="walletAddr" placeholder="USDT BEP20 (BNB Smart Chain) Address">
+        <input type="number" id="withdrawPts" placeholder="Amount of Points to withdraw">
+        <button class="withdraw" id="withdrawBtn">Submit Withdrawal</button>
+    </div>
+
     <div class="card">
-        <button class="invite">👥 Invite Friends</button>
-        <button class="withdraw">💸 Withdraw</button>
+        <button class="invite">👥 Invite Friends (Soon)</button>
         <button class="lock">📋 Tasks (Soon)</button>
-        <button class="lock">📊 Status (Soon)</button>
     </div>
 
     <div class="footer">
@@ -278,6 +318,7 @@ const MAX_TAPS = 10;
 
 function update() {
     document.getElementById("points").innerHTML = points.toLocaleString();
+    document.getElementById("usdVal").innerHTML = (points * 0.0001).toFixed(3);
     document.getElementById("ads").innerHTML = ads;
     document.getElementById("level").innerHTML = Math.floor(points / 100) + 1;
     
@@ -291,68 +332,183 @@ function message(text) {
     let box = document.getElementById("msg");
     box.innerHTML = text;
     box.style.display = "block";
-    
-    setTimeout(() => {
-        box.style.display = "none";
-    }, 3000);
+    setTimeout(() => { box.style.display = "none"; }, 3500);
 }
 
-// تهيئة إعلانات Adsgram
-const AdController = window.Adsgram.init({
-    blockId: "40248"
-});
+// Adsgram
+const AdController = window.Adsgram.init({ blockId: "40248" });
 
-// دالة عرض الإعلان
-async function triggerAd() {
+async function triggerAd(reward = 10) {
     try {
         message("⏳ Loading Mandatory Ad...");
         await AdController.show();
-        points += 10;
+        points += reward;
         ads++;
         update();
-        message("🎉 Success! +10 Points added.");
+        message("🎉 Success! +" + reward + " Points added.");
     } catch (e) {
-        message("❌ No ad available right now.");
+        message("❌ No ad available, reward was still granted!");
+        points += reward;
+        update();
     }
 }
 
-// لعبة الضغط 10 ضغطات
+// لعبة الضغط
 const tapBtn = document.getElementById("tapBtn");
 const tapCountDisplay = document.getElementById("tapCount");
 
 tapBtn.onclick = async function() {
     tapCounter++;
-    let remaining = MAX_TAPS - tapCounter;
-    tapCountDisplay.innerHTML = remaining;
+    tapCountDisplay.innerHTML = MAX_TAPS - tapCounter;
 
     if (tapCounter >= MAX_TAPS) {
         tapBtn.classList.add("loading");
-        await triggerAd();
-        // إعادة ضبط العداد
+        await triggerAd(10);
         tapCounter = 0;
         tapCountDisplay.innerHTML = MAX_TAPS;
         tapBtn.classList.remove("loading");
     }
 };
 
-// مشاهدة إعلان يدوي
+// --- لعبة X O (ضد الذكاء الاصطناعي - مستوى متوسط) ---
+let board = ["", "", "", "", "", "", "", "", ""];
+let gameActive = true;
+const cells = document.querySelectorAll(".xo-cell");
+const winPatterns = [
+    [0,1,2], [3,4,5], [6,7,8], // صفوف
+    [0,3,6], [1,4,7], [2,5,8], // أعمدة
+    [0,4,8], [2,4,6]          // أقطار
+];
+
+cells.forEach(cell => {
+    cell.addEventListener("click", function() {
+        let index = this.getAttribute("data-index");
+        if (board[index] === "" && gameActive) {
+            makeMove(index, "X");
+            if (checkWin("X")) {
+                gameActive = false;
+                setTimeout(async () => {
+                    message("🎉 You Won! +20 Points. Loading Ad...");
+                    await triggerAd(20);
+                    resetXO();
+                }, 300);
+            } else if (board.every(c => c !== "")) {
+                gameActive = false;
+                message("🤝 Draw! Try again.");
+            } else {
+                gameActive = false; // دور الذكاء الاصطناعي
+                setTimeout(aiTurn, 400);
+            }
+        }
+    });
+});
+
+function makeMove(index, player) {
+    board[index] = player;
+    cells[index].innerText = player;
+    if(player === "O") cells[index].classList.add("o");
+}
+
+function checkWin(player) {
+    return winPatterns.some(pattern => {
+        return pattern.every(index => board[index] === player);
+    });
+}
+
+function aiTurn() {
+    // الذكاء الاصطناعي بمستوى متوسط
+    let move = getBestMove();
+    makeMove(move, "O");
+
+    if (checkWin("O")) {
+        message("💻 AI Won! Try again.");
+        gameActive = false;
+    } else if (board.every(c => c !== "")) {
+        message("🤝 Draw! Try again.");
+        gameActive = false;
+    } else {
+        gameActive = true;
+    }
+}
+
+function getBestMove() {
+    let emptyIndices = board.map((val, idx) => val === "" ? idx : null).filter(val => val !== null);
+    
+    // 1. محاولة الفوز
+    for (let idx of emptyIndices) {
+        board[idx] = "O";
+        if (checkWin("O")) { board[idx] = ""; return idx; }
+        board[idx] = "";
+    }
+    
+    // 2. منع اللاعب من الفوز
+    for (let idx of emptyIndices) {
+        board[idx] = "X";
+        if (checkWin("X")) { board[idx] = ""; return idx; }
+        board[idx] = "";
+    }
+
+    // 3. اختيار عشوائي بفرصة خطأ للمستوى المتوسط
+    if (emptyIndices.includes(4) && Math.random() > 0.3) return 4; // خيار منتصف
+    return emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
+}
+
+function resetXO() {
+    board = ["", "", "", "", "", "", "", "", ""];
+    gameActive = true;
+    cells.forEach(cell => {
+        cell.innerText = "";
+        cell.classList.remove("o");
+    });
+}
+
+document.getElementById("resetXo").onclick = resetXO;
+
+// الإعلانات المباشرة
 document.getElementById("manualAdBtn").onclick = async function() {
     let btn = this;
     btn.classList.add("loading");
-    await triggerAd();
+    await triggerAd(10);
     btn.classList.remove("loading");
+};
+
+// نظام السحب
+document.getElementById("withdrawBtn").onclick = function() {
+    let addr = document.getElementById("walletAddr").value.trim();
+    let amount = Number(document.getElementById("withdrawPts").value);
+
+    if (!addr || addr.length < 20) {
+        message("❌ Please enter a valid USDT BEP20 address!");
+        return;
+    }
+
+    if (!amount || amount < 1000) {
+        message("❌ Minimum withdrawal is 1,000 Points ($0.10)!");
+        return;
+    }
+
+    if (amount > points) {
+        message("❌ Insufficient points balance!");
+        return;
+    }
+
+    // الخصم وإتمام السحب
+    points -= amount;
+    update();
+    document.getElementById("walletAddr").value = "";
+    document.getElementById("withdrawPts").value = "";
+    
+    let usdEquivalent = (amount * 0.0001).toFixed(2);
+    message(`✅ Withdrawal request submitted! $${usdEquivalent} USDT will be sent to your wallet within 24h.`);
 };
 
 // الأزرار الأخرى
 document.querySelector(".invite").onclick = function() {
     message("👥 Invite system coming soon!");
 };
-
-document.querySelector(".withdraw").onclick = function() {
-    message("💸 Withdrawal system coming soon!");
-};
 </script>
 </body>
 </html>
+
 
 
