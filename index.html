@@ -2,1115 +2,425 @@
 <html lang="ar" dir="rtl">
 
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>VORTEX REWARDS</title>
-
-<style>
-
-*{
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
-
-body{
-
-margin:0;
-background:
-linear-gradient(180deg,#020617,#111827);
-
-color:white;
-
-}
-
-
-.app{
-
-max-width:450px;
-margin:auto;
-padding:20px;
-padding-bottom:100px;
-
-}
-
-
-.header{
-
-text-align:center;
-margin-top:20px;
-
-}
-
-
-.logo{
-
-width:90px;
-height:90px;
-border-radius:50%;
-
-margin:auto;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-font-size:45px;
-
-background:
-linear-gradient(135deg,#facc15,#ea580c);
-
-box-shadow:
-0 0 30px #facc15;
-
-}
-
-
-.title{
-
-font-size:30px;
-font-weight:bold;
-
-color:#facc15;
-
-margin-top:15px;
-
-}
-
-
-.subtitle{
-
-color:#94a3b8;
-
-}
-
-
-
-.card{
-
-background:#0f172a;
-
-border:1px solid #334155;
-
-border-radius:25px;
-
-padding:20px;
-
-margin-top:20px;
-
-}
-
-
-
-.balance{
-
-background:
-linear-gradient(135deg,#facc15,#b45309);
-
-color:#111;
-
-border-radius:20px;
-
-padding:20px;
-
-text-align:center;
-
-}
-
-
-.balance span{
-
-display:block;
-
-font-size:45px;
-
-font-weight:bold;
-
-}
-
-
-
-.stats{
-
-display:grid;
-
-grid-template-columns:1fr 1fr;
-
-gap:10px;
-
-}
-
-
-
-.stat{
-
-background:#020617;
-
-border-radius:18px;
-
-padding:15px;
-
-text-align:center;
-
-}
-
-
-.stat b{
-
-display:block;
-
-font-size:25px;
-
-color:#facc15;
-
-}
-
-
-
-
-button{
-
-width:100%;
-
-padding:16px;
-
-border:0;
-
-border-radius:20px;
-
-font-size:17px;
-
-font-weight:bold;
-
-margin-top:12px;
-
-cursor:pointer;
-
-}
-
-
-.gold{
-
-background:#facc15;
-
-color:#111;
-
-}
-
-
-.green{
-
-background:#22c55e;
-
-color:white;
-
-}
-
-
-.blue{
-
-background:#2563eb;
-
-color:white;
-
-}
-
-
-
-.page{
-
-display:none;
-
-}
-
-
-
-
-.nav{
-
-position:fixed;
-
-bottom:10px;
-
-left:50%;
-
-transform:translateX(-50%);
-
-width:90%;
-
-max-width:420px;
-
-display:flex;
-
-gap:8px;
-
-background:#020617;
-
-padding:10px;
-
-border-radius:25px;
-
-border:1px solid #334155;
-
-}
-
-
-.nav button{
-
-margin:0;
-
-padding:12px 5px;
-
-font-size:12px;
-
-background:#1e293b;
-
-color:white;
-
-}
-
-
-.notice{
-
-display:none;
-
-background:#16a34a;
-
-padding:12px;
-
-border-radius:15px;
-
-margin-top:15px;
-
-text-align:center;
-
-}
-
-
-</style>
-
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOVA EARN</title>
+
+    <!-- خط Cairo لمظهر احترافي -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+
+    <style>
+        :root {
+            --bg-main: #090d16;
+            --card-bg: rgba(22, 30, 46, 0.7);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --primary-accent: #facc15;
+            --secondary-accent: #f97316;
+            --green-btn: linear-gradient(135deg, #10b981, #059669);
+            --orange-btn: linear-gradient(135deg, #f59e0b, #d97706);
+            --blue-btn: linear-gradient(135deg, #3b82f6, #2563eb);
+            --lock-btn: rgba(255, 255, 255, 0.05);
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(250, 204, 21, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 0% 100%, rgba(37, 99, 235, 0.1) 0%, transparent 40%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .app {
+            width: 100%;
+            max-width: 420px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* الهيدر */
+        .header {
+            text-align: center;
+            padding: 10px 0 5px;
+        }
+
+        .icon {
+            font-size: 50px;
+            filter: drop-shadow(0 0 15px rgba(250, 204, 21, 0.4));
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, #fff 30%, var(--primary-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-sub);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* التنبيهات */
+        .msg {
+            display: none;
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #34d399;
+            padding: 12px;
+            border-radius: 14px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 700;
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .msg.error {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: rgba(239, 68, 68, 0.4);
+            color: #f87171;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* الكروت General Card */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 18px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        /* كارت الرصيد */
+        .balance-card {
+            background: linear-gradient(135deg, #facc15 0%, #ea580c 100%);
+            border: none;
+            color: #000;
+            text-align: center;
+            padding: 22px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(234, 88, 12, 0.3);
+        }
+
+        .balance-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .balance-title {
+            font-size: 13px;
+            font-weight: 700;
+            opacity: 0.85;
+            text-transform: uppercase;
+        }
+
+        .balance-amount {
+            font-size: 42px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin: 6px 0;
+        }
+
+        .balance-unit {
+            font-size: 13px;
+            font-weight: 700;
+            opacity: 0.9;
+        }
+
+        /* كارت الإحصائيات */
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .box {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 14px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .box span {
+            display: block;
+            font-size: 12px;
+            color: var(--text-sub);
+            margin-bottom: 2px;
+        }
+
+        .box b {
+            font-size: 20px;
+            color: var(--primary-accent);
+        }
+
+        /* عنوان القسم */
+        .section-title {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .section-desc {
+            font-size: 12px;
+            color: var(--text-sub);
+            margin-bottom: 14px;
+        }
+
+        /* الأزرار */
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        button {
+            width: 100%;
+            border: 0;
+            border-radius: 14px;
+            padding: 14px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: white;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .btn-ads {
+            background: var(--green-btn);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.25);
+        }
+
+        .btn-invite {
+            background: var(--orange-btn);
+        }
+
+        .btn-withdraw {
+            background: var(--blue-btn);
+        }
+
+        .btn-lock {
+            background: var(--lock-btn);
+            color: #64748b;
+            border: 1px dashed rgba(255, 255, 255, 0.1);
+            cursor: not-allowed;
+            justify-content: space-between;
+        }
+
+        .btn-lock span {
+            font-size: 11px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
+
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        /* الفوتر */
+        .footer {
+            text-align: center;
+            color: #475569;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+    </style>
 </head>
-
 
 <body>
 
-
-<div class="app">
-
-
-<div class="header">
-
-
-<div class="logo">
-⚡
-</div>
-
-
-<div class="title">
-VORTEX REWARDS
-</div>
-
-
-<div class="subtitle">
-اربح النقاط من الإعلانات والألعاب
-</div>
-
-
-</div>
-
-
-
-<div id="notice" class="notice"></div>
-
-
-
-
-<!-- الرئيسية -->
-
-
-<div id="home" class="page" style="display:block">
-
-
-<div class="card">
-
-
-<div class="balance">
-
-رصيدك
-
-<span id="points">
-0
-</span>
-
-نقطة
-
-</div>
-
-
-</div>
-
-
-
-<div class="card">
-
-
-<div class="stats">
-
-
-<div class="stat">
-
-<b id="ads">
-0
-</b>
-
-إعلانات
-
-</div>
-
-
-<div class="stat">
-
-<b id="level">
-1
-</b>
-
-المستوى
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-
-<div class="card">
-
-
-<button class="green" onclick="openPage('adsPage')">
-
-📢 قسم AdsGram
-
-</button>
-
-
-<button class="blue" onclick="openPage('withdrawPage')">
-
-💸 السحب
-
-</button>
-
-
-<button class="gold" onclick="openPage('gamesPage')">
-
-🎮 الألعاب
-
-</button>
-
-
-</div>
-
-
-
-</div>
-
-
-
-<!-- الصفحات ستضاف في الجزء الثاني -->
-
-
-
-
-
-<div class="nav">
-
-
-<button onclick="openPage('home')">
-🏠
-</button>
-
-
-<button onclick="openPage('adsPage')">
-📢
-</button>
-
-
-<button onclick="openPage('gamesPage')">
-🎮
-</button>
-
-
-<button onclick="openPage('withdrawPage')">
-💸
-</button>
-
-
-</div>
-
-
-
-
-
-<script>
-
-
-let points =
-Number(localStorage.getItem("points")) || 0;
-
-
-let ads =
-Number(localStorage.getItem("ads")) || 0;
-
-
-
-function update(){
-
-
-document.getElementById("points").innerHTML=
-points.toLocaleString();
-
-
-document.getElementById("ads").innerHTML=
-ads;
-
-
-document.getElementById("level").innerHTML=
-Math.floor(points/500)+1;
-
-
-localStorage.setItem("points",points);
-
-localStorage.setItem("ads",ads);
-
-
-}
-
-
-
-update();
-
-
-
-
-function openPage(id){
-
-
-document.querySelectorAll(".page")
-.forEach(p=>{
-
-p.style.display="none";
-
-});
-
-
-document.getElementById(id).style.display="block";
-
-
-}
-
-
-
-
-function notice(t){
-
-
-let n=document.getElementById("notice");
-
-
-n.innerHTML=t;
-
-n.style.display="block";
-
-
-setTimeout(()=>{
-
-n.style.display="none";
-
-},2500);
-
-
-}
-
-
-
-
-
-//<!-- ===== قسم AdsGram ===== -->
-
-<div id="adsPage" class="page">
-
-<div class="card">
-
-<h2>📢 AdsGram</h2>
-
-<p>
-شاهد الإعلانات واحصل على نقاط
-</p>
-
-
-<button class="green" onclick="watchAd()">
-🎬 مشاهدة إعلان +10 نقاط
-</button>
-
-
-</div>
-
-</div>
-
-
-
-
-
-<!-- ===== قسم السحب ===== -->
-
-
-<div id="withdrawPage" class="page">
-
-
-<div class="card">
-
-
-<h2>💸 السحب</h2>
-
-
-<p>
-اختر طريقة السحب
-</p>
-
-
-<button class="blue" onclick="comingSoon()">
-💵 USDT
-</button>
-
-
-<button class="blue" onclick="comingSoon()">
-💎 TON
-</button>
-
-
-<button class="blue" onclick="comingSoon()">
-📱 رصيد هاتف
-</button>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-<!-- ===== قسم الألعاب ===== -->
-
-
-<div id="gamesPage" class="page">
-
-
-<div class="card">
-
-
-<h2>🎮 الألعاب</h2>
-
-
-<button class="gold" onclick="openPage('rpsPage')">
-✊ حجر ورقة مقص
-</button>
-
-
-<button class="gold" onclick="openPage('xoPage')">
-❌⭕ X O
-</button>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-<!-- ===== لعبة حجر ورقة مقص ===== -->
-
-
-<div id="rpsPage" class="page">
-
-
-<div class="card">
-
-
-<h2>✊ حجر ورقة مقص</h2>
-
-
-<button class="gold" onclick="rps('حجر')">
-✊ حجر
-</button>
-
-
-<button class="gold" onclick="rps('ورقة')">
-📄 ورقة
-</button>
-
-
-<button class="gold" onclick="rps('مقص')">
-✂️ مقص
-</button>
-
-
-
-<h3 id="rpsResult"></h3>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-<!-- ===== لعبة XO ===== -->
-
-
-<div id="xoPage" class="page">
-
-
-<div class="card">
-
-
-<h2>❌⭕ X O</h2>
-
-
-<div id="board"></div>
-
-
-<h3 id="xoResult"></h3>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-<script>
-
-
-function comingSoon(){
-
-notice("🚧 نظام السحب سيضاف قريباً");
-
-}
-
-
-
-
-
-function watchAd(){
-
-
-let btn=event.target;
-
-
-btn.innerHTML="⏳ جاري تشغيل الإعلان...";
-
-
-setTimeout(()=>{
-
-
-points+=10;
-
-ads++;
-
-
-update();
-
-
-notice("🎉 حصلت على 10 نقاط");
-
-
-btn.innerHTML="🎬 مشاهدة إعلان +10 نقاط";
-
-
-},3000);
-
-
-}
-
-
-
-
-
-function rps(user){
-
-
-let list=[
-"حجر",
-"ورقة",
-"مقص"
-];
-
-
-let bot=list[Math.floor(Math.random()*3)];
-
-
-let result="";
-
-
-if(user===bot){
-
-result="تعادل 🤝";
-
-}
-
-else if(
-
-(user=="حجر" && bot=="مقص") ||
-
-(user=="ورقة" && bot=="حجر") ||
-
-(user=="مقص" && bot=="ورقة")
-
-){
-
-result="فزت 🎉 +5 نقاط";
-
-points+=5;
-
-update();
-
-}
-
-else{
-
-result="خسرت 😢";
-
-}
-
-
-document.getElementById("rpsResult").innerHTML=
-"أنت: "+user+
-"<br>البوت: "+bot+
-"<br>"+result;
-
-
-}
-
-
-
-
-
-let xo=[
-"",
-"",
-"",
-"",
-"",
-"",
-"",
-"",
-""
-];
-
-
-
-function drawXO(){
-
-
-let html="";
-
-
-for(let i=0;i<9;i++){
-
-
-html+=`
-
-<button onclick="playXO(${i})">
-${xo[i]}
-</button>
-
-`;
-
-}
-
-
-document.getElementById("board").innerHTML=html;
-
-
-}
-
-
-
-function playXO(i){
-
-
-if(xo[i]!="")return;
-
-
-xo[i]="X";
-
-
-
-let empty=[];
-
-
-xo.forEach((x,index)=>{
-
-if(x=="")
-empty.push(index);
-
-});
-
-
-
-if(empty.length){
-
-let bot=
-empty[Math.floor(Math.random()*empty.length)];
-
-xo[bot]="O";
-
-}
-
-
-
-drawXO();
-
-
-}
-
-
-
-drawXO();
-
-
-
-</script>
-
-// ===== الجزء الثالث =====
-
-
-// بيانات المستخدم
-
-let username="Guest";
-
-
-if(window.Telegram && Telegram.WebApp){
-
-
-Telegram.WebApp.ready();
-
-
-let user=
-Telegram.WebApp.initDataUnsafe.user;
-
-
-if(user){
-
-username=user.first_name;
-
-
-document.querySelector(".subtitle").innerHTML=
-"مرحبا "+username+" 👋";
-
-
-}
-
-
-}
-
-
-
-
-// نظام الإحالة
-
-
-function invite(){
-
-
-let link=
-"https://t.me/YourBot?start="+username;
-
-
-navigator.clipboard.writeText(link);
-
-
-notice("✅ تم نسخ رابط الدعوة");
-
-
-}
-
-
-
-
-
-// مكافأة يومية
-
-
-let lastReward=
-localStorage.getItem("rewardDay");
-
-
-
-function dailyReward(){
-
-
-let today=
-new Date().toDateString();
-
-
-
-if(lastReward==today){
-
-
-notice("🎁 حصلت على المكافأة اليوم");
-
-return;
-
-
-}
-
-
-
-points+=50;
-
-
-update();
-
-
-localStorage.setItem(
-"rewardDay",
-today
-);
-
-
-
-notice("🎉 مكافأة يومية +50 نقطة");
-
-
-}
-  // ===== الجزء الرابع =====
-
-
-// مهام يومية
-
-
-function tasks(){
-
-
-let done=
-Number(localStorage.getItem("tasks"))||0;
-
-
-
-if(done>=3){
-
-
-notice("✅ أكملت مهام اليوم");
-
-return;
-
-
-}
-
-
-
-points+=20;
-
-
-done++;
-
-
-localStorage.setItem(
-"tasks",
-done
-);
-
-
-update();
-
-
-notice("🔥 مهمة مكتملة +20 نقطة");
-
-
-}
-
-
-
-
-
-// متجر ترقيات
-
-
-function shop(){
-
-
-if(points>=100){
-
-
-points-=100;
-
-
-update();
-
-
-notice("⚡ تم شراء ترقية");
-
-
-}
-
-else{
-
-
-notice("❌ تحتاج 100 نقطة");
-
-
-}
-
-
-
-}
-
-
-
-
-
-// حماية الحفظ
-
-
-setInterval(()=>{
-
-
-localStorage.setItem(
-"points",
-points
-);
-
-
-localStorage.setItem(
-"ads",
-ads
-);
-
-
-},5000);
-</script>
-
+    <div class="app">
+
+        <div class="header">
+            <div class="icon">🌌</div>
+            <div class="title">NOVA EARN</div>
+            <div class="subtitle">منصة الربح الذكية من الإعلانات</div>
+        </div>
+
+        <div id="msg" class="msg"></div>
+
+        <div class="card balance-card">
+            <div class="balance-title">الرصيد الحالي</div>
+            <div class="balance-amount" id="points">0</div>
+            <div class="balance-unit">نقطة</div>
+        </div>
+
+        <div class="card">
+            <div class="stats">
+                <div class="box">
+                    <span>الإعلانات المشاهدة</span>
+                    <b id="ads">0</b>
+                </div>
+                <div class="box">
+                    <span>المستوى الحالي</span>
+                    <b id="level">1</b>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="section-title">🎬 مشاهدة الإعلانات</div>
+            <div class="section-desc">شاهد الإعلانات اليومية واجمع النقاط فوراً</div>
+            <button class="btn-ads" id="adBtn">
+                <span>🎥</span> مشاهدة إعلان (+10 نقاط)
+            </button>
+        </div>
+
+        <div class="card">
+            <div class="btn-group">
+                <button class="btn-invite" id="inviteBtn">
+                    👥 دعوة الأصدقاء
+                </button>
+
+                <button class="btn-withdraw" id="withdrawBtn">
+                    💸 سحب الأرباح
+                </button>
+
+                <button class="btn-lock" disabled>
+                    <span>📋 المهام اليومية</span>
+                    <span>قريباً</span>
+                </button>
+
+                <button class="btn-lock" disabled>
+                    <span>📊 الإحصائيات الشاملة</span>
+                    <span>قريباً</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="footer">
+            NOVA EARN &copy; 2026 • جميع الحقوق محفوظة
+        </div>
+
+    </div>
+
+    <script>
+        // استرجاع البيانات
+        let points = Number(localStorage.getItem("points")) || 0;
+        let ads = Number(localStorage.getItem("ads")) || 0;
+
+        // تحديث الواجهة
+        function updateUI() {
+            document.getElementById("points").innerText = points.toLocaleString();
+            document.getElementById("ads").innerText = ads.toLocaleString();
+            document.getElementById("level").innerText = Math.floor(points / 100) + 1;
+
+            localStorage.setItem("points", points);
+            localStorage.setItem("ads", ads);
+        }
+
+        updateUI();
+
+        // إظهار التنبيهات
+        function showMessage(text, isError = false) {
+            const box = document.getElementById("msg");
+            box.innerText = text;
+            
+            if (isError) {
+                box.classList.add("error");
+            } else {
+                box.classList.remove("error");
+            }
+
+            box.style.display = "block";
+
+            setTimeout(() => {
+                box.style.display = "none";
+            }, 3000);
+        }
+
+        // إعداد الإعلانات
+        const AdController = window.Adsgram ? window.Adsgram.init({ blockId: "40248" }) : null;
+
+        // مشاهدة الإعلان
+        document.getElementById("adBtn").onclick = async function () {
+            const btn = this;
+            btn.classList.add("loading");
+            btn.innerHTML = "⏳ جاري تحضير الإعلان...";
+
+            setTimeout(async () => {
+                try {
+                    if (AdController) {
+                        await AdController.show();
+                    }
+                    points += 10;
+                    ads++;
+                    updateUI();
+                    showMessage("🎉 مبروك! حصلت على 10 نقاط");
+                } catch (e) {
+                    showMessage("❌ لا يوجد إعلان متاح حالياً، حاول لاحقاً", true);
+                } finally {
+                    btn.classList.remove("loading");
+                    btn.innerHTML = "<span>🎥</span> مشاهدة إعلان (+10 نقاط)";
+                }
+            }, 2000);
+        };
+
+        // الأزرار التفاعلية
+        document.getElementById("inviteBtn").onclick = () => {
+            showMessage("👥 نظام الدعوات يتاح قريباً!");
+        };
+
+        document.getElementById("withdrawBtn").onclick = () => {
+            showMessage("💸 نظام السحب سيتم تفعيله قريباً!");
+        };
+    </script>
 
 </body>
 
-</html>          
+</html>
+
