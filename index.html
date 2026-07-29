@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>NOVA EARN</title>
 
 <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 
-<style>
 
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap');
+<style>
 
 *{
 box-sizing:border-box;
-font-family:Cairo,Arial;
+font-family:Arial;
 }
 
 
@@ -23,51 +23,35 @@ body{
 
 margin:0;
 background:
-linear-gradient(180deg,#050505,#111827);
+linear-gradient(180deg,#020617,#111827);
 
 color:white;
-min-height:100vh;
 
 }
+
 
 
 .app{
 
 max-width:450px;
 margin:auto;
-padding:15px;
+padding:20px;
 
 }
 
 
 
-.banner{
-
-width:100%;
-height:160px;
-border-radius:25px;
-object-fit:cover;
-box-shadow:0 0 30px #000;
-
-}
-
-
-
-.logo{
+.header{
 
 text-align:center;
-margin-top:-45px;
+padding:25px;
 
 }
 
 
+.icon{
 
-.logo img{
-
-width:90px;
-height:90px;
-border-radius:50%;
-border:5px solid #111827;
+font-size:70px;
 
 }
 
@@ -75,19 +59,17 @@ border:5px solid #111827;
 
 .title{
 
-text-align:center;
-font-size:32px;
-font-weight:900;
+font-size:34px;
+font-weight:bold;
 color:#facc15;
 
 }
 
 
+
 .subtitle{
 
-text-align:center;
 color:#aaa;
-margin-bottom:20px;
 
 }
 
@@ -95,18 +77,17 @@ margin-bottom:20px;
 
 .card{
 
-background:
-rgba(255,255,255,.05);
+background:#0f172a;
 
-border:1px solid #333;
+border:1px solid #273244;
 
 border-radius:25px;
 
 padding:20px;
 
-margin-bottom:15px;
+margin-bottom:18px;
 
-backdrop-filter:blur(10px);
+box-shadow:0 10px 30px #0005;
 
 }
 
@@ -114,16 +95,16 @@ backdrop-filter:blur(10px);
 
 .balance{
 
-text-align:center;
-
 background:
 linear-gradient(135deg,#facc15,#ea580c);
 
 color:#111;
 
-padding:25px;
+text-align:center;
 
-border-radius:25px;
+border-radius:22px;
+
+padding:25px;
 
 }
 
@@ -131,8 +112,8 @@ border-radius:25px;
 
 .balance h1{
 
-font-size:50px;
-margin:5px;
+font-size:48px;
+margin:10px;
 
 }
 
@@ -144,19 +125,19 @@ display:grid;
 
 grid-template-columns:1fr 1fr;
 
-gap:12px;
+gap:15px;
 
 }
 
 
 
-.stat{
+.box{
 
-background:#09090b;
+background:#020617;
+
+border-radius:18px;
 
 padding:15px;
-
-border-radius:20px;
 
 text-align:center;
 
@@ -164,39 +145,13 @@ text-align:center;
 
 
 
-.stat b{
-
-font-size:26px;
+.box b{
 
 display:block;
 
+font-size:25px;
+
 color:#facc15;
-
-}
-
-
-
-.progress{
-
-height:12px;
-
-background:#333;
-
-border-radius:20px;
-
-overflow:hidden;
-
-}
-
-
-
-.bar{
-
-height:100%;
-
-background:#22c55e;
-
-width:40%;
 
 }
 
@@ -206,11 +161,11 @@ button{
 
 width:100%;
 
-padding:16px;
-
 border:0;
 
 border-radius:20px;
+
+padding:17px;
 
 font-size:18px;
 
@@ -225,16 +180,18 @@ margin-top:12px;
 .ads{
 
 background:#22c55e;
+
 color:white;
 
 }
 
 
 
-.withdraw{
+.lock{
 
-background:#2563eb;
-color:white;
+background:#1e293b;
+
+color:#94a3b8;
 
 }
 
@@ -243,25 +200,26 @@ color:white;
 .invite{
 
 background:#f59e0b;
-color:#111;
 
 }
 
 
 
-.loading{
+.withdraw{
 
-opacity:.6;
+background:#2563eb;
+
+color:white;
 
 }
 
 
 
-.notice{
+.msg{
 
 display:none;
 
-background:#22c55e;
+background:#16a34a;
 
 padding:12px;
 
@@ -278,8 +236,18 @@ margin-bottom:15px;
 .footer{
 
 text-align:center;
+
 color:#777;
+
 font-size:13px;
+
+}
+
+
+
+.loading{
+
+opacity:.6;
 
 }
 
@@ -295,42 +263,47 @@ font-size:13px;
 <div class="app">
 
 
-<img class="banner" src="images/banner.png">
+<div class="header">
 
-
-<div class="logo">
-
-<img src="images/logo.png">
-
+<div class="icon">
+🌌
 </div>
 
 
-<h1 class="title">
+<div class="title">
 NOVA EARN
-</h1>
+</div>
 
 
 <div class="subtitle">
-اكسب النقاط من مشاهدة الإعلانات 🎁
+منصة الربح من الإعلانات
 </div>
 
 
-<div class="notice" id="notice"></div>
+</div>
+
+
+
+<div id="msg" class="msg"></div>
 
 
 
 <div class="card">
 
+
 <div class="balance">
 
-رصيدك
+رصيدك الحالي
 
-<h1 id="points">0</h1>
+<h1 id="points">
+0
+</h1>
 
 نقطة
 
 </div>
 
+
 </div>
 
 
@@ -338,20 +311,24 @@ NOVA EARN
 
 <div class="card">
 
+
 <div class="stats">
 
-<div class="stat">
 
-<b id="adsCount">0</b>
+<div class="box">
+
+<b id="ads">
+0</b>
 
 إعلانات
 
 </div>
 
 
-<div class="stat">
+<div class="box">
 
-<b id="level">1</b>
+<b id="level">
+1</b>
 
 المستوى
 
@@ -361,18 +338,7 @@ NOVA EARN
 </div>
 
 
-<br>
-
-
-<div class="progress">
-
-<div class="bar" id="bar"></div>
-
 </div>
-
-
-</div>
-
 
 
 
@@ -381,24 +347,23 @@ NOVA EARN
 
 
 <h2>
-🎬 AdsGram
+🎬 مشاهدة الإعلانات
 </h2>
 
 
 <p>
-شاهد الإعلانات واحصل على نقاط مجانية
+احصل على نقاط مجانية يومياً
 </p>
 
 
 <button class="ads">
 
-🎥 مشاهدة إعلان +10
+🎥 مشاهدة إعلان +10 نقاط
 
 </button>
 
 
 </div>
-
 
 
 
@@ -413,14 +378,31 @@ NOVA EARN
 </button>
 
 
+
 <button class="withdraw">
 
-💸 سحب الأرباح
+💸 السحب
 
 </button>
 
 
+<button class="lock">
+
+📋 المهام (ستضاف قريباً)
+
+</button>
+
+
+<button class="lock">
+
+📊 الحالة (ستضاف قريباً)
+
+</button>
+
+
+
 </div>
+
 
 
 
@@ -431,8 +413,8 @@ NOVA EARN © 2026
 </div>
 
 
-
 </div>
+
 
 
 
@@ -448,7 +430,19 @@ Number(localStorage.getItem("ads")) || 0;
 
 
 
-function save(){
+function update(){
+
+document.getElementById("points").innerHTML =
+points.toLocaleString();
+
+
+document.getElementById("ads").innerHTML =
+ads;
+
+
+document.getElementById("level").innerHTML =
+Math.floor(points/100)+1;
+
 
 localStorage.setItem("points",points);
 
@@ -457,58 +451,28 @@ localStorage.setItem("ads",ads);
 }
 
 
+update();
 
-function show(msg){
 
-let n=document.getElementById("notice");
 
-n.innerHTML=msg;
+function message(text){
 
-n.style.display="block";
+let box=document.getElementById("msg");
+
+box.innerHTML=text;
+
+box.style.display="block";
 
 
 setTimeout(()=>{
 
-n.style.display="none";
+box.style.display="none";
 
 },3000);
 
 
 }
 
-
-
-function update(){
-
-
-document.getElementById("points").innerHTML =
-points.toLocaleString();
-
-
-document.getElementById("adsCount").innerHTML =
-ads;
-
-
-let lvl=Math.floor(points/100)+1;
-
-
-document.getElementById("level").innerHTML=lvl;
-
-
-let percent=(points%100);
-
-
-document.getElementById("bar").style.width=
-percent+"%";
-
-
-save();
-
-
-}
-
-
-update();
 
 
 
@@ -531,7 +495,11 @@ let btn=this;
 
 btn.classList.add("loading");
 
-btn.innerHTML="⏳ جاري تحميل الإعلان";
+
+btn.innerHTML="⏳ جاري تشغيل الإعلان...";
+
+
+setTimeout(async()=>{
 
 
 try{
@@ -548,14 +516,16 @@ ads++;
 update();
 
 
-show("🎉 حصلت على +10 نقاط");
+message("🎉 تم إضافة 10 نقاط");
 
 
 }
 
 catch(e){
 
-show("❌ لا يوجد إعلان حاليا");
+
+message("❌ لا يوجد إعلان متاح");
+
 
 }
 
@@ -563,11 +533,14 @@ show("❌ لا يوجد إعلان حاليا");
 
 btn.classList.remove("loading");
 
-btn.innerHTML="🎥 مشاهدة إعلان +10";
+btn.innerHTML="🎥 مشاهدة إعلان +10 نقاط";
+
+
+},3000);
+
 
 
 };
-
 
 
 
@@ -577,19 +550,10 @@ btn.innerHTML="🎥 مشاهدة إعلان +10";
 document.querySelector(".invite").onclick=function(){
 
 
-let link=
-"https://t.me/test_rewards_libya_bot";
-
-
-navigator.clipboard.writeText(link);
-
-
-show("✅ تم نسخ رابط الدعوة");
+message("👥 نظام الدعوات سيضاف قريباً");
 
 
 };
-
-
 
 
 
@@ -598,48 +562,10 @@ show("✅ تم نسخ رابط الدعوة");
 document.querySelector(".withdraw").onclick=function(){
 
 
-if(points<1000){
-
-show("⚠️ تحتاج 1000 نقطة للسحب");
-
-return;
-
-}
-
-
-show("💸 تم إرسال طلب السحب للمراجعة");
+message("💸 نظام السحب سيضاف قريباً");
 
 
 };
-
-
-
-
-
-
-
-
-if(window.Telegram &&
-Telegram.WebApp){
-
-
-Telegram.WebApp.ready();
-
-
-let user=
-Telegram.WebApp.initDataUnsafe.user;
-
-
-if(user){
-
-document.querySelector(".subtitle").innerHTML=
-
-"مرحبا "+user.first_name+" 👋";
-
-}
-
-
-}
 
 
 
