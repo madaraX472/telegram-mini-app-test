@@ -1,393 +1,358 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
-
+<html lang="en" dir="ltr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NOVA EARN</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MADARA CRYPTO</title>
+<script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+<style>
+* {
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
 
-    <!-- خط Cairo -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- مكتبة تليجرام ومكتبة Adsgram -->
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(180deg, #050b14, #0a1128, #1c2541);
+    color: white;
+    position: relative;
+    overflow-x: hidden;
+}
 
-    <style>
-        :root {
-            --bg-main: #090d16;
-            --card-bg: rgba(22, 30, 46, 0.7);
-            --card-border: rgba(255, 255, 255, 0.08);
-            --primary-accent: #facc15;
-            --green-btn: linear-gradient(135deg, #10b981, #059669);
-            --orange-btn: linear-gradient(135deg, #f59e0b, #d97706);
-            --blue-btn: linear-gradient(135deg, #3b82f6, #2563eb);
-            --lock-btn: rgba(255, 255, 255, 0.05);
-            --text-main: #f8fafc;
-            --text-sub: #94a3b8;
-        }
+/* خلفية النجوم والقمر */
+.moon {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #fefcd7;
+    box-shadow: 0 0 20px #fefcd7, 0 0 40px rgba(254, 252, 215, 0.4);
+    z-index: 1;
+}
 
-        * {
-            box-sizing: border-box;
-            font-family: 'Cairo', sans-serif;
-            margin: 0;
-            padding: 0;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-        }
+.star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle 2s infinite alternate;
+}
 
-        body {
-            background-color: var(--bg-main);
-            background-image: 
-                radial-gradient(circle at 50% 0%, rgba(250, 204, 21, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 0% 100%, rgba(37, 99, 235, 0.1) 0%, transparent 40%);
-            background-attachment: fixed;
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 15px;
-        }
+@keyframes twinkle {
+    0% { opacity: 0.2; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1.2); }
+}
 
-        .app {
-            width: 100%;
-            max-width: 420px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
+.app {
+    max-width: 450px;
+    margin: auto;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+}
 
-        .header {
-            text-align: center;
-            padding: 10px 0 5px;
-        }
+.header {
+    text-align: center;
+    padding: 20px 0 10px;
+}
 
-        .icon {
-            font-size: 50px;
-            filter: drop-shadow(0 0 15px rgba(250, 204, 21, 0.4));
-            animation: float 3s ease-in-out infinite;
-        }
+.icon {
+    font-size: 60px;
+}
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
+.title {
+    font-size: 32px;
+    font-weight: bold;
+    color: #38bdf8;
+    text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+    letter-spacing: 1px;
+}
 
-        .title {
-            font-size: 28px;
-            font-weight: 800;
-            letter-spacing: 1px;
-            background: linear-gradient(135deg, #fff 30%, var(--primary-accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+.subtitle {
+    color: #94a3b8;
+    font-size: 14px;
+}
 
-        .subtitle {
-            color: var(--text-sub);
-            font-size: 13px;
-            font-weight: 600;
-        }
+.card {
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid #1e293b;
+    border-radius: 25px;
+    padding: 20px;
+    margin-bottom: 18px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
 
-        .msg {
-            display: none;
-            background: rgba(16, 185, 129, 0.15);
-            border: 1px solid rgba(16, 185, 129, 0.4);
-            color: #34d399;
-            padding: 12px;
-            border-radius: 14px;
-            text-align: center;
-            font-size: 14px;
-            font-weight: 700;
-            backdrop-filter: blur(8px);
-            animation: fadeIn 0.3s ease;
-        }
+.balance {
+    background: linear-gradient(135deg, #38bdf8, #818cf8);
+    color: #0f172a;
+    text-align: center;
+    border-radius: 22px;
+    padding: 20px;
+    font-weight: bold;
+}
 
-        .msg.error {
-            background: rgba(239, 68, 68, 0.15);
-            border-color: rgba(239, 68, 68, 0.4);
-            color: #f87171;
-        }
+.balance h1 {
+    font-size: 44px;
+    margin: 5px 0;
+}
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+.stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
 
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            backdrop-filter: blur(12px);
-            border-radius: 20px;
-            padding: 18px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        }
+.box {
+    background: #020617;
+    border-radius: 18px;
+    padding: 15px;
+    text-align: center;
+    border: 1px solid #1e293b;
+}
 
-        .balance-card {
-            background: linear-gradient(135deg, #facc15 0%, #ea580c 100%);
-            border: none;
-            color: #000;
-            text-align: center;
-            padding: 22px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(234, 88, 12, 0.3);
-        }
+.box b {
+    display: block;
+    font-size: 24px;
+    color: #38bdf8;
+}
 
-        .balance-title {
-            font-size: 13px;
-            font-weight: 700;
-            opacity: 0.85;
-        }
+/* زر لعبة الضغط */
+.tap-container {
+    text-align: center;
+}
 
-        .balance-amount {
-            font-size: 42px;
-            font-weight: 800;
-            line-height: 1.1;
-            margin: 6px 0;
-        }
+.tap-btn {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0ea5e9, #6366f1);
+    border: 4px solid #38bdf8;
+    color: white;
+    font-size: 36px;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    margin: 15px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+}
 
-        .balance-unit {
-            font-size: 13px;
-            font-weight: 700;
-            opacity: 0.9;
-        }
+.tap-btn:active {
+    transform: scale(0.92);
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
+}
 
-        .stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
+.counter-info {
+    font-size: 16px;
+    color: #cbd5e1;
+    margin-top: 5px;
+}
 
-        .box {
-            background: rgba(0, 0, 0, 0.25);
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            border-radius: 14px;
-            padding: 12px;
-            text-align: center;
-        }
+.counter-info span {
+    color: #facc15;
+    font-weight: bold;
+}
 
-        .box span {
-            display: block;
-            font-size: 12px;
-            color: var(--text-sub);
-            margin-bottom: 2px;
-        }
+button {
+    width: 100%;
+    border: 0;
+    border-radius: 20px;
+    padding: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+    cursor: pointer;
+}
 
-        .box b {
-            font-size: 20px;
-            color: var(--primary-accent);
-        }
+.ads { background: #22c55e; color: white; }
+.lock { background: #1e293b; color: #64748b; cursor: not-allowed; }
+.invite { background: #f59e0b; color: white; }
+.withdraw { background: #2563eb; color: white; }
 
-        .section-title {
-            font-size: 15px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
+.msg {
+    display: none;
+    background: #16a34a;
+    color: white;
+    padding: 12px;
+    border-radius: 15px;
+    text-align: center;
+    margin-bottom: 15px;
+}
 
-        .section-desc {
-            font-size: 12px;
-            color: var(--text-sub);
-            margin-bottom: 14px;
-        }
+.footer {
+    text-align: center;
+    color: #64748b;
+    font-size: 13px;
+}
 
-        .btn-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        button {
-            width: 100%;
-            border: 0;
-            border-radius: 14px;
-            padding: 14px;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            color: white;
-        }
-
-        button:active {
-            transform: scale(0.98);
-        }
-
-        .btn-ads {
-            background: var(--green-btn);
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.25);
-        }
-
-        .btn-invite { background: var(--orange-btn); }
-        .btn-withdraw { background: var(--blue-btn); }
-
-        .btn-lock {
-            background: var(--lock-btn);
-            color: #64748b;
-            border: 1px dashed rgba(255, 255, 255, 0.1);
-            cursor: not-allowed;
-            justify-content: space-between;
-        }
-
-        .btn-lock span {
-            font-size: 11px;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 2px 8px;
-            border-radius: 20px;
-        }
-
-        .loading {
-            opacity: 0.7;
-            pointer-events: none;
-        }
-
-        .footer {
-            text-align: center;
-            color: #475569;
-            font-size: 12px;
-            font-weight: 600;
-            margin-top: 5px;
-        }
-    </style>
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+</style>
 </head>
-
 <body>
 
-    <div class="app">
+<!-- عنصر القمر -->
+<div class="moon"></div>
 
-        <div class="header">
-            <div class="icon">🌌</div>
-            <div class="title">NOVA EARN</div>
-            <div class="subtitle">منصة الربح الذكية من الإعلانات</div>
-        </div>
+<!-- توليد النجوم بالخلفية -->
+<script>
+    for (let i = 0; i < 30; i++) {
+        let star = document.createElement("div");
+        star.className = "star";
+        star.style.width = Math.random() * 3 + "px";
+        star.style.height = star.style.width;
+        star.style.top = Math.random() * 100 + "vh";
+        star.style.left = Math.random() * 100 + "vw";
+        star.style.animationDelay = Math.random() * 2 + "s";
+        document.body.appendChild(star);
+    }
+</script>
 
-        <div id="msg" class="msg"></div>
-
-        <div class="card balance-card">
-            <div class="balance-title">الرصيد الحالي</div>
-            <div class="balance-amount" id="points">0</div>
-            <div class="balance-unit">نقطة</div>
-        </div>
-
-        <div class="card">
-            <div class="stats">
-                <div class="box">
-                    <span>الإعلانات المشاهدة</span>
-                    <b id="ads">0</b>
-                </div>
-                <div class="box">
-                    <span>المستوى الحالي</span>
-                    <b id="level">1</b>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="section-title">🎬 مشاهدة الإعلانات</div>
-            <div class="section-desc">شاهد الإعلانات اليومية واجمع النقاط فوراً</div>
-            <button class="btn-ads" id="adBtn">
-                🎥 مشاهدة إعلان (+10 نقاط)
-            </button>
-        </div>
-
-        <div class="card">
-            <div class="btn-group">
-                <button class="btn-invite" id="inviteBtn">👥 دعوة الأصدقاء</button>
-                <button class="btn-withdraw" id="withdrawBtn">💸 سحب الأرباح</button>
-                <button class="btn-lock" disabled><span>📋 المهام اليومية</span><span>قريباً</span></button>
-                <button class="btn-lock" disabled><span>📊 الإحصائيات الشاملة</span><span>قريباً</span></button>
-            </div>
-        </div>
-
-        <div class="footer">
-            NOVA EARN &copy; 2026 • جميع الحقوق محفوظة
-        </div>
-
+<div class="app">
+    <div class="header">
+        <div class="icon">🌙</div>
+        <div class="title">MADARA CRYPTO</div>
+        <div class="subtitle">Tap to Earn & Watch Ads</div>
     </div>
 
-    <script>
-        // تهيئة تطبيق تليجرام
-        if (window.Telegram && window.Telegram.WebApp) {
-            window.Telegram.WebApp.ready();
-            window.Telegram.WebApp.expand();
-        }
+    <div id="msg" class="msg"></div>
 
-        // استرجاع البيانات المخزنة
-        let points = Number(localStorage.getItem("points")) || 0;
-        let ads = Number(localStorage.getItem("ads")) || 0;
+    <div class="card">
+        <div class="balance">
+            Current Balance
+            <h1 id="points">0</h1>
+            Points
+        </div>
+    </div>
 
-        function updateUI() {
-            document.getElementById("points").innerText = points.toLocaleString();
-            document.getElementById("ads").innerText = ads.toLocaleString();
-            document.getElementById("level").innerText = Math.floor(points / 100) + 1;
+    <div class="card">
+        <div class="stats">
+            <div class="box">
+                <b id="ads">0</b> Ads Watched
+            </div>
+            <div class="box">
+                <b id="level">1</b> Level
+            </div>
+        </div>
+    </div>
 
-            localStorage.setItem("points", points);
-            localStorage.setItem("ads", ads);
-        }
+    <!-- لعبة الضغط -->
+    <div class="card tap-container">
+        <h2>⚡ Tap & Earn</h2>
+        <p>Tap 10 times to watch mandatory ad & gain reward!</p>
+        <div class="tap-btn" id="tapBtn">👆</div>
+        <div class="counter-info">
+            Taps remaining: <span id="tapCount">10</span>/10
+        </div>
+    </div>
 
-        updateUI();
+    <div class="card">
+        <h2>🎬 Watch Ads Direct</h2>
+        <button class="ads" id="manualAdBtn">🎥 Watch Ad (+10 Points)</button>
+    </div>
 
-        function showMessage(text, isError = false) {
-            const box = document.getElementById("msg");
-            box.innerText = text;
-            if (isError) box.classList.add("error");
-            else box.classList.remove("error");
+    <div class="card">
+        <button class="invite">👥 Invite Friends</button>
+        <button class="withdraw">💸 Withdraw</button>
+        <button class="lock">📋 Tasks (Soon)</button>
+        <button class="lock">📊 Status (Soon)</button>
+    </div>
 
-            box.style.display = "block";
-            setTimeout(() => { box.style.display = "none"; }, 3000);
-        }
+    <div class="footer">
+        MADARA CRYPTO © 2026
+    </div>
+</div>
 
-        // تهيئة Adsgram بآمان
-        let AdController = null;
-        try {
-            if (window.Adsgram) {
-                AdController = window.Adsgram.init({ blockId: "40248" });
-            }
-        } catch (err) {
-            console.log("Adsgram Init Error:", err);
-        }
+<script>
+let points = Number(localStorage.getItem("points")) || 0;
+let ads = Number(localStorage.getItem("ads")) || 0;
+let tapCounter = 0;
+const MAX_TAPS = 10;
 
-        // زر مشاهدة الإعلان
-        document.getElementById("adBtn").onclick = async function () {
-            const btn = this;
-            btn.classList.add("loading");
-            btn.innerHTML = "⏳ جاري تحضير الإعلان...";
+function update() {
+    document.getElementById("points").innerHTML = points.toLocaleString();
+    document.getElementById("ads").innerHTML = ads;
+    document.getElementById("level").innerHTML = Math.floor(points / 100) + 1;
+    
+    localStorage.setItem("points", points);
+    localStorage.setItem("ads", ads);
+}
 
-            try {
-                if (AdController) {
-                    // تجربة عرض إعلان Adsgram الحقيقي
-                    await AdController.show();
-                    points += 10;
-                    ads++;
-                    updateUI();
-                    showMessage("🎉 مبروك! حصلت على 10 نقاط");
-                } else {
-                    // محاكاة الإعلان للتجربة على المتصفح العادي
-                    await new Promise(resolve => setTimeout(resolve, 2000));
-                    points += 10;
-                    ads++;
-                    updateUI();
-                    showMessage("🎉 (وضع تجريبي) تم إضافة 10 نقاط!");
-                }
-            } catch (e) {
-                console.error(e);
-                showMessage("❌ لا يوجد إعلان متاح حالياً", true);
-            } finally {
-                btn.classList.remove("loading");
-                btn.innerHTML = "🎥 مشاهدة إعلان (+10 نقاط)";
-            }
-        };
+update();
 
-        document.getElementById("inviteBtn").onclick = () => showMessage("👥 نظام الدعوات سيتوفر قريباً!");
-        document.getElementById("withdrawBtn").onclick = () => showMessage("💸 نظام السحب سيتوفر قريباً!");
-  </script>
+function message(text) {
+    let box = document.getElementById("msg");
+    box.innerHTML = text;
+    box.style.display = "block";
+    
+    setTimeout(() => {
+        box.style.display = "none";
+    }, 3000);
+}
 
+// تهيئة إعلانات Adsgram
+const AdController = window.Adsgram.init({
+    blockId: "40248"
+});
+
+// دالة عرض الإعلان
+async function triggerAd() {
+    try {
+        message("⏳ Loading Mandatory Ad...");
+        await AdController.show();
+        points += 10;
+        ads++;
+        update();
+        message("🎉 Success! +10 Points added.");
+    } catch (e) {
+        message("❌ No ad available right now.");
+    }
+}
+
+// لعبة الضغط 10 ضغطات
+const tapBtn = document.getElementById("tapBtn");
+const tapCountDisplay = document.getElementById("tapCount");
+
+tapBtn.onclick = async function() {
+    tapCounter++;
+    let remaining = MAX_TAPS - tapCounter;
+    tapCountDisplay.innerHTML = remaining;
+
+    if (tapCounter >= MAX_TAPS) {
+        tapBtn.classList.add("loading");
+        await triggerAd();
+        // إعادة ضبط العداد
+        tapCounter = 0;
+        tapCountDisplay.innerHTML = MAX_TAPS;
+        tapBtn.classList.remove("loading");
+    }
+};
+
+// مشاهدة إعلان يدوي
+document.getElementById("manualAdBtn").onclick = async function() {
+    let btn = this;
+    btn.classList.add("loading");
+    await triggerAd();
+    btn.classList.remove("loading");
+};
+
+// الأزرار الأخرى
+document.querySelector(".invite").onclick = function() {
+    message("👥 Invite system coming soon!");
+};
+
+document.querySelector(".withdraw").onclick = function() {
+    message("💸 Withdrawal system coming soon!");
+};
+</script>
 </body>
-
 </html>
 
 
