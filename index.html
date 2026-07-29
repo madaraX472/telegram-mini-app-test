@@ -1,408 +1,369 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
-
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<title>Rail Rush Rewards</title>
-
-<script src="https://sad.adsgram.ai/js/sad.min.js"></script>
-
+<title>Shadow Runner</title>
 
 <style>
 
-*{
-box-sizing:border-box;
-font-family:Arial;
-}
-
-
 body{
-
 margin:0;
-background:#020617;
+background:#050816;
 color:white;
+font-family:Arial;
 text-align:center;
-
-}
-
-
-.game{
-
-width:360px;
-height:600px;
-margin:auto;
 overflow:hidden;
-background:
-linear-gradient(#334155,#020617);
-
-position:relative;
-border-radius:25px;
-
 }
 
 
-
-.title{
-
-font-size:30px;
-font-weight:bold;
-color:#facc15;
-margin:15px;
-
+h2{
+color:#38bdf8;
 }
 
 
-.score{
-
-font-size:22px;
-margin-bottom:10px;
-
+canvas{
+background:#111827;
+border-radius:20px;
+display:block;
+margin:auto;
+box-shadow:0 0 30px #000;
 }
-
-
-
-.road{
-
-position:absolute;
-top:0;
-bottom:0;
-left:0;
-right:0;
-
-display:flex;
-
-}
-
-
-
-.line{
-
-width:33.3%;
-border-left:2px dashed #64748b;
-
-}
-
-
-
-.player{
-
-position:absolute;
-
-bottom:40px;
-
-font-size:45px;
-
-transition:.2s;
-
-}
-
-
-
-.enemy{
-
-position:absolute;
-
-top:-60px;
-
-font-size:45px;
-
-}
-
-
-
-.coin{
-
-position:absolute;
-
-top:-50px;
-
-font-size:35px;
-
-}
-
 
 
 button{
 
 width:90%;
 padding:15px;
+margin:10px;
 
 border:0;
-
 border-radius:20px;
 
 font-size:18px;
-
 font-weight:bold;
 
-margin:10px;
-
-}
-
-
-
-.start{
-
 background:#22c55e;
-
 color:white;
 
 }
 
-
-
-.ad{
-
-background:#facc15;
-
-display:none;
-
-}
-
-
-
-.message{
-
-font-size:25px;
-
-color:#ef4444;
-
-}
-
-
-
 </style>
 
-
 </head>
-
 
 
 <body>
 
 
+<h2>🌃 Shadow Runner</h2>
 
-<h1 class="title">
-🚇 Rail Rush Rewards
-</h1>
-
-
-<div class="score">
-
-🪙 العملات:
-<span id="coins">0</span>
-
+<div>
+النتيجة:
+<span id="score">0</span>
 </div>
 
 
-
-<div class="game" id="game">
-
-
-<div class="road">
-
-<div class="line"></div>
-
-<div class="line"></div>
-
-<div class="line"></div>
-
-</div>
+<canvas id="game" width="360" height="600"></canvas>
 
 
-<div class="player" id="player">
-
-🏃
-
-</div>
-
-
-</div>
-
-
-
-<div id="msg" class="message"></div>
-
-
-<button class="start" id="start">
-
-▶️ بدء اللعب
-
+<button onclick="startGame()">
+▶ بدء اللعب
 </button>
-
-
-<button class="ad" id="ad">
-
-🎬 شاهد إعلان واستمر
-
-</button>
-
 
 
 
 <script>
 
 
+const canvas=document.getElementById("game");
+const ctx=canvas.getContext("2d");
+
+
+let running=false;
+
+let score=0;
+
+let roadMove=0;
+
+
 let lane=1;
 
-let coins=0;
 
-let playing=false;
+const lanes=[70,180,290];
 
-let speed=5;
 
 
+let player={
 
-const player=
-document.getElementById("player");
+x:180,
 
-const game=
-document.getElementById("game");
+y:470,
 
-const coinText=
-document.getElementById("coins");
+width:35,
 
-const msg=
-document.getElementById("msg");
+height:70,
 
+run:0
 
+};
 
-let enemy;
 
-let coin;
 
 
+// رسم المدينة
 
-function movePlayer(){
+function drawCity(){
 
-player.style.left=
-(lane*120+35)+"px";
 
-}
+ctx.fillStyle="#020617";
+ctx.fillRect(0,0,360,600);
 
 
-movePlayer();
 
+for(let i=0;i<8;i++){
 
+ctx.fillStyle="#1e293b";
 
-
-document.addEventListener("keydown",e=>{
-
-
-if(e.key=="ArrowLeft" && lane>0){
-
-lane--;
-
-movePlayer();
-
-}
-
-
-
-if(e.key=="ArrowRight" && lane<2){
-
-lane++;
-
-movePlayer();
-
-}
-
-
-});
-
-
-
-
-// لمس الهاتف
-
-
-document.addEventListener("touchstart",e=>{
-
-
-let x=e.touches[0].clientX;
-
-
-if(x < window.innerWidth/2 && lane>0){
-
-lane--;
-
-}
-
-
-else if(lane<2){
-
-lane++;
-
-}
-
-
-movePlayer();
-
-
-});
-
-
-
-
-
-
-
-function createEnemy(){
-
-
-enemy=document.createElement("div");
-
-enemy.className="enemy";
-
-enemy.innerHTML="🚆";
-
-
-enemy.style.left=
-(laneRandom()*120+35)+"px";
-
-
-enemy.style.top="-60px";
-
-
-game.appendChild(enemy);
-
+ctx.fillRect(
+i*60,
+200-(i%3)*40,
+40,
+200
+);
 
 
 }
 
 
+// أضواء
 
-function createCoin(){
+ctx.fillStyle="#38bdf8";
 
+for(let i=0;i<15;i++){
 
-coin=document.createElement("div");
-
-coin.className="coin";
-
-coin.innerHTML="🪙";
-
-
-coin.style.left=
-(laneRandom()*120+45)+"px";
-
-
-coin.style.top="-40px";
+ctx.fillRect(
+Math.random()*360,
+Math.random()*300,
+4,
+4
+);
 
 
-game.appendChild(coin);
+}
+
+}
+
+
+
+// رسم الطريق
+
+
+function drawRoad(){
+
+
+ctx.fillStyle="#334155";
+
+ctx.fillRect(30,0,300,600);
+
+
+
+ctx.strokeStyle="#94a3b8";
+
+ctx.lineWidth=3;
+
+
+for(let i=1;i<3;i++){
+
+ctx.beginPath();
+
+ctx.moveTo(30+i*100,0);
+
+ctx.lineTo(30+i*100,600);
+
+ctx.stroke();
+
+}
+
+
+
+roadMove+=8;
+
+
+if(roadMove>60)
+roadMove=0;
+
+
+
+ctx.strokeStyle="#e2e8f0";
+
+for(let y=-60;y<600;y+=60){
+
+ctx.beginPath();
+
+ctx.moveTo(130,y+roadMove);
+
+ctx.lineTo(130,y+30+roadMove);
+
+ctx.stroke();
+
+
+ctx.beginPath();
+
+ctx.moveTo(230,y+roadMove);
+
+ctx.lineTo(230,y+30+roadMove);
+
+ctx.stroke();
 
 
 }
 
 
 
+}
 
-function laneRandom(){
 
-return Math.floor(Math.random()*3);
+
+// شخصية عداء
+
+
+function drawPlayer(){
+
+
+
+player.run++;
+
+let leg=
+Math.sin(player.run*0.3)*8;
+
+
+
+// الرأس
+
+ctx.fillStyle="#f1c27d";
+
+ctx.beginPath();
+
+ctx.arc(
+player.x,
+player.y,
+15,
+0,
+Math.PI*2
+);
+
+ctx.fill();
+
+
+
+// الجسم
+
+ctx.fillStyle="#2563eb";
+
+ctx.fillRect(
+player.x-12,
+player.y+15,
+24,
+35
+);
+
+
+
+// الأرجل المتحركة
+
+ctx.strokeStyle="#111";
+
+ctx.lineWidth=6;
+
+
+ctx.beginPath();
+
+ctx.moveTo(
+player.x,
+player.y+50
+);
+
+ctx.lineTo(
+player.x-10,
+player.y+65+leg
+);
+
+ctx.moveTo(
+player.x,
+player.y+50
+);
+
+ctx.lineTo(
+player.x+10,
+player.y+65-leg
+);
+
+ctx.stroke();
+
+
+
+// اليد
+
+ctx.beginPath();
+
+ctx.moveTo(
+player.x-10,
+player.y+25
+);
+
+ctx.lineTo(
+player.x-25,
+player.y+40
+);
+
+
+ctx.moveTo(
+player.x+10,
+player.y+25
+);
+
+ctx.lineTo(
+player.x+25,
+player.y+40
+);
+
+
+ctx.stroke();
+
+
+}
+
+
+
+
+function update(){
+
+
+if(!running)return;
+
+
+ctx.clearRect(0,0,360,600);
+
+
+drawCity();
+
+drawRoad();
+
+drawPlayer();
+
+
+
+score++;
+
+document.getElementById("score").innerHTML=
+score;
+
+
+
+requestAnimationFrame(update);
+
 
 }
 
@@ -413,25 +374,15 @@ return Math.floor(Math.random()*3);
 function startGame(){
 
 
-playing=true;
+running=true;
 
-coins=0;
+score=0;
 
-coinText.innerHTML=coins;
+lane=1;
 
-msg.innerHTML="";
+player.x=lanes[lane];
 
-
-document.getElementById("ad").style.display="none";
-
-
-enemy=null;
-
-coin=null;
-
-
-
-gameLoop();
+update();
 
 
 }
@@ -440,119 +391,90 @@ gameLoop();
 
 
 
-function gameLoop(){
+document.addEventListener("keydown",e=>{
 
 
-if(!playing)return;
+if(e.key==="ArrowLeft" && lane>0){
 
-
-
-if(!enemy){
-
-createEnemy();
+lane--;
 
 }
 
 
+if(e.key==="ArrowRight" && lane<2){
 
-if(!coin){
-
-createCoin();
-
-}
-
-
-
-
-if(enemy){
-
-let y=parseInt(enemy.style.top);
-
-y+=speed;
-
-enemy.style.top=y+"px";
-
-
-
-let playerLane=lane;
-
-
-let enemyLane=
-Math.floor(parseInt(enemy.style.left)/120);
-
-
-
-if(y>500 && playerLane==enemyLane){
-
-endGame();
-
-return;
+lane++;
 
 }
 
 
-
-if(y>620){
-
-enemy.remove();
-
-enemy=null;
-
-}
+player.x=lanes[lane];
 
 
-}
+});
 
 
 
-if(coin){
+canvas.addEventListener("touchstart",e=>{
 
 
-let y=parseInt(coin.style.top);
-
-y+=speed;
-
-coin.style.top=y+"px";
+let x=e.touches[0].clientX;
 
 
-let coinLane=
-Math.floor(parseInt(coin.style.left)/120);
+if(x<180 && lane>0)
+lane--;
+
+
+if(x>180 && lane<2)
+lane++;
+
+
+player.x=lanes[lane];
+
+
+});
+
+
+// ===== الجزء الثاني =====
+
+
+// العوائق
+
+let obstacles=[];
+
+
+// الطاقة
+
+let energy=[];
 
 
 
-if(y>500 && lane==coinLane){
+function createObstacle(){
 
+obstacles.push({
 
-coins++;
+x:lanes[Math.floor(Math.random()*3)],
 
-coinText.innerHTML=coins;
+y:-80,
 
+type:"box"
 
-coin.remove();
-
-coin=null;
+});
 
 
 }
 
 
 
-if(y>620){
+function createEnergy(){
 
-coin.remove();
+energy.push({
 
-coin=null;
+x:lanes[Math.floor(Math.random()*3)],
 
-}
+y:-40
 
-
-
-}
-
-
-
-requestAnimationFrame(gameLoop);
-
+});
 
 
 }
@@ -561,21 +483,40 @@ requestAnimationFrame(gameLoop);
 
 
 
-
-function endGame(){
-
-
-playing=false;
+function drawObstacle(o){
 
 
-enemy.remove();
+ctx.fillStyle="#ef4444";
 
 
-msg.innerHTML=
-"💥 انتهت الجولة";
+ctx.fillRect(
+
+o.x-20,
+
+o.y,
+
+40,
+
+45
+
+);
 
 
-document.getElementById("ad").style.display="block";
+// علامة تحذير
+
+ctx.fillStyle="#111";
+
+ctx.fillRect(
+
+o.x-10,
+
+o.y+10,
+
+20,
+
+10
+
+);
 
 
 }
@@ -584,18 +525,125 @@ document.getElementById("ad").style.display="block";
 
 
 
-document.getElementById("start").onclick=startGame;
+function drawEnergy(e){
+
+
+ctx.fillStyle="#22d3ee";
+
+
+ctx.beginPath();
+
+ctx.arc(
+
+e.x,
+
+e.y,
+
+12,
+
+0,
+
+Math.PI*2
+
+);
+
+ctx.fill();
+
+
+}
+
+
+
+
+function checkCollision(a,b){
+
+
+return (
+
+Math.abs(a.x-b.x)<35 &&
+
+Math.abs(a.y-b.y)<50
+
+);
+
+
+}
 
 
 
 
 
 
+// تعديل التحديث القديم
 
-const AdController =
-window.Adsgram.init({
+let oldUpdate=update;
 
-blockId:"40248"
+
+
+update=function(){
+
+
+if(!running)return;
+
+
+ctx.clearRect(0,0,360,600);
+
+
+drawCity();
+
+drawRoad();
+
+
+
+
+
+// إنشاء عوائق
+
+if(Math.random()<0.02){
+
+createObstacle();
+
+}
+
+
+
+if(Math.random()<0.03){
+
+createEnergy();
+
+}
+
+
+
+
+// العوائق
+
+obstacles.forEach((o,index)=>{
+
+
+o.y+=7;
+
+
+drawObstacle(o);
+
+
+
+if(checkCollision(player,o)){
+
+
+gameOver();
+
+
+}
+
+
+
+if(o.y>650){
+
+obstacles.splice(index,1);
+
+}
+
 
 });
 
@@ -603,64 +651,79 @@ blockId:"40248"
 
 
 
-document.getElementById("ad").onclick=async()=>{
+// الطاقة
+
+energy.forEach((e,index)=>{
 
 
-document.getElementById("ad").innerHTML=
-"⏳ جاري تشغيل الإعلان...";
+e.y+=7;
 
 
-setTimeout(async()=>{
-
-
-try{
-
-
-await AdController.show();
-
-
-msg.innerHTML=
-"🔥 أكمل اللعب!";
-
-
-document.getElementById("ad").style.display="none";
-
-
-playing=true;
-
-gameLoop();
+drawEnergy(e);
 
 
 
-}
-
-catch(e){
+if(checkCollision(player,e)){
 
 
-msg.innerHTML=
-"❌ لا يوجد إعلان";
+score+=50;
+
+
+document.getElementById("score").innerHTML=score;
+
+
+energy.splice(index,1);
 
 
 }
 
 
 
-document.getElementById("ad").innerHTML=
-"🎬 شاهد إعلان واستمر";
+if(e.y>650){
+
+energy.splice(index,1);
+
+}
 
 
-},3000);
+});
 
+
+
+drawPlayer();
+
+
+
+score++;
+
+
+document.getElementById("score").innerHTML=score;
+
+
+
+requestAnimationFrame(update);
 
 
 };
 
 
 
+
+
+
+function gameOver(){
+
+
+running=false;
+
+
+alert("💥 انتهت الجولة\nالنقاط: "+score);
+
+
+}
 </script>
 
 
 </body>
-
 </html>
           
