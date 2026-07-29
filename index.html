@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Libya Rewards</title>
+<title>NOVA EARN</title>
+
+<script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 
 <style>
 
@@ -17,9 +18,12 @@ font-family:Arial,sans-serif;
 
 body{
 margin:0;
-background:#050505;
+background:
+radial-gradient(circle at top,#3b2a00,#050505 50%);
 color:white;
+min-height:100vh;
 }
+
 
 .app{
 max-width:450px;
@@ -28,39 +32,49 @@ padding:20px;
 }
 
 
-.header{
-text-align:center;
-padding:20px;
-}
-
-
 .logo{
-font-size:55px;
+text-align:center;
+font-size:50px;
+margin-top:20px;
 }
 
 
 .title{
-font-size:30px;
+text-align:center;
+font-size:32px;
 font-weight:bold;
 color:#facc15;
 }
 
 
-.user{
+.subtitle{
+text-align:center;
 color:#aaa;
-margin-top:10px;
+margin-bottom:25px;
+}
+
+
+
+.card{
+
+background:rgba(20,20,20,.9);
+border:1px solid #333;
+border-radius:25px;
+padding:20px;
+margin-bottom:20px;
+box-shadow:0 0 30px #000;
+
 }
 
 
 
 .balance{
 
-background:linear-gradient(135deg,#facc15,#ca8a04);
-padding:25px;
-border-radius:30px;
 text-align:center;
+background:linear-gradient(135deg,#facc15,#b45309);
 color:#111;
-box-shadow:0 0 30px #facc1555;
+border-radius:25px;
+padding:25px;
 
 }
 
@@ -74,29 +88,28 @@ margin:10px;
 
 
 
-.grid{
+.stats{
 
 display:grid;
 grid-template-columns:1fr 1fr;
 gap:15px;
-margin-top:20px;
 
 }
 
 
 
-.box{
+.stat{
 
 background:#111;
-border-radius:20px;
-padding:20px;
+padding:15px;
+border-radius:18px;
 text-align:center;
-border:1px solid #222;
 
 }
 
 
-.box span{
+
+.stat b{
 
 display:block;
 font-size:25px;
@@ -106,41 +119,22 @@ color:#facc15;
 
 
 
-.card{
-
-background:#111;
-padding:20px;
-border-radius:25px;
-margin-top:20px;
-
-}
-
-
-
 button{
 
 width:100%;
-padding:16px;
-margin-top:12px;
+padding:17px;
 border:0;
-border-radius:18px;
+border-radius:20px;
 font-size:18px;
 font-weight:bold;
+margin-top:15px;
 cursor:pointer;
 
 }
 
 
 
-.game{
-
-background:#facc15;
-color:#111;
-
-}
-
-
-.ad{
+.ads{
 
 background:#22c55e;
 color:white;
@@ -149,33 +143,38 @@ color:white;
 
 
 
-.coin{
+.withdraw{
 
-font-size:90px;
+background:#2563eb;
+color:white;
+
+}
+
+
+
+.invite{
+
+background:#f59e0b;
+color:#111;
+
+}
+
+
+
+.loading{
+
+opacity:.6;
+}
+
+
+
+.footer{
+
 text-align:center;
-cursor:pointer;
-user-select:none;
-transition:.1s;
+color:#777;
+font-size:13px;
 
 }
-
-
-.coin:active{
-
-transform:scale(.8);
-
-}
-
-
-
-.message{
-
-text-align:center;
-color:#aaa;
-margin-top:10px;
-
-}
-
 
 </style>
 
@@ -188,27 +187,29 @@ margin-top:10px;
 <div class="app">
 
 
-<div class="header">
-
 <div class="logo">
-🪙
+🌌
 </div>
+
 
 <div class="title">
-Libya Rewards
+NOVA EARN
 </div>
 
-<div class="user">
-مرحبا بك 👋
+
+<div class="subtitle">
+Earn rewards with AdsGram
 </div>
 
-</div>
 
+
+
+<div class="card">
 
 
 <div class="balance">
 
-رصيدك
+رصيدك الحالي
 
 <h1 id="points">
 0
@@ -219,24 +220,45 @@ Libya Rewards
 </div>
 
 
-
-
-<div class="grid">
-
-
-<div class="box">
-<span id="clicks">0</span>
-نقرات اللعبة
 </div>
 
 
-<div class="box">
-<span id="level">1</span>
+
+
+
+<div class="card">
+
+
+<div class="stats">
+
+
+<div class="stat">
+
+<b id="adsCount">
+0
+</b>
+
+إعلانات مكتملة
+
+</div>
+
+
+<div class="stat">
+
+<b id="level">
+1
+</b>
+
 المستوى
+
 </div>
 
 
 </div>
+
+
+</div>
+
 
 
 
@@ -246,27 +268,23 @@ Libya Rewards
 
 
 <h2>
-🎮 لعبة جمع النقاط
+🎬 AdsGram Reward
 </h2>
 
 
-<div class="coin" id="coin">
-🪙
-</div>
+<p>
+شاهد الإعلان واحصل على نقاط
+</p>
 
 
-<div class="message">
-اضغط على العملة واحصل على نقاط
-</div>
-
-
-
-<button class="game" onclick="addClick()">
-اضغط للربح
+<button class="ads">
+🎥 مشاهدة إعلان +10 نقاط
 </button>
 
 
 </div>
+
+
 
 
 
@@ -275,16 +293,22 @@ Libya Rewards
 <div class="card">
 
 
-<h2>
-🎁 المكافآت
-</h2>
-
-
-<button class="ad">
-مشاهدة إعلان
+<button class="invite">
+👥 دعوة الأصدقاء
 </button>
 
 
+<button class="withdraw">
+💸 طلب سحب
+</button>
+
+
+</div>
+
+
+
+<div class="footer">
+NOVA EARN © 2026
 </div>
 
 
@@ -302,84 +326,35 @@ let points =
 Number(localStorage.getItem("points")) || 0;
 
 
-let clicks =
-Number(localStorage.getItem("clicks")) || 0;
+let ads =
+Number(localStorage.getItem("ads")) || 0;
 
 
 
 function update(){
 
-document.getElementById("points").innerHTML=points;
-
-document.getElementById("clicks").innerHTML=clicks;
-
-
-document.getElementById("level").innerHTML=
-Math.floor(points/100)+1;
-
-
-localStorage.setItem("points",points);
-
-localStorage.setItem("clicks",clicks);
-
-}
-
-
-
-function addClick(){
-
-
-points++;
-
-clicks++;
-
-
-update();
-
-
-}
-
-
-
-update();
-
-
-
-</script>
-
-
-</body>
-
-</html>
-<script src="https://sad.adsgram.ai/js/sad.min.js"></script>
-
-<script>
-
-let points = Number(localStorage.getItem("points")) || 0;
-let ads = Number(localStorage.getItem("ads")) || 0;
-
-
-// تحديث البيانات
-
-function updateData(){
-
 document.getElementById("points").innerHTML = points;
 
-if(document.getElementById("ads")){
-document.getElementById("ads").innerHTML = ads;
-}
+document.getElementById("adsCount").innerHTML = ads;
+
+document.getElementById("level").innerHTML =
+Math.floor(points / 100) + 1;
+
 
 localStorage.setItem("points",points);
+
 localStorage.setItem("ads",ads);
 
 }
 
-updateData();
+
+
+update();
 
 
 
 
-// تشغيل AdsGram
+// AdsGram
 
 const AdController = window.Adsgram.init({
 
@@ -391,19 +366,14 @@ blockId:"40248"
 
 
 
-// زر الإعلان
-
-const adButton = document.querySelector(".ad");
+document.querySelector(".ads").onclick = async function(){
 
 
-if(adButton){
+let btn=this;
 
-adButton.onclick = async function(){
+btn.classList.add("loading");
 
-
-adButton.innerHTML="⏳ جاري تحميل الإعلان...";
-
-adButton.disabled=true;
+btn.innerHTML="⏳ جاري تحميل الإعلان...";
 
 
 try{
@@ -412,14 +382,12 @@ try{
 await AdController.show();
 
 
-// الإعلان اكتمل
-
 points += 10;
 
 ads++;
 
 
-updateData();
+update();
 
 
 alert("🎉 حصلت على 10 نقاط");
@@ -427,84 +395,32 @@ alert("🎉 حصلت على 10 نقاط");
 
 }
 
-
 catch(error){
 
 
 console.log(error);
 
 
-alert("❌ لا يوجد إعلان متاح الآن، حاول لاحقاً");
+alert("❌ لا يوجد إعلان متاح حاليا");
 
 
 }
 
 
-adButton.innerHTML="🎬 مشاهدة إعلان +10 نقاط";
+btn.classList.remove("loading");
 
-adButton.disabled=false;
-
+btn.innerHTML="🎥 مشاهدة إعلان +10 نقاط";
 
 
 };
 
 
-}
 
 
 
 
 
-
-// نظام السحب
-
-const withdrawButton =
-document.querySelector(".withdraw");
-
-
-if(withdrawButton){
-
-withdrawButton.onclick=function(){
-
-
-if(points < 1000){
-
-alert(
-"⚠️ الحد الأدنى للسحب هو 1000 نقطة"
-);
-
-return;
-
-}
-
-
-alert(
-"💸 تم إرسال طلب السحب"
-);
-
-
-}
-
-
-}
-
-
-
-
-
-
-
-// نظام الإحالة
-
-
-const inviteButton =
-document.querySelector(".invite");
-
-
-if(inviteButton){
-
-
-inviteButton.onclick=function(){
+document.querySelector(".invite").onclick=function(){
 
 
 let link =
@@ -514,22 +430,37 @@ let link =
 navigator.clipboard.writeText(link);
 
 
-alert(
-"✅ تم نسخ رابط الدعوة"
-);
+alert("✅ تم نسخ رابط الدعوة");
 
+
+};
+
+
+
+
+
+
+document.querySelector(".withdraw").onclick=function(){
+
+
+if(points < 1000){
+
+alert("الحد الأدنى للسحب 1000 نقطة");
+
+return;
 
 }
 
 
-}
+alert("💸 سيتم مراجعة طلب السحب");
+
+
+};
 
 
 
 
 
-
-// Telegram Mini App
 
 
 if(window.Telegram && Telegram.WebApp){
@@ -544,30 +475,18 @@ Telegram.WebApp.initDataUnsafe.user;
 
 if(user){
 
-
-let name =
-user.first_name || "مستخدم";
-
-
-let userElement =
-document.querySelector(".user");
-
-
-if(userElement){
-
-userElement.innerHTML =
-"👤 "+name;
+document.querySelector(".subtitle").innerHTML =
+"مرحبا "+user.first_name+" 👋";
 
 }
 
 
 }
-
-
-}
-
-
 
 
 
 </script>
+
+
+</body>
+</html>
