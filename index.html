@@ -1,492 +1,281 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>NOVA EARN</title>
-
-<script src="https://sad.adsgram.ai/js/sad.min.js"></script>
-
-<style>
-
-*{
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
-
-body{
-margin:0;
-background:
-radial-gradient(circle at top,#3b2a00,#050505 50%);
-color:white;
-min-height:100vh;
-}
-
-
-.app{
-max-width:450px;
-margin:auto;
-padding:20px;
-}
-
-
-.logo{
-text-align:center;
-font-size:50px;
-margin-top:20px;
-}
-
-
-.title{
-text-align:center;
-font-size:32px;
-font-weight:bold;
-color:#facc15;
-}
-
-
-.subtitle{
-text-align:center;
-color:#aaa;
-margin-bottom:25px;
-}
-
-
-
-.card{
-
-background:rgba(20,20,20,.9);
-border:1px solid #333;
-border-radius:25px;
-padding:20px;
-margin-bottom:20px;
-box-shadow:0 0 30px #000;
-
-}
-
-
-
-.balance{
-
-text-align:center;
-background:linear-gradient(135deg,#facc15,#b45309);
-color:#111;
-border-radius:25px;
-padding:25px;
-
-}
-
-
-.balance h1{
-
-font-size:45px;
-margin:10px;
-
-}
-
-
-
-.stats{
-
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:15px;
-
-}
-
-
-
-.stat{
-
-background:#111;
-padding:15px;
-border-radius:18px;
-text-align:center;
-
-}
-
-
-
-.stat b{
-
-display:block;
-font-size:25px;
-color:#facc15;
-
-}
-
-
-
-button{
-
-width:100%;
-padding:17px;
-border:0;
-border-radius:20px;
-font-size:18px;
-font-weight:bold;
-margin-top:15px;
-cursor:pointer;
-
-}
-
-
-
-.ads{
-
-background:#22c55e;
-color:white;
-
-}
-
-
-
-.withdraw{
-
-background:#2563eb;
-color:white;
-
-}
-
-
-
-.invite{
-
-background:#f59e0b;
-color:#111;
-
-}
-
-
-
-.loading{
-
-opacity:.6;
-}
-
-
-
-.footer{
-
-text-align:center;
-color:#777;
-font-size:13px;
-
-}
-
-</style>
-
-</head>
-
-
-<body>
-
-
-<div class="app">
-
-
-<div class="logo">
-🌌
-</div>
-
-
-<div class="title">
-NOVA EARN
-</div>
-
-
-<div class="subtitle">
-Earn rewards with AdsGram
-</div>
-
-
-
-
-<div class="card">
-
-
-<div class="balance">
-
-رصيدك الحالي
-
-<h1 id="points">
-0
-</h1>
-
-نقطة
-
-</div>
-
-
-</div>
-
-
-
-
-
-<div class="card">
-
-
-<div class="stats">
-
-
-<div class="stat">
-
-<b id="adsCount">
-0
-</b>
-
-إعلانات مكتملة
-
-</div>
-
-
-<div class="stat">
-
-<b id="level">
-1
-</b>
-
-المستوى
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-<div class="card">
-
-
-<h2>
-🎬 AdsGram Reward
-</h2>
-
-
-<p>
-شاهد الإعلان واحصل على نقاط
-</p>
-
-
-<button class="ads">
-🎥 مشاهدة إعلان +10 نقاط
-</button>
-
-
-</div>
-
-
-
-
-
-
-
-<div class="card">
-
-
-<button class="invite">
-👥 دعوة الأصدقاء
-</button>
-
-
-<button class="withdraw">
-💸 طلب سحب
-</button>
-
-
-</div>
-
-
-
-<div class="footer">
-NOVA EARN © 2026
-</div>
-
-
-
-</div>
-
-
-
-
-
-<script>
-
-
-let points =
-Number(localStorage.getItem("points")) || 0;
-
-
-let ads =
-Number(localStorage.getItem("ads")) || 0;
-
-
-
-function update(){
-
-document.getElementById("points").innerHTML = points;
-
-document.getElementById("adsCount").innerHTML = ads;
-
-document.getElementById("level").innerHTML =
-Math.floor(points / 100) + 1;
-
-
-localStorage.setItem("points",points);
-
-localStorage.setItem("ads",ads);
-
-}
-
-
-
-update();
-
-
-
-
-// AdsGram
-
-const AdController = window.Adsgram.init({
-
-blockId:"40248"
-
-});
-
-
-
-
-
-document.querySelector(".ads").onclick = async function(){
-
-
-let btn=this;
-
-btn.classList.add("loading");
-
-btn.innerHTML="⏳ جاري تحميل الإعلان...";
-
-
-try{
-
-
-await AdController.show();
-
-
-points += 10;
-
-ads++;
-
-
-update();
-
-
-alert("🎉 حصلت على 10 نقاط");
-
-
-}
-
-catch(error){
-
-
-console.log(error);
-
-
-alert("❌ لا يوجد إعلان متاح حاليا");
-
-
-}
-
-
-btn.classList.remove("loading");
-
-btn.innerHTML="🎥 مشاهدة إعلان +10 نقاط";
-
-
-};
-
-
-
-
-
-
-
-document.querySelector(".invite").onclick=function(){
-
-
-let link =
-"https://t.me/test_rewards_libya_bot";
-
-
-navigator.clipboard.writeText(link);
-
-
-alert("✅ تم نسخ رابط الدعوة");
-
-
-};
-
-
-
-
-
-
-document.querySelector(".withdraw").onclick=function(){
-
-
-if(points < 1000){
-
-alert("الحد الأدنى للسحب 1000 نقطة");
-
-return;
-
-}
-
-
-alert("💸 سيتم مراجعة طلب السحب");
-
-
-};
-
-
-
-
-
-
-
-if(window.Telegram && Telegram.WebApp){
-
-
-Telegram.WebApp.ready();
-
-
-let user =
-Telegram.WebApp.initDataUnsafe.user;
-
-
-if(user){
-
-document.querySelector(".subtitle").innerHTML =
-"مرحبا "+user.first_name+" 👋";
-
-}
-
-
-}
-
-
-
-</script>
-
-
-</body>
-</html>
+# target_file: bot_script.py
+# (This file is expected to be part of the user's existing GitHub structure)
+
+import logging
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, CallbackQueryHandler, MessageHandler, filters
+from tinydb import TinyDB, Query
+import uuid # For unique referral links (example)
+
+# --- Configuration (User-defined) ---
+# Substitute with your actual Bot Token from BotFather
+BOT_TOKEN = "YOUR_BOT_TOKEN_HERE"
+ADSGRAM_ID = "40248" # Your specific AdsGram ID
+POINTS_PER_AD = 40
+WITHDRAW_THRESHOLD_POINTS = 1000
+# (For actual TON withdrawal, this needs a much more complex API interaction)
+WITHDRAW_WALLET_TYPE = "TON" 
+
+# --- Image Assets (Example placeholders) ---
+# Replace with the actual Telegram file ID of your pixel art images
+START_PIXEL_IMAGE_ID = "AgACAgQAAxkBAAIBpWZfS9w23gYyB9MvD8p6N9U1wZfS9wAEd_U6p2F42H44N0C0IqA5BQAiAQ" # Example: image_0.png ID
+AD_PIXEL_IMAGE_ID = "AgACAgQAAxkBAAIBqWZfS9-pE87n_K_nB_z-xL-rI5AQAiAQ" # A 'watching ad' asset
+WITHDRAW_PIXEL_IMAGE_ID = "AgACAgQAAxkBAAIBrWZfS-B0S7E9k_9eL_X_yY5EBAiAQ" # A 'chest' or 'payout' asset
+REFERRAL_PIXEL_IMAGE_ID = "AgACAgQAAxkBAAIBsWZfS-C6I5-6-G5fS_y5EBAiAQ" # A 'friends' asset
+
+# --- Database Setup (For demonstration, using TinyDB) ---
+# For production, use a more robust DB like PostgreSQL
+db = TinyDB('user_db.json')
+User = Query()
+transactions_db = TinyDB('transactions_db.json')
+Transaction = Query()
+
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.INFO
+)
+
+# --- Helper Functions ---
+
+def get_or_create_user(user_id, username, chat_id):
+    user_data = db.get(User.user_id == user_id)
+    if not user_data:
+        # Check for referrer from start command (handled in /start)
+        db.insert({
+            'user_id': user_id,
+            'username': username,
+            'chat_id': chat_id,
+            'points': 0,
+            'referrer_id': None,
+            'referral_token': str(uuid.uuid4())[:8], # Simple referral token
+            'ads_watched': 0
+        })
+        user_data = db.get(User.user_id == user_id)
+    return user_data
+
+def update_user_points(user_id, points_change):
+    user_data = db.get(User.user_id == user_id)
+    if user_data:
+        new_points = max(0, user_data['points'] + points_change)
+        db.update({'points': new_points}, User.user_id == user_id)
+        return new_points
+    return None
+
+# --- Main Bot Functions ---
+
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user = update.effective_user
+    chat_id = update.effective_chat.id
+    username = user.username or user.first_name
+    
+    # Check for referral in args
+    args = context.args
+    referrer_id = None
+    if args:
+        referrer_id = int(args[0])
+        # Validate referrer_id (e.g., check if it exists in DB, is not the same user)
+
+    user_data = get_or_create_user(user.id, username, chat_id)
+    
+    # Handle first-time referral logic
+    if referrer_id and not user_data.get('referrer_processed'):
+        referrer_data = db.get(User.user_id == referrer_id)
+        if referrer_data and referrer_id != user.id:
+            db.update({'referrer_id': referrer_id}, User.user_id == user.id)
+            # Logic to reward referrer can be added here
+            logging.info(f"User {user.id} was referred by {referrer_id}")
+
+    # Pixel art stylized menu with main image
+    text = f"👾 أهلاً بك يا <b>{username}</b> في لعبة جمع النقاط!\n\n"
+    text += f"💰 نقاطك الحالية: <b>{user_data['points']}</b>\n"
+    text += f"🎮 حد السحب: <b>{WITHDRAW_THRESHOLD_POINTS} {WITHDRAW_WALLET_TYPE}</b>"
+
+    keyboard = [
+        [InlineKeyboardButton("📺 شاهد إعلان واكسب (40)", callback_data='watch_ad')],
+        [InlineKeyboardButton("💳 سحب الأرباح", callback_data='withdraw_menu'),
+         InlineKeyboardButton("👥 الإحالات", callback_data='referral_menu')]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+
+    await context.bot.send_photo(
+        chat_id=chat_id,
+        photo=START_PIXEL_IMAGE_ID,
+        caption=text,
+        reply_markup=reply_markup,
+        parse_mode='HTML'
+    )
+
+async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    user_id = query.from_user.id
+    user_data = db.get(User.user_id == user_id)
+    
+    if not user_data: return # Safety check
+
+    # --- WATCH AD SECTION ---
+    if query.data == 'watch_ad':
+        # --- CRITICAL ADSGRAM INTEGRATION POINT ---
+        # 1. You must integrate AdsGram here. 
+        # 2. Use their API to display an ad.
+        # 3. Use their callback (callback_url) to a secure server you control to verify the ad was viewed.
+        # 4. Only AFTER verification on your server, reward the user.
+        
+        # This is a PLACEHOLDER demonstrating the flow:
+        ad_url = f"https://partner.adsgram.ai/{ADSGRAM_ID}/ad?uid={user_id}" # Example URL
+        
+        text = f"👀 شاهد الإعلان التالي لتكسب <b>{POINTS_PER_AD}</b> نقطة:\n\n"
+        text += f"🔗 رابط الإعلان (تجريبي):\n{ad_url}"
+        
+        keyboard = [[InlineKeyboardButton("✅ لقد شاهدت الإعلان", callback_data='confirm_ad_view')]]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+
+        # In a real bot, you'd send an image or just a message with the inline button
+        await context.bot.send_photo(
+            chat_id=query.message.chat_id,
+            photo=AD_PIXEL_IMAGE_ID,
+            caption=text,
+            reply_markup=reply_markup,
+            parse_mode='HTML'
+        )
+        await query.answer()
+
+    elif query.data == 'confirm_ad_view':
+        # !!! INSECURE - USE ONLY FOR LOCAL TESTING !!!
+        # A proper implementation must verify the ad view via AdsGram's API server-to-server.
+        # For testing purposes only:
+        new_points = update_user_points(user_id, POINTS_PER_AD)
+        # Update ad count
+        current_ads = user_data.get('ads_watched', 0)
+        db.update({'ads_watched': current_ads + 1}, User.user_id == user_id)
+        
+        await query.answer(f"تهانينا! لقد حصلت على {POINTS_PER_AD} نقطة! 🎉")
+        # Update the original menu message
+        updated_data = db.get(User.user_id == user_id)
+        # Return to main menu (could use a separate function for menu rendering)
+        text = f"👾 أهلاً بك يا <b>{query.from_user.username or query.from_user.first_name}</b>!\n\n💰 نقاطك الحالية: <b>{updated_data['points']}</b>"
+        # ... recreate standard menu buttons ...
+        # [This logic should be centralized]
+        
+        # Simplest is just to delete and resend start (less ideal) or update points display
+        await query.message.edit_reply_markup() # Clear current inline buttons
+        await query.message.edit_caption(caption=f"{text}\n\n(القائمة تم تحديثها)", parse_mode='HTML')
+
+    # --- WITHDRAW SECTION ---
+    elif query.data == 'withdraw_menu':
+        # Text based pixel art chest or wallet image
+        text = f"💰 **قسم السحب** 💳\n\n"
+        text += f"💰 نقاطك: {user_data['points']}\n"
+        text += f"🎮 حد السحب الأدنى: {WITHDRAW_THRESHOLD_POINTS} نقطة.\n"
+        text += f"🏦 السحب على محفظة: **{WITHDRAW_WALLET_TYPE}**\n\n"
+        
+        if user_data['points'] < WITHDRAW_THRESHOLD_POINTS:
+            text += f"⚠️ **تحتاج إلى {WITHDRAW_THRESHOLD_POINTS - user_data['points']} نقطة إضافية للسحب.**"
+            keyboard = [[InlineKeyboardButton("🔙 العودة", callback_data='start_menu')]]
+        else:
+            text += "✅ **يمكنك طلب السحب الآن!**\n\nأرسل عنوان محفظة TON الخاصة بك أدناه 👇."
+            keyboard = [[InlineKeyboardButton("✅ تأكيد عنوان المحفظة", callback_data='confirm_wallet_input')],
+                        [InlineKeyboardButton("🔙 العودة", callback_data='start_menu')]]
+            # Flag that user is inputting wallet
+            db.update({'input_state': 'waiting_for_wallet'}, User.user_id == user_id)
+
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        await context.bot.send_photo(
+            chat_id=query.message.chat_id,
+            photo=WITHDRAW_PIXEL_IMAGE_ID,
+            caption=text,
+            reply_markup=reply_markup,
+            parse_mode='HTML'
+        )
+        await query.answer()
+
+    # --- REFERRAL SECTION ---
+    elif query.data == 'referral_menu':
+        referral_link = f"https://t.me/{context.bot.username}?start={user_id}"
+        # Simplified reward display
+        text = f"👥 **برنامج الإحالات** 🤝\n\n"
+        text += f"💬 ادعُ أصدقاءك واكسب (مثلاً: 100 نقطة لكل إحالة ناجحة).\n"
+        text += f"إحالاتك الحالية: {db.count(User.referrer_id == user_id)}\n\n"
+        text += f"🔗 رابط الإحالة الخاص بك:\n<code>{referral_link}</code>"
+        
+        keyboard = [
+            [InlineKeyboardButton("📤 مشاركة الرابط", callback_data='share_referral')],
+            [InlineKeyboardButton("🔙 العودة", callback_data='start_menu')]
+        ]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+
+        await context.bot.send_photo(
+            chat_id=query.message.chat_id,
+            photo=REFERRAL_PIXEL_IMAGE_ID,
+            caption=text,
+            reply_markup=reply_markup,
+            parse_mode='HTML'
+        )
+        await query.answer()
+        
+    elif query.data == 'start_menu':
+        # Basic way to return to start without starting a new chat flow
+        # In practice, you'd centralize menu rendering to reuse it.
+        await query.message.delete()
+        # Call start explicitly for the same user/chat
+        # A more robust solution would be to make start/menu render functions reusable
+        await query.answer("جاري العودة إلى القائمة الرئيسية...")
+
+# --- Message Handler for Wallet Input ---
+
+async def wallet_input_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = update.effective_user.id
+    user_data = db.get(User.user_id == user_id)
+    
+    if user_data and user_data.get('input_state') == 'waiting_for_wallet':
+        wallet_address = update.message.text
+        # Basic validation (optional)
+        if len(wallet_address) < 20: # Simple TON length check, make it proper
+             await update.message.reply_text("⛔️ عنوان المحفظة يبدو غير صحيح. حاول مرة أخرى.")
+             return
+
+        # Record withdrawal request
+        points_to_withdraw = WITHDRAW_THRESHOLD_POINTS # Simple, all threshold points
+        transactions_db.insert({
+            'user_id': user_id,
+            'points': points_to_withdraw,
+            'wallet': wallet_address,
+            'wallet_type': WITHDRAW_WALLET_TYPE,
+            'status': 'pending',
+            'timestamp': str(context.args[0]) if context.args else 'none' # Placeholder for timestamp
+        })
+        
+        # Deduct points
+        update_user_points(user_id, -points_to_withdraw)
+        
+        # Reset input state
+        db.update({'input_state': None}, User.user_id == user_id)
+        
+        # Notify user
+        text = f"✅ **تم تسجيل طلب السحب بنجاح!**\n\n💳 محفظة: <code>{wallet_address}</code>\n💰 نقاط: {points_to_withdraw}\n🕰️ يتم معالجة الطلب حالياً."
+        
+        # Stylized payout image
+        await context.bot.send_photo(
+            chat_id=update.message.chat_id,
+            photo=WITHDRAW_PIXEL_IMAGE_ID,
+            caption=text,
+            parse_mode='HTML'
+        )
+        
+        # (Optional: Admin notification of pending withdrawal)
+        logging.info(f"Withdrawal request from {user_id} for {points_to_withdraw} points to {wallet_address}")
+
+
+# --- Bot Setup and Run ---
+
+if __name__ == '__main__':
+    application = ApplicationBuilder().token(BOT_TOKEN).build()
+
+    application.add_handler(CommandHandler('start', start))
+    application.add_handler(CallbackQueryHandler(button_handler))
+    
+    # Handle message inputs for wallet address
+    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, wallet_input_handler))
+
+    logging.info("البوت بدأ العمل...")
+    application.run_polling()
+          
