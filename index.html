@@ -1,53 +1,65 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Shadow Runner</title>
 
 <style>
 
+*{
+box-sizing:border-box;
+font-family:Arial;
+}
+
 body{
 margin:0;
 background:#050816;
 color:white;
-font-family:Arial;
 text-align:center;
 overflow:hidden;
 }
 
 
-h2{
+h1{
 color:#38bdf8;
 }
 
 
 canvas{
-background:#111827;
-border-radius:20px;
 display:block;
 margin:auto;
+background:#111827;
+border-radius:25px;
 box-shadow:0 0 30px #000;
 }
 
 
 button{
-
 width:90%;
 padding:15px;
 margin:10px;
-
 border:0;
 border-radius:20px;
-
 font-size:18px;
 font-weight:bold;
+}
 
+
+#start{
 background:#22c55e;
 color:white;
-
 }
+
+
+#ad{
+display:none;
+background:#facc15;
+}
+
+
 
 </style>
 
@@ -57,10 +69,11 @@ color:white;
 <body>
 
 
-<h2>🌃 Shadow Runner</h2>
+<h1>🌃 Shadow Runner</h1>
+
 
 <div>
-النتيجة:
+النقاط:
 <span id="score">0</span>
 </div>
 
@@ -68,9 +81,15 @@ color:white;
 <canvas id="game" width="360" height="600"></canvas>
 
 
-<button onclick="startGame()">
+<button id="start">
 ▶ بدء اللعب
 </button>
+
+
+<button id="ad">
+🎬 مشاهدة إعلان والمتابعة
+</button>
+
 
 
 
@@ -85,10 +104,12 @@ let running=false;
 
 let score=0;
 
+let lane=1;
+
+let speed=6;
+
 let roadMove=0;
 
-
-let lane=1;
 
 
 const lanes=[70,180,290];
@@ -98,38 +119,36 @@ const lanes=[70,180,290];
 let player={
 
 x:180,
-
 y:470,
-
-width:35,
-
-height:70,
-
 run:0
 
 };
 
 
 
+let obstacles=[];
 
-// رسم المدينة
+let batteries=[];
 
-function drawCity(){
+
+
+function drawBackground(){
 
 
 ctx.fillStyle="#020617";
+
 ctx.fillRect(0,0,360,600);
 
 
 
-for(let i=0;i<8;i++){
+for(let i=0;i<7;i++){
 
 ctx.fillStyle="#1e293b";
 
 ctx.fillRect(
 i*60,
-200-(i%3)*40,
-40,
+120,
+45,
 200
 );
 
@@ -137,27 +156,9 @@ i*60,
 }
 
 
-// أضواء
-
-ctx.fillStyle="#38bdf8";
-
-for(let i=0;i<15;i++){
-
-ctx.fillRect(
-Math.random()*360,
-Math.random()*300,
-4,
-4
-);
-
 
 }
 
-}
-
-
-
-// رسم الطريق
 
 
 function drawRoad(){
@@ -174,17 +175,18 @@ ctx.strokeStyle="#94a3b8";
 ctx.lineWidth=3;
 
 
-for(let i=1;i<3;i++){
 
 ctx.beginPath();
 
-ctx.moveTo(30+i*100,0);
+ctx.moveTo(130,0);
+ctx.lineTo(130,600);
 
-ctx.lineTo(30+i*100,600);
+
+ctx.moveTo(230,0);
+ctx.lineTo(230,600);
+
 
 ctx.stroke();
-
-}
 
 
 
@@ -196,24 +198,17 @@ roadMove=0;
 
 
 
-ctx.strokeStyle="#e2e8f0";
+ctx.strokeStyle="white";
+
 
 for(let y=-60;y<600;y+=60){
 
-ctx.beginPath();
-
-ctx.moveTo(130,y+roadMove);
-
-ctx.lineTo(130,y+30+roadMove);
-
-ctx.stroke();
-
 
 ctx.beginPath();
 
-ctx.moveTo(230,y+roadMove);
+ctx.moveTo(180,y+roadMove);
 
-ctx.lineTo(230,y+30+roadMove);
+ctx.lineTo(180,y+30+roadMove);
 
 ctx.stroke();
 
@@ -226,23 +221,22 @@ ctx.stroke();
 
 
 
-// شخصية عداء
+// رسم الشخصية
 
 
 function drawPlayer(){
 
 
-
 player.run++;
 
-let leg=
-Math.sin(player.run*0.3)*8;
+
+let move=Math.sin(player.run*0.3)*5;
 
 
 
 // الرأس
 
-ctx.fillStyle="#f1c27d";
+ctx.fillStyle="#f5cfa0";
 
 ctx.beginPath();
 
@@ -271,7 +265,7 @@ player.y+15,
 
 
 
-// الأرجل المتحركة
+// الأرجل
 
 ctx.strokeStyle="#111";
 
@@ -287,8 +281,9 @@ player.y+50
 
 ctx.lineTo(
 player.x-10,
-player.y+65+leg
+player.y+70+move
 );
+
 
 ctx.moveTo(
 player.x,
@@ -297,59 +292,190 @@ player.y+50
 
 ctx.lineTo(
 player.x+10,
-player.y+65-leg
-);
-
-ctx.stroke();
-
-
-
-// اليد
-
-ctx.beginPath();
-
-ctx.moveTo(
-player.x-10,
-player.y+25
-);
-
-ctx.lineTo(
-player.x-25,
-player.y+40
-);
-
-
-ctx.moveTo(
-player.x+10,
-player.y+25
-);
-
-ctx.lineTo(
-player.x+25,
-player.y+40
+player.y+70-move
 );
 
 
 ctx.stroke();
+
 
 
 }
 
 
 
+function createObstacle(){
+
+obstacles.push({
+
+x:lanes[Math.floor(Math.random()*3)],
+y:-50
+
+});
+
+}
+
+
+
+function createBattery(){
+
+batteries.push({
+
+x:lanes[Math.floor(Math.random()*3)],
+y:-30
+
+});
+
+}
+
+
+
+function drawObstacle(o){
+
+ctx.fillStyle="#ef4444";
+
+ctx.fillRect(
+o.x-20,
+o.y,
+40,
+45
+);
+
+}
+
+
+
+function drawBattery(b){
+
+ctx.fillStyle="#22d3ee";
+
+ctx.beginPath();
+
+ctx.arc(
+b.x,
+b.y,
+12,
+0,
+Math.PI*2
+);
+
+ctx.fill();
+
+}
+function collision(a,b){
+
+return(
+Math.abs(a.x-b.x)<40 &&
+Math.abs(a.y-b.y)<50
+);
+
+}
+
+
 
 function update(){
 
 
-if(!running)return;
+if(!running) return;
 
 
 ctx.clearRect(0,0,360,600);
 
 
-drawCity();
+drawBackground();
 
 drawRoad();
+
+
+
+// إنشاء العوائق
+
+if(Math.random()<0.025){
+
+createObstacle();
+
+}
+
+
+if(Math.random()<0.03){
+
+createBattery();
+
+}
+
+
+
+// تحريك العوائق
+
+obstacles.forEach((o,index)=>{
+
+
+o.y+=speed;
+
+
+drawObstacle(o);
+
+
+
+if(collision(player,o)){
+
+gameOver();
+
+}
+
+
+
+if(o.y>650){
+
+obstacles.splice(index,1);
+
+}
+
+
+
+});
+
+
+
+
+// تحريك الطاقة
+
+batteries.forEach((b,index)=>{
+
+
+b.y+=speed;
+
+
+drawBattery(b);
+
+
+
+if(collision(player,b)){
+
+
+score+=50;
+
+
+document.getElementById("score").innerHTML=score;
+
+
+batteries.splice(index,1);
+
+
+}
+
+
+
+if(b.y>650){
+
+batteries.splice(index,1);
+
+}
+
+
+});
+
+
 
 drawPlayer();
 
@@ -357,8 +483,7 @@ drawPlayer();
 
 score++;
 
-document.getElementById("score").innerHTML=
-score;
+document.getElementById("score").innerHTML=score;
 
 
 
@@ -374,13 +499,25 @@ requestAnimationFrame(update);
 function startGame(){
 
 
-running=true;
-
 score=0;
 
 lane=1;
 
 player.x=lanes[lane];
+
+obstacles=[];
+
+batteries=[];
+
+
+document.getElementById("score").innerHTML=0;
+
+
+document.getElementById("ad").style.display="none";
+
+
+running=true;
+
 
 update();
 
@@ -391,7 +528,23 @@ update();
 
 
 
-document.addEventListener("keydown",e=>{
+function gameOver(){
+
+
+running=false;
+
+
+document.getElementById("ad").style.display="block";
+
+
+}
+
+
+
+
+// التحكم بالكمبيوتر
+
+document.addEventListener("keydown",function(e){
 
 
 if(e.key==="ArrowLeft" && lane>0){
@@ -415,18 +568,27 @@ player.x=lanes[lane];
 
 
 
-canvas.addEventListener("touchstart",e=>{
+
+// التحكم بالهاتف
+
+canvas.addEventListener("touchstart",function(e){
 
 
 let x=e.touches[0].clientX;
 
 
-if(x<180 && lane>0)
+if(x < window.innerWidth/2 && lane>0){
+
 lane--;
 
+}
 
-if(x>180 && lane<2)
+
+else if(lane<2){
+
 lane++;
+
+}
 
 
 player.x=lanes[lane];
@@ -435,295 +597,87 @@ player.x=lanes[lane];
 });
 
 
-// ===== الجزء الثاني =====
-
-
-// العوائق
-
-let obstacles=[];
-
-
-// الطاقة
-
-let energy=[];
 
 
 
-function createObstacle(){
+document.getElementById("start").onclick=startGame;
 
-obstacles.push({
 
-x:lanes[Math.floor(Math.random()*3)],
 
-y:-80,
 
-type:"box"
+// مكان AdsGram
+
+let AdController;
+
+
+try{
+
+AdController=window.Adsgram.init({
+
+blockId:"40248"
 
 });
 
 
+}catch(e){}
+
+
+
+
+
+document.getElementById("ad").onclick=function(){
+
+
+let btn=this;
+
+
+btn.innerHTML="⏳ جاري تشغيل الإعلان...";
+
+
+setTimeout(async()=>{
+
+
+try{
+
+
+if(AdController){
+
+await AdController.show();
+
 }
 
 
-
-function createEnergy(){
-
-energy.push({
-
-x:lanes[Math.floor(Math.random()*3)],
-
-y:-40
-
-});
+btn.style.display="none";
 
 
-}
+running=true;
+
+
+update();
 
 
 
+}catch(e){
 
 
-function drawObstacle(o){
-
-
-ctx.fillStyle="#ef4444";
-
-
-ctx.fillRect(
-
-o.x-20,
-
-o.y,
-
-40,
-
-45
-
-);
-
-
-// علامة تحذير
-
-ctx.fillStyle="#111";
-
-ctx.fillRect(
-
-o.x-10,
-
-o.y+10,
-
-20,
-
-10
-
-);
+btn.innerHTML="❌ لا يوجد إعلان";
 
 
 }
 
 
 
+},3000);
 
-
-function drawEnergy(e){
-
-
-ctx.fillStyle="#22d3ee";
-
-
-ctx.beginPath();
-
-ctx.arc(
-
-e.x,
-
-e.y,
-
-12,
-
-0,
-
-Math.PI*2
-
-);
-
-ctx.fill();
-
-
-}
-
-
-
-
-function checkCollision(a,b){
-
-
-return (
-
-Math.abs(a.x-b.x)<35 &&
-
-Math.abs(a.y-b.y)<50
-
-);
-
-
-}
-
-
-
-
-
-
-// تعديل التحديث القديم
-
-let oldUpdate=update;
-
-
-
-update=function(){
-
-
-if(!running)return;
-
-
-ctx.clearRect(0,0,360,600);
-
-
-drawCity();
-
-drawRoad();
-
-
-
-
-
-// إنشاء عوائق
-
-if(Math.random()<0.02){
-
-createObstacle();
-
-}
-
-
-
-if(Math.random()<0.03){
-
-createEnergy();
-
-}
-
-
-
-
-// العوائق
-
-obstacles.forEach((o,index)=>{
-
-
-o.y+=7;
-
-
-drawObstacle(o);
-
-
-
-if(checkCollision(player,o)){
-
-
-gameOver();
-
-
-}
-
-
-
-if(o.y>650){
-
-obstacles.splice(index,1);
-
-}
-
-
-});
-
-
-
-
-
-// الطاقة
-
-energy.forEach((e,index)=>{
-
-
-e.y+=7;
-
-
-drawEnergy(e);
-
-
-
-if(checkCollision(player,e)){
-
-
-score+=50;
-
-
-document.getElementById("score").innerHTML=score;
-
-
-energy.splice(index,1);
-
-
-}
-
-
-
-if(e.y>650){
-
-energy.splice(index,1);
-
-}
-
-
-});
-
-
-
-drawPlayer();
-
-
-
-score++;
-
-
-document.getElementById("score").innerHTML=score;
-
-
-
-requestAnimationFrame(update);
 
 
 };
 
 
 
-
-
-
-function gameOver(){
-
-
-running=false;
-
-
-alert("💥 انتهت الجولة\nالنقاط: "+score);
-
-
-}
 </script>
 
 
 </body>
-</html>
-          
+
+</html>          
