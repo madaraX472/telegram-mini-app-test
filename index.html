@@ -1,67 +1,295 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Shadow Runner</title>
+<title>VORTEX REWARDS</title>
 
 <style>
 
 *{
 box-sizing:border-box;
-font-family:Arial;
+font-family:Arial,sans-serif;
 }
 
 body{
+
 margin:0;
-background:#050816;
+background:
+linear-gradient(180deg,#020617,#111827);
+
 color:white;
-text-align:center;
-overflow:hidden;
+
 }
 
 
-h1{
-color:#38bdf8;
-}
+.app{
 
-
-canvas{
-display:block;
+max-width:450px;
 margin:auto;
-background:#111827;
-border-radius:25px;
-box-shadow:0 0 30px #000;
+padding:20px;
+padding-bottom:100px;
+
 }
+
+
+.header{
+
+text-align:center;
+margin-top:20px;
+
+}
+
+
+.logo{
+
+width:90px;
+height:90px;
+border-radius:50%;
+
+margin:auto;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:45px;
+
+background:
+linear-gradient(135deg,#facc15,#ea580c);
+
+box-shadow:
+0 0 30px #facc15;
+
+}
+
+
+.title{
+
+font-size:30px;
+font-weight:bold;
+
+color:#facc15;
+
+margin-top:15px;
+
+}
+
+
+.subtitle{
+
+color:#94a3b8;
+
+}
+
+
+
+.card{
+
+background:#0f172a;
+
+border:1px solid #334155;
+
+border-radius:25px;
+
+padding:20px;
+
+margin-top:20px;
+
+}
+
+
+
+.balance{
+
+background:
+linear-gradient(135deg,#facc15,#b45309);
+
+color:#111;
+
+border-radius:20px;
+
+padding:20px;
+
+text-align:center;
+
+}
+
+
+.balance span{
+
+display:block;
+
+font-size:45px;
+
+font-weight:bold;
+
+}
+
+
+
+.stats{
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:10px;
+
+}
+
+
+
+.stat{
+
+background:#020617;
+
+border-radius:18px;
+
+padding:15px;
+
+text-align:center;
+
+}
+
+
+.stat b{
+
+display:block;
+
+font-size:25px;
+
+color:#facc15;
+
+}
+
+
 
 
 button{
-width:90%;
-padding:15px;
-margin:10px;
+
+width:100%;
+
+padding:16px;
+
 border:0;
+
 border-radius:20px;
-font-size:18px;
+
+font-size:17px;
+
 font-weight:bold;
+
+margin-top:12px;
+
+cursor:pointer;
+
 }
 
 
-#start{
-background:#22c55e;
-color:white;
-}
+.gold{
 
-
-#ad{
-display:none;
 background:#facc15;
+
+color:#111;
+
 }
 
+
+.green{
+
+background:#22c55e;
+
+color:white;
+
+}
+
+
+.blue{
+
+background:#2563eb;
+
+color:white;
+
+}
+
+
+
+.page{
+
+display:none;
+
+}
+
+
+
+
+.nav{
+
+position:fixed;
+
+bottom:10px;
+
+left:50%;
+
+transform:translateX(-50%);
+
+width:90%;
+
+max-width:420px;
+
+display:flex;
+
+gap:8px;
+
+background:#020617;
+
+padding:10px;
+
+border-radius:25px;
+
+border:1px solid #334155;
+
+}
+
+
+.nav button{
+
+margin:0;
+
+padding:12px 5px;
+
+font-size:12px;
+
+background:#1e293b;
+
+color:white;
+
+}
+
+
+.notice{
+
+display:none;
+
+background:#16a34a;
+
+padding:12px;
+
+border-radius:15px;
+
+margin-top:15px;
+
+text-align:center;
+
+}
 
 
 </style>
+
 
 </head>
 
@@ -69,26 +297,160 @@ background:#facc15;
 <body>
 
 
-<h1>🌃 Shadow Runner</h1>
+<div class="app">
 
 
-<div>
-النقاط:
-<span id="score">0</span>
+<div class="header">
+
+
+<div class="logo">
+⚡
 </div>
 
 
-<canvas id="game" width="360" height="600"></canvas>
+<div class="title">
+VORTEX REWARDS
+</div>
 
 
-<button id="start">
-▶ بدء اللعب
+<div class="subtitle">
+اربح النقاط من الإعلانات والألعاب
+</div>
+
+
+</div>
+
+
+
+<div id="notice" class="notice"></div>
+
+
+
+
+<!-- الرئيسية -->
+
+
+<div id="home" class="page" style="display:block">
+
+
+<div class="card">
+
+
+<div class="balance">
+
+رصيدك
+
+<span id="points">
+0
+</span>
+
+نقطة
+
+</div>
+
+
+</div>
+
+
+
+<div class="card">
+
+
+<div class="stats">
+
+
+<div class="stat">
+
+<b id="ads">
+0
+</b>
+
+إعلانات
+
+</div>
+
+
+<div class="stat">
+
+<b id="level">
+1
+</b>
+
+المستوى
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+<div class="card">
+
+
+<button class="green" onclick="openPage('adsPage')">
+
+📢 قسم AdsGram
+
 </button>
 
 
-<button id="ad">
-🎬 مشاهدة إعلان والمتابعة
+<button class="blue" onclick="openPage('withdrawPage')">
+
+💸 السحب
+
 </button>
+
+
+<button class="gold" onclick="openPage('gamesPage')">
+
+🎮 الألعاب
+
+</button>
+
+
+</div>
+
+
+
+</div>
+
+
+
+<!-- الصفحات ستضاف في الجزء الثاني -->
+
+
+
+
+
+<div class="nav">
+
+
+<button onclick="openPage('home')">
+🏠
+</button>
+
+
+<button onclick="openPage('adsPage')">
+📢
+</button>
+
+
+<button onclick="openPage('gamesPage')">
+🎮
+</button>
+
+
+<button onclick="openPage('withdrawPage')">
+💸
+</button>
+
+
+</div>
+
 
 
 
@@ -96,585 +458,656 @@ background:#facc15;
 <script>
 
 
-const canvas=document.getElementById("game");
-const ctx=canvas.getContext("2d");
+let points =
+Number(localStorage.getItem("points")) || 0;
 
 
-let running=false;
-
-let score=0;
-
-let lane=1;
-
-let speed=6;
-
-let roadMove=0;
-
-
-
-const lanes=[70,180,290];
-
-
-
-let player={
-
-x:180,
-y:470,
-run:0
-
-};
-
-
-
-let obstacles=[];
-
-let batteries=[];
-
-
-
-function drawBackground(){
-
-
-ctx.fillStyle="#020617";
-
-ctx.fillRect(0,0,360,600);
-
-
-
-for(let i=0;i<7;i++){
-
-ctx.fillStyle="#1e293b";
-
-ctx.fillRect(
-i*60,
-120,
-45,
-200
-);
-
-
-}
-
-
-
-}
-
-
-
-function drawRoad(){
-
-
-ctx.fillStyle="#334155";
-
-ctx.fillRect(30,0,300,600);
-
-
-
-ctx.strokeStyle="#94a3b8";
-
-ctx.lineWidth=3;
-
-
-
-ctx.beginPath();
-
-ctx.moveTo(130,0);
-ctx.lineTo(130,600);
-
-
-ctx.moveTo(230,0);
-ctx.lineTo(230,600);
-
-
-ctx.stroke();
-
-
-
-roadMove+=8;
-
-
-if(roadMove>60)
-roadMove=0;
-
-
-
-ctx.strokeStyle="white";
-
-
-for(let y=-60;y<600;y+=60){
-
-
-ctx.beginPath();
-
-ctx.moveTo(180,y+roadMove);
-
-ctx.lineTo(180,y+30+roadMove);
-
-ctx.stroke();
-
-
-}
-
-
-
-}
-
-
-
-// رسم الشخصية
-
-
-function drawPlayer(){
-
-
-player.run++;
-
-
-let move=Math.sin(player.run*0.3)*5;
-
-
-
-// الرأس
-
-ctx.fillStyle="#f5cfa0";
-
-ctx.beginPath();
-
-ctx.arc(
-player.x,
-player.y,
-15,
-0,
-Math.PI*2
-);
-
-ctx.fill();
-
-
-
-// الجسم
-
-ctx.fillStyle="#2563eb";
-
-ctx.fillRect(
-player.x-12,
-player.y+15,
-24,
-35
-);
-
-
-
-// الأرجل
-
-ctx.strokeStyle="#111";
-
-ctx.lineWidth=6;
-
-
-ctx.beginPath();
-
-ctx.moveTo(
-player.x,
-player.y+50
-);
-
-ctx.lineTo(
-player.x-10,
-player.y+70+move
-);
-
-
-ctx.moveTo(
-player.x,
-player.y+50
-);
-
-ctx.lineTo(
-player.x+10,
-player.y+70-move
-);
-
-
-ctx.stroke();
-
-
-
-}
-
-
-
-function createObstacle(){
-
-obstacles.push({
-
-x:lanes[Math.floor(Math.random()*3)],
-y:-50
-
-});
-
-}
-
-
-
-function createBattery(){
-
-batteries.push({
-
-x:lanes[Math.floor(Math.random()*3)],
-y:-30
-
-});
-
-}
-
-
-
-function drawObstacle(o){
-
-ctx.fillStyle="#ef4444";
-
-ctx.fillRect(
-o.x-20,
-o.y,
-40,
-45
-);
-
-}
-
-
-
-function drawBattery(b){
-
-ctx.fillStyle="#22d3ee";
-
-ctx.beginPath();
-
-ctx.arc(
-b.x,
-b.y,
-12,
-0,
-Math.PI*2
-);
-
-ctx.fill();
-
-}
-function collision(a,b){
-
-return(
-Math.abs(a.x-b.x)<40 &&
-Math.abs(a.y-b.y)<50
-);
-
-}
+let ads =
+Number(localStorage.getItem("ads")) || 0;
 
 
 
 function update(){
 
 
-if(!running) return;
+document.getElementById("points").innerHTML=
+points.toLocaleString();
 
 
-ctx.clearRect(0,0,360,600);
+document.getElementById("ads").innerHTML=
+ads;
 
 
-drawBackground();
-
-drawRoad();
-
+document.getElementById("level").innerHTML=
+Math.floor(points/500)+1;
 
 
-// إنشاء العوائق
+localStorage.setItem("points",points);
 
-if(Math.random()<0.025){
-
-createObstacle();
-
-}
-
-
-if(Math.random()<0.03){
-
-createBattery();
-
-}
-
-
-
-// تحريك العوائق
-
-obstacles.forEach((o,index)=>{
-
-
-o.y+=speed;
-
-
-drawObstacle(o);
-
-
-
-if(collision(player,o)){
-
-gameOver();
-
-}
-
-
-
-if(o.y>650){
-
-obstacles.splice(index,1);
-
-}
-
-
-
-});
-
-
-
-
-// تحريك الطاقة
-
-batteries.forEach((b,index)=>{
-
-
-b.y+=speed;
-
-
-drawBattery(b);
-
-
-
-if(collision(player,b)){
-
-
-score+=50;
-
-
-document.getElementById("score").innerHTML=score;
-
-
-batteries.splice(index,1);
+localStorage.setItem("ads",ads);
 
 
 }
 
-
-
-if(b.y>650){
-
-batteries.splice(index,1);
-
-}
-
-
-});
-
-
-
-drawPlayer();
-
-
-
-score++;
-
-document.getElementById("score").innerHTML=score;
-
-
-
-requestAnimationFrame(update);
-
-
-}
-
-
-
-
-
-function startGame(){
-
-
-score=0;
-
-lane=1;
-
-player.x=lanes[lane];
-
-obstacles=[];
-
-batteries=[];
-
-
-document.getElementById("score").innerHTML=0;
-
-
-document.getElementById("ad").style.display="none";
-
-
-running=true;
 
 
 update();
 
 
-}
 
 
+function openPage(id){
 
 
+document.querySelectorAll(".page")
+.forEach(p=>{
 
-function gameOver(){
-
-
-running=false;
-
-
-document.getElementById("ad").style.display="block";
-
-
-}
-
-
-
-
-// التحكم بالكمبيوتر
-
-document.addEventListener("keydown",function(e){
-
-
-if(e.key==="ArrowLeft" && lane>0){
-
-lane--;
-
-}
-
-
-if(e.key==="ArrowRight" && lane<2){
-
-lane++;
-
-}
-
-
-player.x=lanes[lane];
-
+p.style.display="none";
 
 });
 
 
+document.getElementById(id).style.display="block";
 
-
-// التحكم بالهاتف
-
-canvas.addEventListener("touchstart",function(e){
-
-
-let x=e.touches[0].clientX;
-
-
-if(x < window.innerWidth/2 && lane>0){
-
-lane--;
 
 }
 
 
-else if(lane<2){
 
-lane++;
+
+function notice(t){
+
+
+let n=document.getElementById("notice");
+
+
+n.innerHTML=t;
+
+n.style.display="block";
+
+
+setTimeout(()=>{
+
+n.style.display="none";
+
+},2500);
+
 
 }
 
 
-player.x=lanes[lane];
-
-
-});
 
 
 
+//<!-- ===== قسم AdsGram ===== -->
+
+<div id="adsPage" class="page">
+
+<div class="card">
+
+<h2>📢 AdsGram</h2>
+
+<p>
+شاهد الإعلانات واحصل على نقاط
+</p>
 
 
-document.getElementById("start").onclick=startGame;
+<button class="green" onclick="watchAd()">
+🎬 مشاهدة إعلان +10 نقاط
+</button>
 
 
+</div>
 
-
-// مكان AdsGram
-
-let AdController;
-
-
-try{
-
-AdController=window.Adsgram.init({
-
-blockId:"40248"
-
-});
-
-
-}catch(e){}
+</div>
 
 
 
 
 
-document.getElementById("ad").onclick=function(){
+<!-- ===== قسم السحب ===== -->
 
 
-let btn=this;
+<div id="withdrawPage" class="page">
+
+
+<div class="card">
+
+
+<h2>💸 السحب</h2>
+
+
+<p>
+اختر طريقة السحب
+</p>
+
+
+<button class="blue" onclick="comingSoon()">
+💵 USDT
+</button>
+
+
+<button class="blue" onclick="comingSoon()">
+💎 TON
+</button>
+
+
+<button class="blue" onclick="comingSoon()">
+📱 رصيد هاتف
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<!-- ===== قسم الألعاب ===== -->
+
+
+<div id="gamesPage" class="page">
+
+
+<div class="card">
+
+
+<h2>🎮 الألعاب</h2>
+
+
+<button class="gold" onclick="openPage('rpsPage')">
+✊ حجر ورقة مقص
+</button>
+
+
+<button class="gold" onclick="openPage('xoPage')">
+❌⭕ X O
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<!-- ===== لعبة حجر ورقة مقص ===== -->
+
+
+<div id="rpsPage" class="page">
+
+
+<div class="card">
+
+
+<h2>✊ حجر ورقة مقص</h2>
+
+
+<button class="gold" onclick="rps('حجر')">
+✊ حجر
+</button>
+
+
+<button class="gold" onclick="rps('ورقة')">
+📄 ورقة
+</button>
+
+
+<button class="gold" onclick="rps('مقص')">
+✂️ مقص
+</button>
+
+
+
+<h3 id="rpsResult"></h3>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<!-- ===== لعبة XO ===== -->
+
+
+<div id="xoPage" class="page">
+
+
+<div class="card">
+
+
+<h2>❌⭕ X O</h2>
+
+
+<div id="board"></div>
+
+
+<h3 id="xoResult"></h3>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<script>
+
+
+function comingSoon(){
+
+notice("🚧 نظام السحب سيضاف قريباً");
+
+}
+
+
+
+
+
+function watchAd(){
+
+
+let btn=event.target;
 
 
 btn.innerHTML="⏳ جاري تشغيل الإعلان...";
 
 
-setTimeout(async()=>{
+setTimeout(()=>{
 
 
-try{
+points+=10;
 
-
-if(AdController){
-
-await AdController.show();
-
-}
-
-
-btn.style.display="none";
-
-
-running=true;
+ads++;
 
 
 update();
 
 
+notice("🎉 حصلت على 10 نقاط");
 
-}catch(e){
+
+btn.innerHTML="🎬 مشاهدة إعلان +10 نقاط";
 
 
-btn.innerHTML="❌ لا يوجد إعلان";
+},3000);
 
 
 }
 
 
 
-},3000);
+
+
+function rps(user){
+
+
+let list=[
+"حجر",
+"ورقة",
+"مقص"
+];
+
+
+let bot=list[Math.floor(Math.random()*3)];
+
+
+let result="";
+
+
+if(user===bot){
+
+result="تعادل 🤝";
+
+}
+
+else if(
+
+(user=="حجر" && bot=="مقص") ||
+
+(user=="ورقة" && bot=="حجر") ||
+
+(user=="مقص" && bot=="ورقة")
+
+){
+
+result="فزت 🎉 +5 نقاط";
+
+points+=5;
+
+update();
+
+}
+
+else{
+
+result="خسرت 😢";
+
+}
+
+
+document.getElementById("rpsResult").innerHTML=
+"أنت: "+user+
+"<br>البوت: "+bot+
+"<br>"+result;
+
+
+}
 
 
 
-};
+
+
+let xo=[
+"",
+"",
+"",
+"",
+"",
+"",
+"",
+"",
+""
+];
 
 
 
+function drawXO(){
+
+
+let html="";
+
+
+for(let i=0;i<9;i++){
+
+
+html+=`
+
+<button onclick="playXO(${i})">
+${xo[i]}
+</button>
+
+`;
+
+}
+
+
+document.getElementById("board").innerHTML=html;
+
+
+}
+
+
+
+function playXO(i){
+
+
+if(xo[i]!="")return;
+
+
+xo[i]="X";
+
+
+
+let empty=[];
+
+
+xo.forEach((x,index)=>{
+
+if(x=="")
+empty.push(index);
+
+});
+
+
+
+if(empty.length){
+
+let bot=
+empty[Math.floor(Math.random()*empty.length)];
+
+xo[bot]="O";
+
+}
+
+
+
+drawXO();
+
+
+}
+
+
+
+drawXO();
+
+
+
+</script>
+
+// ===== الجزء الثالث =====
+
+
+// بيانات المستخدم
+
+let username="Guest";
+
+
+if(window.Telegram && Telegram.WebApp){
+
+
+Telegram.WebApp.ready();
+
+
+let user=
+Telegram.WebApp.initDataUnsafe.user;
+
+
+if(user){
+
+username=user.first_name;
+
+
+document.querySelector(".subtitle").innerHTML=
+"مرحبا "+username+" 👋";
+
+
+}
+
+
+}
+
+
+
+
+// نظام الإحالة
+
+
+function invite(){
+
+
+let link=
+"https://t.me/YourBot?start="+username;
+
+
+navigator.clipboard.writeText(link);
+
+
+notice("✅ تم نسخ رابط الدعوة");
+
+
+}
+
+
+
+
+
+// مكافأة يومية
+
+
+let lastReward=
+localStorage.getItem("rewardDay");
+
+
+
+function dailyReward(){
+
+
+let today=
+new Date().toDateString();
+
+
+
+if(lastReward==today){
+
+
+notice("🎁 حصلت على المكافأة اليوم");
+
+return;
+
+
+}
+
+
+
+points+=50;
+
+
+update();
+
+
+localStorage.setItem(
+"rewardDay",
+today
+);
+
+
+
+notice("🎉 مكافأة يومية +50 نقطة");
+
+
+}
+  // ===== الجزء الرابع =====
+
+
+// مهام يومية
+
+
+function tasks(){
+
+
+let done=
+Number(localStorage.getItem("tasks"))||0;
+
+
+
+if(done>=3){
+
+
+notice("✅ أكملت مهام اليوم");
+
+return;
+
+
+}
+
+
+
+points+=20;
+
+
+done++;
+
+
+localStorage.setItem(
+"tasks",
+done
+);
+
+
+update();
+
+
+notice("🔥 مهمة مكتملة +20 نقطة");
+
+
+}
+
+
+
+
+
+// متجر ترقيات
+
+
+function shop(){
+
+
+if(points>=100){
+
+
+points-=100;
+
+
+update();
+
+
+notice("⚡ تم شراء ترقية");
+
+
+}
+
+else{
+
+
+notice("❌ تحتاج 100 نقطة");
+
+
+}
+
+
+
+}
+
+
+
+
+
+// حماية الحفظ
+
+
+setInterval(()=>{
+
+
+localStorage.setItem(
+"points",
+points
+);
+
+
+localStorage.setItem(
+"ads",
+ads
+);
+
+
+},5000);
 </script>
 
 
