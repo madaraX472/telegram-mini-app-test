@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>NOVA EARN</title>
+<title>Rail Rush Rewards</title>
 
 <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 
@@ -22,36 +22,24 @@ font-family:Arial;
 body{
 
 margin:0;
-background:
-linear-gradient(180deg,#020617,#111827);
-
+background:#020617;
 color:white;
-
-}
-
-
-
-.app{
-
-max-width:450px;
-margin:auto;
-padding:20px;
-
-}
-
-
-
-.header{
-
 text-align:center;
-padding:25px;
 
 }
 
 
-.icon{
+.game{
 
-font-size:70px;
+width:360px;
+height:600px;
+margin:auto;
+overflow:hidden;
+background:
+linear-gradient(#334155,#020617);
+
+position:relative;
+border-radius:25px;
 
 }
 
@@ -59,99 +47,79 @@ font-size:70px;
 
 .title{
 
-font-size:34px;
+font-size:30px;
 font-weight:bold;
 color:#facc15;
+margin:15px;
+
+}
+
+
+.score{
+
+font-size:22px;
+margin-bottom:10px;
 
 }
 
 
 
-.subtitle{
+.road{
 
-color:#aaa;
+position:absolute;
+top:0;
+bottom:0;
+left:0;
+right:0;
 
-}
-
-
-
-.card{
-
-background:#0f172a;
-
-border:1px solid #273244;
-
-border-radius:25px;
-
-padding:20px;
-
-margin-bottom:18px;
-
-box-shadow:0 10px 30px #0005;
+display:flex;
 
 }
 
 
 
-.balance{
+.line{
 
-background:
-linear-gradient(135deg,#facc15,#ea580c);
-
-color:#111;
-
-text-align:center;
-
-border-radius:22px;
-
-padding:25px;
+width:33.3%;
+border-left:2px dashed #64748b;
 
 }
 
 
 
-.balance h1{
+.player{
 
-font-size:48px;
-margin:10px;
+position:absolute;
 
-}
+bottom:40px;
 
+font-size:45px;
 
-
-.stats{
-
-display:grid;
-
-grid-template-columns:1fr 1fr;
-
-gap:15px;
+transition:.2s;
 
 }
 
 
 
-.box{
+.enemy{
 
-background:#020617;
+position:absolute;
 
-border-radius:18px;
+top:-60px;
 
-padding:15px;
-
-text-align:center;
+font-size:45px;
 
 }
 
 
 
-.box b{
+.coin{
 
-display:block;
+position:absolute;
 
-font-size:25px;
+top:-50px;
 
-color:#facc15;
+font-size:35px;
 
 }
 
@@ -159,25 +127,24 @@ color:#facc15;
 
 button{
 
-width:100%;
+width:90%;
+padding:15px;
 
 border:0;
 
 border-radius:20px;
 
-padding:17px;
-
 font-size:18px;
 
 font-weight:bold;
 
-margin-top:12px;
+margin:10px;
 
 }
 
 
 
-.ads{
+.start{
 
 background:#22c55e;
 
@@ -187,119 +154,68 @@ color:white;
 
 
 
-.lock{
+.ad{
 
-background:#1e293b;
-
-color:#94a3b8;
-
-}
-
-
-
-.invite{
-
-background:#f59e0b;
-
-}
-
-
-
-.withdraw{
-
-background:#2563eb;
-
-color:white;
-
-}
-
-
-
-.msg{
+background:#facc15;
 
 display:none;
 
-background:#16a34a;
-
-padding:12px;
-
-border-radius:15px;
-
-text-align:center;
-
-margin-bottom:15px;
-
 }
 
 
 
-.footer{
+.message{
 
-text-align:center;
+font-size:25px;
 
-color:#777;
-
-font-size:13px;
+color:#ef4444;
 
 }
 
-
-
-.loading{
-
-opacity:.6;
-
-}
 
 
 </style>
 
+
 </head>
+
 
 
 <body>
 
 
-<div class="app">
 
-
-<div class="header">
-
-<div class="icon">
-🌌
-</div>
-
-
-<div class="title">
-NOVA EARN
-</div>
-
-
-<div class="subtitle">
-منصة الربح من الإعلانات
-</div>
-
-
-</div>
-
-
-
-<div id="msg" class="msg"></div>
-
-
-
-<div class="card">
-
-
-<div class="balance">
-
-رصيدك الحالي
-
-<h1 id="points">
-0
+<h1 class="title">
+🚇 Rail Rush Rewards
 </h1>
 
-نقطة
+
+<div class="score">
+
+🪙 العملات:
+<span id="coins">0</span>
+
+</div>
+
+
+
+<div class="game" id="game">
+
+
+<div class="road">
+
+<div class="line"></div>
+
+<div class="line"></div>
+
+<div class="line"></div>
+
+</div>
+
+
+<div class="player" id="player">
+
+🏃
 
 </div>
 
@@ -308,112 +224,21 @@ NOVA EARN
 
 
 
-
-<div class="card">
-
-
-<div class="stats">
+<div id="msg" class="message"></div>
 
 
-<div class="box">
+<button class="start" id="start">
 
-<b id="ads">
-0</b>
-
-إعلانات
-
-</div>
-
-
-<div class="box">
-
-<b id="level">
-1</b>
-
-المستوى
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-
-
-<div class="card">
-
-
-<h2>
-🎬 مشاهدة الإعلانات
-</h2>
-
-
-<p>
-احصل على نقاط مجانية يومياً
-</p>
-
-
-<button class="ads">
-
-🎥 مشاهدة إعلان +10 نقاط
+▶️ بدء اللعب
 
 </button>
 
 
-</div>
+<button class="ad" id="ad">
 
-
-
-
-<div class="card">
-
-
-<button class="invite">
-
-👥 دعوة الأصدقاء
+🎬 شاهد إعلان واستمر
 
 </button>
-
-
-
-<button class="withdraw">
-
-💸 السحب
-
-</button>
-
-
-<button class="lock">
-
-📋 المهام (ستضاف قريباً)
-
-</button>
-
-
-<button class="lock">
-
-📊 الحالة (ستضاف قريباً)
-
-</button>
-
-
-
-</div>
-
-
-
-
-<div class="footer">
-
-NOVA EARN © 2026
-
-</div>
-
-
-</div>
 
 
 
@@ -421,57 +246,348 @@ NOVA EARN © 2026
 <script>
 
 
-let points =
-Number(localStorage.getItem("points")) || 0;
+let lane=1;
+
+let coins=0;
+
+let playing=false;
+
+let speed=5;
 
 
-let ads =
-Number(localStorage.getItem("ads")) || 0;
+
+const player=
+document.getElementById("player");
+
+const game=
+document.getElementById("game");
+
+const coinText=
+document.getElementById("coins");
+
+const msg=
+document.getElementById("msg");
 
 
 
-function update(){
+let enemy;
 
-document.getElementById("points").innerHTML =
-points.toLocaleString();
-
-
-document.getElementById("ads").innerHTML =
-ads;
+let coin;
 
 
-document.getElementById("level").innerHTML =
-Math.floor(points/100)+1;
+
+function movePlayer(){
+
+player.style.left=
+(lane*120+35)+"px";
+
+}
 
 
-localStorage.setItem("points",points);
+movePlayer();
 
-localStorage.setItem("ads",ads);
+
+
+
+document.addEventListener("keydown",e=>{
+
+
+if(e.key=="ArrowLeft" && lane>0){
+
+lane--;
+
+movePlayer();
 
 }
 
 
-update();
+
+if(e.key=="ArrowRight" && lane<2){
+
+lane++;
+
+movePlayer();
+
+}
+
+
+});
 
 
 
-function message(text){
 
-let box=document.getElementById("msg");
-
-box.innerHTML=text;
-
-box.style.display="block";
+// لمس الهاتف
 
 
-setTimeout(()=>{
+document.addEventListener("touchstart",e=>{
 
-box.style.display="none";
 
-},3000);
+let x=e.touches[0].clientX;
+
+
+if(x < window.innerWidth/2 && lane>0){
+
+lane--;
+
+}
+
+
+else if(lane<2){
+
+lane++;
+
+}
+
+
+movePlayer();
+
+
+});
+
+
+
+
+
+
+
+function createEnemy(){
+
+
+enemy=document.createElement("div");
+
+enemy.className="enemy";
+
+enemy.innerHTML="🚆";
+
+
+enemy.style.left=
+(laneRandom()*120+35)+"px";
+
+
+enemy.style.top="-60px";
+
+
+game.appendChild(enemy);
+
 
 
 }
+
+
+
+function createCoin(){
+
+
+coin=document.createElement("div");
+
+coin.className="coin";
+
+coin.innerHTML="🪙";
+
+
+coin.style.left=
+(laneRandom()*120+45)+"px";
+
+
+coin.style.top="-40px";
+
+
+game.appendChild(coin);
+
+
+}
+
+
+
+
+function laneRandom(){
+
+return Math.floor(Math.random()*3);
+
+}
+
+
+
+
+
+function startGame(){
+
+
+playing=true;
+
+coins=0;
+
+coinText.innerHTML=coins;
+
+msg.innerHTML="";
+
+
+document.getElementById("ad").style.display="none";
+
+
+enemy=null;
+
+coin=null;
+
+
+
+gameLoop();
+
+
+}
+
+
+
+
+
+function gameLoop(){
+
+
+if(!playing)return;
+
+
+
+if(!enemy){
+
+createEnemy();
+
+}
+
+
+
+if(!coin){
+
+createCoin();
+
+}
+
+
+
+
+if(enemy){
+
+let y=parseInt(enemy.style.top);
+
+y+=speed;
+
+enemy.style.top=y+"px";
+
+
+
+let playerLane=lane;
+
+
+let enemyLane=
+Math.floor(parseInt(enemy.style.left)/120);
+
+
+
+if(y>500 && playerLane==enemyLane){
+
+endGame();
+
+return;
+
+}
+
+
+
+if(y>620){
+
+enemy.remove();
+
+enemy=null;
+
+}
+
+
+}
+
+
+
+if(coin){
+
+
+let y=parseInt(coin.style.top);
+
+y+=speed;
+
+coin.style.top=y+"px";
+
+
+let coinLane=
+Math.floor(parseInt(coin.style.left)/120);
+
+
+
+if(y>500 && lane==coinLane){
+
+
+coins++;
+
+coinText.innerHTML=coins;
+
+
+coin.remove();
+
+coin=null;
+
+
+}
+
+
+
+if(y>620){
+
+coin.remove();
+
+coin=null;
+
+}
+
+
+
+}
+
+
+
+requestAnimationFrame(gameLoop);
+
+
+
+}
+
+
+
+
+
+
+function endGame(){
+
+
+playing=false;
+
+
+enemy.remove();
+
+
+msg.innerHTML=
+"💥 انتهت الجولة";
+
+
+document.getElementById("ad").style.display="block";
+
+
+}
+
+
+
+
+
+document.getElementById("start").onclick=startGame;
+
+
+
 
 
 
@@ -487,16 +603,11 @@ blockId:"40248"
 
 
 
-document.querySelector(".ads").onclick=async function(){
+document.getElementById("ad").onclick=async()=>{
 
 
-let btn=this;
-
-
-btn.classList.add("loading");
-
-
-btn.innerHTML="⏳ جاري تشغيل الإعلان...";
+document.getElementById("ad").innerHTML=
+"⏳ جاري تشغيل الإعلان...";
 
 
 setTimeout(async()=>{
@@ -508,15 +619,17 @@ try{
 await AdController.show();
 
 
-points+=10;
-
-ads++;
-
-
-update();
+msg.innerHTML=
+"🔥 أكمل اللعب!";
 
 
-message("🎉 تم إضافة 10 نقاط");
+document.getElementById("ad").style.display="none";
+
+
+playing=true;
+
+gameLoop();
+
 
 
 }
@@ -524,45 +637,20 @@ message("🎉 تم إضافة 10 نقاط");
 catch(e){
 
 
-message("❌ لا يوجد إعلان متاح");
+msg.innerHTML=
+"❌ لا يوجد إعلان";
 
 
 }
 
 
 
-btn.classList.remove("loading");
-
-btn.innerHTML="🎥 مشاهدة إعلان +10 نقاط";
+document.getElementById("ad").innerHTML=
+"🎬 شاهد إعلان واستمر";
 
 
 },3000);
 
-
-
-};
-
-
-
-
-
-
-document.querySelector(".invite").onclick=function(){
-
-
-message("👥 نظام الدعوات سيضاف قريباً");
-
-
-};
-
-
-
-
-
-document.querySelector(".withdraw").onclick=function(){
-
-
-message("💸 نظام السحب سيضاف قريباً");
 
 
 };
