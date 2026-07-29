@@ -6,8 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NOVA EARN</title>
 
-    <!-- خط Cairo لمظهر احترافي -->
+    <!-- خط Cairo -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- مكتبة تليجرام ومكتبة Adsgram -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 
     <style>
@@ -16,7 +19,6 @@
             --card-bg: rgba(22, 30, 46, 0.7);
             --card-border: rgba(255, 255, 255, 0.08);
             --primary-accent: #facc15;
-            --secondary-accent: #f97316;
             --green-btn: linear-gradient(135deg, #10b981, #059669);
             --orange-btn: linear-gradient(135deg, #f59e0b, #d97706);
             --blue-btn: linear-gradient(135deg, #3b82f6, #2563eb);
@@ -56,7 +58,6 @@
             gap: 16px;
         }
 
-        /* الهيدر */
         .header {
             text-align: center;
             padding: 10px 0 5px;
@@ -88,7 +89,6 @@
             font-weight: 600;
         }
 
-        /* التنبيهات */
         .msg {
             display: none;
             background: rgba(16, 185, 129, 0.15);
@@ -114,7 +114,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* الكروت General Card */
         .card {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
@@ -124,7 +123,6 @@
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
 
-        /* كارت الرصيد */
         .balance-card {
             background: linear-gradient(135deg, #facc15 0%, #ea580c 100%);
             border: none;
@@ -136,22 +134,10 @@
             box-shadow: 0 10px 25px rgba(234, 88, 12, 0.3);
         }
 
-        .balance-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 60%);
-            pointer-events: none;
-        }
-
         .balance-title {
             font-size: 13px;
             font-weight: 700;
             opacity: 0.85;
-            text-transform: uppercase;
         }
 
         .balance-amount {
@@ -167,7 +153,6 @@
             opacity: 0.9;
         }
 
-        /* كارت الإحصائيات */
         .stats {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -194,14 +179,10 @@
             color: var(--primary-accent);
         }
 
-        /* عنوان القسم */
         .section-title {
             font-size: 15px;
             font-weight: 700;
             margin-bottom: 4px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
         }
 
         .section-desc {
@@ -210,7 +191,6 @@
             margin-bottom: 14px;
         }
 
-        /* الأزرار */
         .btn-group {
             display: flex;
             flex-direction: column;
@@ -242,13 +222,8 @@
             box-shadow: 0 4px 15px rgba(16, 185, 129, 0.25);
         }
 
-        .btn-invite {
-            background: var(--orange-btn);
-        }
-
-        .btn-withdraw {
-            background: var(--blue-btn);
-        }
+        .btn-invite { background: var(--orange-btn); }
+        .btn-withdraw { background: var(--blue-btn); }
 
         .btn-lock {
             background: var(--lock-btn);
@@ -270,7 +245,6 @@
             pointer-events: none;
         }
 
-        /* الفوتر */
         .footer {
             text-align: center;
             color: #475569;
@@ -316,29 +290,16 @@
             <div class="section-title">🎬 مشاهدة الإعلانات</div>
             <div class="section-desc">شاهد الإعلانات اليومية واجمع النقاط فوراً</div>
             <button class="btn-ads" id="adBtn">
-                <span>🎥</span> مشاهدة إعلان (+10 نقاط)
+                🎥 مشاهدة إعلان (+10 نقاط)
             </button>
         </div>
 
         <div class="card">
             <div class="btn-group">
-                <button class="btn-invite" id="inviteBtn">
-                    👥 دعوة الأصدقاء
-                </button>
-
-                <button class="btn-withdraw" id="withdrawBtn">
-                    💸 سحب الأرباح
-                </button>
-
-                <button class="btn-lock" disabled>
-                    <span>📋 المهام اليومية</span>
-                    <span>قريباً</span>
-                </button>
-
-                <button class="btn-lock" disabled>
-                    <span>📊 الإحصائيات الشاملة</span>
-                    <span>قريباً</span>
-                </button>
+                <button class="btn-invite" id="inviteBtn">👥 دعوة الأصدقاء</button>
+                <button class="btn-withdraw" id="withdrawBtn">💸 سحب الأرباح</button>
+                <button class="btn-lock" disabled><span>📋 المهام اليومية</span><span>قريباً</span></button>
+                <button class="btn-lock" disabled><span>📊 الإحصائيات الشاملة</span><span>قريباً</span></button>
             </div>
         </div>
 
@@ -349,11 +310,16 @@
     </div>
 
     <script>
-        // استرجاع البيانات
+        // تهيئة تطبيق تليجرام
+        if (window.Telegram && window.Telegram.WebApp) {
+            window.Telegram.WebApp.ready();
+            window.Telegram.WebApp.expand();
+        }
+
+        // استرجاع البيانات المخزنة
         let points = Number(localStorage.getItem("points")) || 0;
         let ads = Number(localStorage.getItem("ads")) || 0;
 
-        // تحديث الواجهة
         function updateUI() {
             document.getElementById("points").innerText = points.toLocaleString();
             document.getElementById("ads").innerText = ads.toLocaleString();
@@ -365,62 +331,63 @@
 
         updateUI();
 
-        // إظهار التنبيهات
         function showMessage(text, isError = false) {
             const box = document.getElementById("msg");
             box.innerText = text;
-            
-            if (isError) {
-                box.classList.add("error");
-            } else {
-                box.classList.remove("error");
-            }
+            if (isError) box.classList.add("error");
+            else box.classList.remove("error");
 
             box.style.display = "block";
-
-            setTimeout(() => {
-                box.style.display = "none";
-            }, 3000);
+            setTimeout(() => { box.style.display = "none"; }, 3000);
         }
 
-        // إعداد الإعلانات
-        const AdController = window.Adsgram ? window.Adsgram.init({ blockId: "40248" }) : null;
+        // تهيئة Adsgram بآمان
+        let AdController = null;
+        try {
+            if (window.Adsgram) {
+                AdController = window.Adsgram.init({ blockId: "40248" });
+            }
+        } catch (err) {
+            console.log("Adsgram Init Error:", err);
+        }
 
-        // مشاهدة الإعلان
+        // زر مشاهدة الإعلان
         document.getElementById("adBtn").onclick = async function () {
             const btn = this;
             btn.classList.add("loading");
             btn.innerHTML = "⏳ جاري تحضير الإعلان...";
 
-            setTimeout(async () => {
-                try {
-                    if (AdController) {
-                        await AdController.show();
-                    }
+            try {
+                if (AdController) {
+                    // تجربة عرض إعلان Adsgram الحقيقي
+                    await AdController.show();
                     points += 10;
                     ads++;
                     updateUI();
                     showMessage("🎉 مبروك! حصلت على 10 نقاط");
-                } catch (e) {
-                    showMessage("❌ لا يوجد إعلان متاح حالياً، حاول لاحقاً", true);
-                } finally {
-                    btn.classList.remove("loading");
-                    btn.innerHTML = "<span>🎥</span> مشاهدة إعلان (+10 نقاط)";
+                } else {
+                    // محاكاة الإعلان للتجربة على المتصفح العادي
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    points += 10;
+                    ads++;
+                    updateUI();
+                    showMessage("🎉 (وضع تجريبي) تم إضافة 10 نقاط!");
                 }
-            }, 2000);
+            } catch (e) {
+                console.error(e);
+                showMessage("❌ لا يوجد إعلان متاح حالياً", true);
+            } finally {
+                btn.classList.remove("loading");
+                btn.innerHTML = "🎥 مشاهدة إعلان (+10 نقاط)";
+            }
         };
 
-        // الأزرار التفاعلية
-        document.getElementById("inviteBtn").onclick = () => {
-            showMessage("👥 نظام الدعوات يتاح قريباً!");
-        };
-
-        document.getElementById("withdrawBtn").onclick = () => {
-            showMessage("💸 نظام السحب سيتم تفعيله قريباً!");
-        };
-    </script>
+        document.getElementById("inviteBtn").onclick = () => showMessage("👥 نظام الدعوات سيتوفر قريباً!");
+        document.getElementById("withdrawBtn").onclick = () => showMessage("💸 نظام السحب سيتوفر قريباً!");
+  </script>
 
 </body>
 
 </html>
+
 
