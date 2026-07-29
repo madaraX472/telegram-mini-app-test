@@ -1,122 +1,291 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Libya Rewards</title>
 
+<script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+
 <style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #111827;
-    color: white;
-    text-align: center;
+
+*{
+box-sizing:border-box;
+font-family:Tajawal,Arial;
 }
 
-.container {
-    padding: 30px 20px;
+body{
+margin:0;
+background:#080f1f;
+color:white;
 }
 
-.logo {
-    font-size: 35px;
-    margin-bottom: 10px;
+.app{
+padding:20px;
+max-width:450px;
+margin:auto;
 }
 
-.card {
-    background: #1f2937;
-    padding: 20px;
-    border-radius: 20px;
-    margin-top: 20px;
+.header{
+text-align:center;
+padding:25px;
 }
 
-.balance {
-    font-size: 28px;
-    margin: 15px;
+.logo{
+font-size:45px;
 }
 
-button {
-    width: 90%;
-    padding: 15px;
-    margin: 10px;
-    border: none;
-    border-radius: 15px;
-    font-size: 18px;
-    cursor: pointer;
+.title{
+font-size:28px;
+font-weight:bold;
 }
 
-.watch {
-    background: #22c55e;
-    color: white;
+.desc{
+color:#94a3b8;
 }
 
-.withdraw {
-    background: #3b82f6;
-    color: white;
+
+.balance{
+
+background:linear-gradient(135deg,#22c55e,#16a34a);
+border-radius:25px;
+padding:25px;
+text-align:center;
+margin:20px 0;
+
 }
 
-.ref {
-    background: #f59e0b;
-    color: white;
+.balance h1{
+font-size:45px;
+margin:10px 0;
 }
+
+
+
+.card{
+
+background:#111827;
+border-radius:25px;
+padding:20px;
+box-shadow:0 0 25px #0008;
+
+}
+
+
+button{
+
+width:100%;
+padding:17px;
+border:0;
+border-radius:18px;
+margin-top:15px;
+font-size:18px;
+font-weight:bold;
+color:white;
+
+}
+
+
+.ad{
+background:#22c55e;
+}
+
+.withdraw{
+background:#2563eb;
+}
+
+.invite{
+background:#f59e0b;
+}
+
+
+.info{
+
+margin-top:20px;
+background:#1e293b;
+padding:15px;
+border-radius:15px;
+color:#cbd5e1;
+
+}
+
+
 </style>
 
 </head>
 
+
 <body>
 
-<div class="container">
 
-<div class="logo">🪙 Libya Rewards</div>
+<div class="app">
+
+
+<div class="header">
+
+<div class="logo">
+🪙
+</div>
+
+<div class="title">
+Libya Rewards
+</div>
+
+<div class="desc">
+اربح النقاط من مشاهدة الإعلانات
+</div>
+
+
+</div>
+
+
+
+<div class="balance">
+
+رصيدك
+
+<h1 id="points">
+0
+</h1>
+
+نقطة
+
+</div>
+
+
 
 <div class="card">
 
-<p>رصيدك الحالي</p>
 
-<div class="balance">
-0 نقطة
-</div>
-
-<button class="watch">
-🎥 مشاهدة إعلان
+<button class="ad">
+🎥 مشاهدة إعلان +10
 </button>
+
 
 <button class="withdraw">
 💸 طلب سحب
 </button>
 
-<button class="ref">
+
+<button class="invite">
 👥 دعوة الأصدقاء
 </button>
 
-</div>
+
+
+<div class="info">
+
+⭐ كل إعلان مكتمل = 10 نقاط
+
+<br><br>
+
+🚀 المزيد من الميزات قريباً
 
 </div>
-<script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+
+
+</div>
+
+
+</div>
+
+
+
+
 
 <script>
+
+
+let points = localStorage.getItem("points") || 0;
+
+document.getElementById("points").innerHTML = points;
+
+
+
+// AdsGram
+
 const AdController = window.Adsgram.init({
-    blockId: "40248"
+
+blockId:"40248"
+
 });
 
-document.querySelector(".watch").onclick = function () {
-    AdController.show()
-    .then(() => {
-        alert("✅ تم مشاهدة الإعلان");
-    })
-    .catch(() => {
-        alert("❌ لم يكتمل الإعلان");
-    });
+
+
+
+// مشاهدة الإعلان
+
+
+document.querySelector(".ad").onclick = async function(){
+
+
+try{
+
+
+let result = await AdController.show();
+
+points = Number(points) + 10;
+
+
+localStorage.setItem(
+"points",
+points
+);
+
+
+document.getElementById("points").innerHTML = points;
+
+
+alert("🎉 تمت إضافة 10 نقاط");
+
+
+}
+
+catch(e){
+
+
+console.log(e);
+
+
+alert("❌ لم يكتمل الإعلان");
+
+
+}
+
+
 };
 
-document.querySelector(".withdraw").onclick = function() {
-    alert("💸 نظام السحب سيتم تفعيله قريبًا");
+
+
+
+
+// السحب
+
+
+document.querySelector(".withdraw").onclick=function(){
+
+alert("💸 نظام السحب قيد التطوير");
+
 };
 
-document.querySelector(".ref").onclick = function() {
-    alert("👥 نظام الإحالة سيتم إضافته قريبًا");
+
+
+
+// الدعوات
+
+
+document.querySelector(".invite").onclick=function(){
+
+alert("👥 نظام الدعوات سيتم إضافته قريباً");
+
 };
+
+
+
 </script>
+
 
 </body>
 </html>
