@@ -8,128 +8,6 @@
   <script src="https://sad.adsgram.ai/js/sad-index.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Tajawal:wght@500;700;900&display=swap" rel="stylesheet">
   <style>
-    /* سيتم وضع التنسيقات في الجزء الثاني */
-  </style>
-</head>
-<body>
-
-  <!-- خلفية الغابة والنجوم Pixel Art -->
-  <div class="pixel-bg">
-    <div class="moon"></div>
-    <div id="stars-container"></div>
-    <div id="snow-container"></div>
-    <div class="forest-silhouettes"></div>
-  </div>
-
-  <!-- التطبيق الرئيسي -->
-  <div class="app-container">
-
-    <!-- شريط الرأس -->
-    <header class="app-header">
-      <div class="brand">
-        <span class="pixel-icon">🌲</span>
-        <h1 class="pixel-title">Madara Crypto</h1>
-      </div>
-      <div class="user-pill">
-        <span class="status-dot"></span>
-        <span id="user-display-name">المستخدم</span>
-      </div>
-    </header>
-
-    <!-- التبويب الأول: الرئيسية -->
-    <main id="page-home" class="page active">
-      <div class="balance-card">
-        <span class="card-label">الرصيد الحالي (USDT)</span>
-        <div class="balance-value" id="user-balance">0.0000</div>
-        <div class="pixel-badge">شبكة BEP20</div>
-      </div>
-
-      <div class="quick-stats">
-        <div class="stat-box">
-          <span class="stat-title">مكافأة Adsgram</span>
-          <span class="stat-num">+0.0005</span>
-        </div>
-        <div class="stat-box">
-          <span class="stat-title">مكافأة Adsterra</span>
-          <span class="stat-num">+0.0003</span>
-        </div>
-      </div>
-    </main>
-
-    <!-- التبويب الثاني: المهام الإعلانية -->
-    <main id="page-tasks" class="page">
-      <div class="section-title">⚔️ المهام المتاحة</div>
-
-      <!-- بطاقة Adsgram -->
-      <div class="task-card">
-        <div class="task-info">
-          <div class="task-icon">📺</div>
-          <div>
-            <h3>إعلان Adsgram الممتاز</h3>
-            <p class="reward-tag">+0.0005 USDT</p>
-          </div>
-        </div>
-        <button class="pixel-btn btn-primary" onclick="handleAdsgramClick()">مشاهدة</button>
-      </div>
-
-      <!-- بطاقة Adsterra -->
-      <div class="task-card">
-        <div class="task-info">
-          <div class="task-icon">🚀</div>
-          <div>
-            <h3>رابط Adsterra الذكي</h3>
-            <p class="reward-tag">+0.0003 USDT</p>
-          </div>
-        </div>
-        <button class="pixel-btn btn-secondary" id="adsterra-btn" onclick="handleAdsterraClick()">زيارة (12 ثانية)</button>
-      </div>
-    </main>
-
-    <!-- التبويب الثالث: السحب والإحالة -->
-    <main id="page-withdraw" class="page">
-      <div class="section-title">💳 سحب الأرباح</div>
-      
-      <div class="withdraw-card">
-        <p class="withdraw-note">الحد الأدنى للسحب هو <b>0.05 USDT</b> عبر شبكة BEP20.</p>
-        
-        <div class="input-group">
-          <label>عنوان محفظة BEP20 (Binance / TrustWallet / Tonkeeper):</label>
-          <input type="text" id="wallet-address" class="pixel-input" placeholder="0x..." />
-        </div>
-
-        <button class="pixel-btn btn-success" onclick="submitWithdrawal()">طلب السحب الآن</button>
-      </div>
-
-      <div class="section-title" style="margin-top: 20px;">👥 رابط الإحالة</div>
-      <div class="referral-card">
-        <input type="text" id="ref-link-input" class="pixel-input" readonly value="جاري التحميل..." />
-        <button class="pixel-btn btn-primary" onclick="copyRefLink()">نسخ الرابط</button>
-      </div>
-    </main>
-
-    <!-- شريط التنقل السفلي -->
-    <nav class="bottom-nav">
-      <button class="nav-item active" onclick="switchPage('home', this)">
-        <span class="nav-icon">🏠</span>
-        <span>الرئيسية</span>
-      </button>
-      <button class="nav-item" onclick="switchPage('tasks', this)">
-        <span class="nav-icon">⚔️</span>
-        <span>المهام</span>
-      </button>
-      <button class="nav-item" onclick="switchPage('withdraw', this)">
-        <span class="nav-icon">💳</span>
-        <span>السحب</span>
-      </button>
-    </nav>
-
-  </div>
-
-  <!-- التنبيهات (Toast Notification) -->
-  <div id="toast" class="toast"></div>
-
-</body>
-</html>
     * {
       box-sizing: border-box;
       margin: 0;
@@ -148,7 +26,7 @@
       overflow-x: hidden;
     }
 
-    /* خلفية الغابة والليل (Pixel Night Sky) */
+    /* خلفية الغابة والليل */
     .pixel-bg {
       position: fixed;
       top: 0;
@@ -198,7 +76,7 @@
       100% { transform: translateY(100vh); }
     }
 
-    /* الهيكل الرئيسي للتطبيق */
+    /* الهيكل الرئيسي */
     .app-container {
       width: 100%;
       max-width: 450px;
@@ -276,7 +154,6 @@
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
       backdrop-filter: blur(8px);
       margin-bottom: 20px;
-      position: relative;
     }
 
     .card-label {
@@ -331,7 +208,7 @@
       color: #00f5d4;
     }
 
-    /* عناوين الأقسام */
+    /* بطاقات المهام */
     .section-title {
       font-size: 16px;
       font-weight: 700;
@@ -339,7 +216,6 @@
       color: #e0e1dd;
     }
 
-    /* بطاقات المهام */
     .task-card {
       background: rgba(13, 27, 42, 0.7);
       border: 1px solid #415a77;
@@ -372,7 +248,7 @@
       font-weight: bold;
     }
 
-    /* الأزرار بتقنية Pixel */
+    /* الأزرار */
     .pixel-btn {
       border: none;
       padding: 10px 18px;
@@ -408,14 +284,7 @@
       margin-top: 10px;
     }
 
-    .pixel-btn:disabled {
-      background: #4a4e69 !important;
-      color: #8d99ae !important;
-      cursor: not-allowed;
-      box-shadow: none;
-    }
-
-    /* مدخلات النصوص */
+    /* السحب والإحالة */
     .withdraw-card, .referral-card {
       background: rgba(13, 27, 42, 0.7);
       border: 1px solid #415a77;
@@ -455,7 +324,7 @@
       border-color: #00f5d4;
     }
 
-    /* شريط التنقل السفلي */
+    /* الشريط السفلي */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -492,7 +361,6 @@
       font-size: 18px;
     }
 
-    /* التنبيه المنسدل (Toast) */
     .toast {
       position: fixed;
       bottom: 75px;
@@ -508,244 +376,356 @@
       z-index: 1000;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
     }
-<script>
-  // ==========================================
-  // الإعدادات الرئيسية المتغيرة (بياناتك الخاصة)
-  // ==========================================
-  const ADSTERRA_URL = "https://www.effectivecpmnetwork.com/jbniegah77key=c25a066401baecd24398a891da71d0e5";
-  const ADSGRAM_BLOCK_ID = "40248"; // تم إدراج معرّفك المعتمد
-  const BOT_TOKEN = "YOUR_BOT_TOKEN"; // استبدله بـ توكن البوت الخاص بك
-  const ADMIN_CHAT_ID = "YOUR_ADMIN_CHAT_ID"; // استبدله بـ آيدي المحادثة/القناة للاستلام
+  </style>
+</head>
+<body>
 
-  const REWARD_ADSGRAM = 0.0005;
-  const REWARD_ADSTERRA = 0.0003;
-  const ADSTERRA_WAIT_SECONDS = 12; // وقت البقاء بالرابط
-  const COOLDOWN_SECONDS = 15; // فترة الانتظار بين الإعلانات
+  <!-- خلفية Pixel -->
+  <div class="pixel-bg">
+    <div class="moon"></div>
+    <div id="stars-container"></div>
+    <div id="snow-container"></div>
+  </div>
 
-  // متغيرات النظام
-  let userBalance = 0.0000;
-  let isAdsterraPending = false;
-  let adsterraTimer = null;
-  let lastAdTime = 0;
+  <!-- التطبيق -->
+  <div class="app-container">
 
-  // تهيئة منصة تلجرام
-  const tg = window.Telegram?.WebApp;
-  if (tg) {
-    tg.expand();
-    if (tg.initDataUnsafe?.user) {
-      const u = tg.initDataUnsafe.user;
-      const userDisplay = document.getElementById('user-display-name');
-      if (userDisplay) {
-        userDisplay.innerText = u.first_name || u.username || "المستخدم";
+    <header class="app-header">
+      <div class="brand">
+        <span class="pixel-icon">🌲</span>
+        <h1 class="pixel-title">Madara Crypto</h1>
+      </div>
+      <div class="user-pill">
+        <span class="status-dot"></span>
+        <span id="user-display-name">المستخدم</span>
+      </div>
+    </header>
+
+    <!-- الرئيسية -->
+    <main id="page-home" class="page active">
+      <div class="balance-card">
+        <span class="card-label">الرصيد الحالي (USDT)</span>
+        <div class="balance-value" id="user-balance">0.0000</div>
+        <div class="pixel-badge">شبكة BEP20</div>
+      </div>
+
+      <div class="quick-stats">
+        <div class="stat-box">
+          <span class="stat-title">مكافأة Adsgram</span>
+          <span class="stat-num">+0.0005</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-title">مكافأة Adsterra</span>
+          <span class="stat-num">+0.0003</span>
+        </div>
+      </div>
+    </main>
+
+    <!-- المهام -->
+    <main id="page-tasks" class="page">
+      <div class="section-title">⚔️ المهام المتاحة</div>
+
+      <div class="task-card">
+        <div class="task-info">
+          <div class="task-icon">📺</div>
+          <div>
+            <h3>إعلان Adsgram</h3>
+            <p class="reward-tag">+0.0005 USDT</p>
+          </div>
+        </div>
+        <button class="pixel-btn btn-primary" onclick="handleAdsgramClick()">مشاهدة</button>
+      </div>
+
+      <div class="task-card">
+        <div class="task-info">
+          <div class="task-icon">🚀</div>
+          <div>
+            <h3>رابط Adsterra الذكي</h3>
+            <p class="reward-tag">+0.0003 USDT</p>
+          </div>
+        </div>
+        <button class="pixel-btn btn-secondary" id="adsterra-btn" onclick="handleAdsterraClick()">زيارة (12 ثانية)</button>
+      </div>
+    </main>
+
+    <!-- السحب والإحالة -->
+    <main id="page-withdraw" class="page">
+      <div class="section-title">💳 سحب الأرباح</div>
+      
+      <div class="withdraw-card">
+        <p class="withdraw-note">الحد الأدنى للسحب هو <b>0.05 USDT</b> عبر شبكة BEP20.</p>
+        
+        <div class="input-group">
+          <label>عنوان محفظة BEP20:</label>
+          <input type="text" id="wallet-address" class="pixel-input" placeholder="0x..." />
+        </div>
+
+        <button class="pixel-btn btn-success" onclick="submitWithdrawal()">طلب السحب الآن</button>
+      </div>
+
+      <div class="section-title" style="margin-top: 20px;">👥 رابط الإحالة</div>
+      <div class="referral-card">
+        <input type="text" id="ref-link-input" class="pixel-input" readonly value="جاري التحميل..." />
+        <button class="pixel-btn btn-primary" style="margin-top: 10px; width: 100%;" onclick="copyRefLink()">نسخ الرابط</button>
+      </div>
+    </main>
+
+    <!-- التنقل السفلي -->
+    <nav class="bottom-nav">
+      <button class="nav-item active" onclick="switchPage('home', this)">
+        <span class="nav-icon">🏠</span>
+        <span>الرئيسية</span>
+      </button>
+      <button class="nav-item" onclick="switchPage('tasks', this)">
+        <span class="nav-icon">⚔️</span>
+        <span>المهام</span>
+      </button>
+      <button class="nav-item" onclick="switchPage('withdraw', this)">
+        <span class="nav-icon">💳</span>
+        <span>السحب</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <div id="toast" class="toast"></div>
+    <script>
+    // ==========================================
+    // الإعدادات الرئيسية المتغيرة (بياناتك الخاصة)
+    // ==========================================
+    const ADSTERRA_URL = "https://www.effectivecpmnetwork.com/jbniegah77key=c25a066401baecd24398a891da71d0e5";
+    const ADSGRAM_BLOCK_ID = "40248"; 
+    const BOT_TOKEN = "YOUR_BOT_TOKEN"; // 8934745041:AAFnoIhabF440pZM17YDIektjN9XFuZ4u1Y
+    const ADMIN_CHAT_ID = "YOUR_ADMIN_CHAT_ID"; // 5557254074
+
+    const REWARD_ADSGRAM = 0.0005;
+    const REWARD_ADSTERRA = 0.0003;
+    const ADSTERRA_WAIT_SECONDS = 12; 
+    const COOLDOWN_SECONDS = 15; 
+
+    // متغيرات النظام
+    let userBalance = 0.0000;
+    let isAdsterraPending = false;
+    let adsterraTimer = null;
+    let lastAdTime = 0;
+
+    // تهيئة تلجرام
+    const tg = window.Telegram?.WebApp;
+    if (tg) {
+      tg.expand();
+      if (tg.initDataUnsafe?.user) {
+        const u = tg.initDataUnsafe.user;
+        const userDisplay = document.getElementById('user-display-name');
+        if (userDisplay) {
+          userDisplay.innerText = u.first_name || u.username || "المستخدم";
+        }
       }
     }
-  }
 
-  // عرض الإشعارات السريعة (Toast)
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    if (!t) return;
-    t.innerText = msg;
-    t.style.display = 'block';
-    setTimeout(() => { t.style.display = 'none'; }, 3500);
-  }
-
-  // التنقل بين الصفحات
-  function switchPage(pageId, element) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    
-    const targetPage = document.getElementById(`page-${pageId}`);
-    if (targetPage) targetPage.classList.add('active');
-    if (element) element.classList.add('active');
-  }
-
-  // تحديث وحفظ الرصيد
-  function updateBalance() {
-    const balanceElem = document.getElementById('user-balance');
-    if (balanceElem) {
-      balanceElem.innerText = userBalance.toFixed(4);
+    // إظهار التنبيهات
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      if (!t) return;
+      t.innerText = msg;
+      t.style.display = 'block';
+      setTimeout(() => { t.style.display = 'none'; }, 3500);
     }
-    localStorage.setItem('userBalance', userBalance.toString());
-  }
 
-  // تحميل بيانات المستخدم
-  function loadUserData() {
-    const savedBalance = localStorage.getItem('userBalance');
-    if (savedBalance !== null) {
-      userBalance = parseFloat(savedBalance);
-      updateBalance();
+    // التبديل بين التبويبات
+    function switchPage(pageId, element) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      
+      const targetPage = document.getElementById(`page-${pageId}`);
+      if (targetPage) targetPage.classList.add('active');
+      if (element) element.classList.add('active');
     }
-    
-    // إنشاء رابط الإحالة الخاص بالمستخدم
-    const userId = tg?.initDataUnsafe?.user?.id || '123456';
-    const refInput = document.getElementById('ref-link-input');
-    if (refInput) {
-      refInput.value = `https://t.me/MadaraCryptoBot?start=${userId}`;
+
+    // تحديث وحفظ الرصيد
+    function updateBalance() {
+      const balanceElem = document.getElementById('user-balance');
+      if (balanceElem) {
+        balanceElem.innerText = userBalance.toFixed(4);
+      }
+      localStorage.setItem('userBalance', userBalance.toString());
     }
-  }
 
-  // فحص مؤقت الـ 15 ثانية لمنع التتابع السريع
-  function checkCooldown() {
-    const now = Date.now();
-    const timePassed = Math.floor((now - lastAdTime) / 1000);
-    if (timePassed < COOLDOWN_SECONDS) {
-      const remaining = COOLDOWN_SECONDS - timePassed;
-      showToast(`⏳ يرجى الانتظار ${remaining} ثانية قبل مشاهدة إعلان آخر!`);
-      return false;
+    // تحميل البيانات
+    function loadUserData() {
+      const savedBalance = localStorage.getItem('userBalance');
+      if (savedBalance !== null) {
+        userBalance = parseFloat(savedBalance);
+        updateBalance();
+      }
+      
+      const userId = tg?.initDataUnsafe?.user?.id || '123456';
+      const refInput = document.getElementById('ref-link-input');
+      if (refInput) {
+        refInput.value = `https://t.me/MadaraCryptoBot?start=${userId}`;
+      }
     }
-    return true;
-  }
 
-  // تشغيل إعلان Adsgram
-  function handleAdsgramClick() {
-    if (!checkCooldown()) return;
+    // فحص فترة الانتظار بين الإعلانات
+    function checkCooldown() {
+      const now = Date.now();
+      const timePassed = Math.floor((now - lastAdTime) / 1000);
+      if (timePassed < COOLDOWN_SECONDS) {
+        const remaining = COOLDOWN_SECONDS - timePassed;
+        showToast(`⏳ يرجى الانتظار ${remaining} ثانية قبل مشاهدة إعلان آخر!`);
+        return false;
+      }
+      return true;
+    }
 
-    if (window.Adsgram) {
-      const AdController = window.Adsgram.init({ blockId: ADSGRAM_BLOCK_ID });
-      AdController.show().then((result) => {
+    // إعلان Adsgram
+    function handleAdsgramClick() {
+      if (!checkCooldown()) return;
+
+      if (window.Adsgram) {
+        const AdController = window.Adsgram.init({ blockId: ADSGRAM_BLOCK_ID });
+        AdController.show().then((result) => {
+          userBalance += REWARD_ADSGRAM;
+          updateBalance();
+          lastAdTime = Date.now();
+          showToast("🎉 تم إضافة +0.0005 USDT بنجاح!");
+        }).catch((result) => {
+          showToast("❌ لم يتم إكمال الإعلان!");
+        });
+      } else {
         userBalance += REWARD_ADSGRAM;
         updateBalance();
         lastAdTime = Date.now();
-        showToast("🎉 تم إضافة +0.0005 USDT بنجاح!");
-      }).catch((result) => {
-        showToast("❌ لم يتم إكمال الإعلان!");
-      });
-    } else {
-      // وضع تجريبي في حال عدم تحميل الـ SDK
-      userBalance += REWARD_ADSGRAM;
-      updateBalance();
-      lastAdTime = Date.now();
-      showToast("🎉 (وضع تجريبي) تم إضافة +0.0005 USDT!");
-    }
-  }
-
-  // تشغيل إعلان Adsterra مع حماية الوقت (12 ثانية)
-  function handleAdsterraClick() {
-    const btn = document.getElementById('adsterra-btn');
-
-    if (!isAdsterraPending) {
-      if (!checkCooldown()) return;
-
-      if (tg && tg.openLink) {
-        tg.openLink(ADSTERRA_URL);
-      } else {
-        window.open(ADSTERRA_URL, '_blank');
-      }
-
-      isAdsterraPending = true;
-      adsterraTimer = Date.now();
-      if (btn) btn.innerText = "🎁 استلام المكافأة";
-      showToast(" For يجب البقاء في موقع الإعلان 12 ثانية على الأقل!");
-    } else {
-      const secondsPassed = Math.floor((Date.now() - adsterraTimer) / 1000);
-
-      if (secondsPassed < ADSTERRA_WAIT_SECONDS) {
-        const remaining = ADSTERRA_WAIT_SECONDS - secondsPassed;
-        showToast(`⚠️ عدت سريعاً! تبقت ${remaining} ثوانٍ للحصول على المكافأة.`);
-      } else {
-        userBalance += REWARD_ADSTERRA;
-        updateBalance();
-        lastAdTime = Date.now();
-        isAdsterraPending = false;
-        if (btn) btn.innerText = "زيارة (12 ثانية)";
-        showToast("🎉 تم إضافة +0.0003 USDT بنجاح!");
+        showToast("🎉 (وضع تجريبي) تم إضافة +0.0005 USDT!");
       }
     }
-  }
 
-  // نسخ رابط الإحالة
-  function copyRefLink() {
-    const refInput = document.getElementById('ref-link-input');
-    if (refInput) {
-      refInput.select();
-      document.execCommand('copy');
-      showToast("📋 تم نسخ رابط الإحالة!");
+    // إعلان Adsterra
+    function handleAdsterraClick() {
+      const btn = document.getElementById('adsterra-btn');
+
+      if (!isAdsterraPending) {
+        if (!checkCooldown()) return;
+
+        if (tg && tg.openLink) {
+          tg.openLink(ADSTERRA_URL);
+        } else {
+          window.open(ADSTERRA_URL, '_blank');
+        }
+
+        isAdsterraPending = true;
+        adsterraTimer = Date.now();
+        if (btn) btn.innerText = "🎁 استلام المكافأة";
+        showToast(" For يجب البقاء في موقع الإعلان 12 ثانية على الأقل!");
+      } else {
+        const secondsPassed = Math.floor((Date.now() - adsterraTimer) / 1000);
+
+        if (secondsPassed < ADSTERRA_WAIT_SECONDS) {
+          const remaining = ADSTERRA_WAIT_SECONDS - secondsPassed;
+          showToast(`⚠️ عدت سريعاً! تبقت ${remaining} ثوانٍ للحصول على المكافأة.`);
+        } else {
+          userBalance += REWARD_ADSTERRA;
+          updateBalance();
+          lastAdTime = Date.now();
+          isAdsterraPending = false;
+          if (btn) btn.innerText = "زيارة (12 ثانية)";
+          showToast("🎉 تم إضافة +0.0003 USDT بنجاح!");
+        }
+      }
     }
-  }
 
-  // تقديم طلب السحب وإرسال التنبيه للبوت
-  function submitWithdrawal() {
-    const walletInput = document.getElementById('wallet-address');
-    const wallet = walletInput ? walletInput.value.trim() : '';
-
-    if (!wallet || (!wallet.startsWith('0x') && wallet.length < 10)) {
-      showToast("⚠️ يرجى إدخال عنوان محفظة BEP20 صحيح!");
-      return;
+    // نسخ رابط الإحالة
+    function copyRefLink() {
+      const refInput = document.getElementById('ref-link-input');
+      if (refInput) {
+        refInput.select();
+        document.execCommand('copy');
+        showToast("📋 تم نسخ رابط الإحالة!");
+      }
     }
 
-    if (userBalance < 0.05) {
-      showToast("⚠️ الحد الأدنى للسحب هو 0.05 USDT!");
-      return;
-    }
+    // تقديم طلب السحب
+    function submitWithdrawal() {
+      const walletInput = document.getElementById('wallet-address');
+      const wallet = walletInput ? walletInput.value.trim() : '';
 
-    const userName = tg?.initDataUnsafe?.user?.first_name || 'غير معروف';
-    const userId = tg?.initDataUnsafe?.user?.id || 'غير معروف';
-    const userHandle = tg?.initDataUnsafe?.user?.username ? `@${tg.initDataUnsafe.user.username}` : 'لا يوجد';
+      if (!wallet || (!wallet.startsWith('0x') && wallet.length < 10)) {
+        showToast("⚠️ يرجى إدخال عنوان محفظة BEP20 صحيح!");
+        return;
+      }
 
-    const message = `🌲 *طلب سحب جديد - Madara Crypto*\n\n` +
-                    `👤 *المستخدم:* ${userName} (${userHandle})\n` +
-                    `🆔 *الآيدي:* \`${userId}\`\n` +
-                    `💰 *المبلغ المطلوبة:* \`${userBalance.toFixed(4)} USDT\`\n` +
-                    `🏦 *عنوان المحفظة (BEP20):*\n\`${wallet}\``;
+      if (userBalance < 0.05) {
+        showToast("⚠️ الحد الأدنى للسحب هو 0.05 USDT!");
+        return;
+      }
 
-    fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        chat_id: ADMIN_CHAT_ID,
-        text: message,
-        parse_mode: 'Markdown'
+      const userName = tg?.initDataUnsafe?.user?.first_name || 'غير معروف';
+      const userId = tg?.initDataUnsafe?.user?.id || 'غير معروف';
+      const userHandle = tg?.initDataUnsafe?.user?.username ? `@${tg.initDataUnsafe.user.username}` : 'لا يوجد';
+
+      const message = `🌲 *طلب سحب جديد - Madara Crypto*\n\n` +
+                      `👤 *المستخدم:* ${userName} (${userHandle})\n` +
+                      `🆔 *الآيدي:* \`${userId}\`\n` +
+                      `💰 *المبلغ المطلوب:* \`${userBalance.toFixed(4)} USDT\`\n` +
+                      `🏦 *عنوان المحفظة (BEP20):*\n\`${wallet}\``;
+
+      fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: ADMIN_CHAT_ID,
+          text: message,
+          parse_mode: 'Markdown'
+        })
       })
-    })
-    .then(res => {
-      userBalance = 0;
-      updateBalance();
-      if (walletInput) walletInput.value = '';
-      showToast("✅ تم إرسال طلب السحب بنجاح إلى الإدارة!");
-    })
-    .catch(err => {
-      showToast("❌ حدث خطأ أثناء إرسال الطلب، تحقق من التوكن وآيدي الأدمن.");
-    });
-  }
+      .then(res => {
+        userBalance = 0;
+        updateBalance();
+        if (walletInput) walletInput.value = '';
+        showToast("✅ تم إرسال طلب السحب بنجاح إلى الإدارة!");
+      })
+      .catch(err => {
+        showToast("❌ حدث خطأ أثناء إرسال الطلب، تحقق من البيانات.");
+      });
+    }
 
-  // إعداد مؤثرات السماء والثلج بالبكسل
-  function createAtmosphere() {
-    const starsContainer = document.getElementById('stars-container');
-    const snowContainer = document.getElementById('snow-container');
+    // مؤثّرات النجوم والثلج
+    function createAtmosphere() {
+      const starsContainer = document.getElementById('stars-container');
+      const snowContainer = document.getElementById('snow-container');
 
-    if (starsContainer) {
-      for (let i = 0; i < 35; i++) {
-        const star = document.createElement('div');
-        star.className = 'star';
-        star.style.left = `${Math.random() * 100}%`;
-        star.style.top = `${Math.random() * 60}%`;
-        star.style.animationDelay = `${Math.random() * 2}s`;
-        starsContainer.appendChild(star);
+      if (starsContainer) {
+        for (let i = 0; i < 35; i++) {
+          const star = document.createElement('div');
+          star.className = 'star';
+          star.style.left = `${Math.random() * 100}%`;
+          star.style.top = `${Math.random() * 60}%`;
+          star.style.animationDelay = `${Math.random() * 2}s`;
+          starsContainer.appendChild(star);
+        }
+      }
+
+      if (snowContainer) {
+        for (let i = 0; i < 15; i++) {
+          const snow = document.createElement('div');
+          snow.className = 'snowflake';
+          snow.innerText = '❄';
+          snow.style.left = `${Math.random() * 100}%`;
+          snow.style.animationDuration = `${Math.random() * 3 + 4}s`;
+          snow.style.animationDelay = `${Math.random() * 2}s`;
+          snowContainer.appendChild(snow);
+        }
       }
     }
 
-    if (snowContainer) {
-      for (let i = 0; i < 15; i++) {
-        const snow = document.createElement('div');
-        snow.className = 'snowflake';
-        snow.innerText = '❄';
-        snow.style.left = `${Math.random() * 100}%`;
-        snow.style.animationDuration = `${Math.random() * 3 + 4}s`;
-        snow.style.animationDelay = `${Math.random() * 2}s`;
-        snowContainer.appendChild(snow);
-      }
-    }
-  }
-
-  // عند تشغيل التطبيق
-  window.onload = () => {
-    loadUserData();
-    createAtmosphere();
+    // التشغيل عند الفتح
+    window.onload = () => {
+      loadUserData();
+      createAtmosphere();
     };
-</script>
+  </script>
 
 </body>
 </html>
+
 
                 
