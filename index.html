@@ -1,390 +1,599 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Madara Crypto</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Madara Crypto - Pixel Night Forest</title>
     <!-- Telegram WebApp SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <!-- Adsgram SDK -->
+    <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <style>
         :root {
-            --bg-color: #0b0713;
-            --card-bg: rgba(255, 255, 255, 0.07);
-            --primary-gold: #f3ba2f;
-            --text-color: #ffffff;
-            --text-sub: #a0a0a0;
+            --primary-gold: #ffd700;
+            --secondary-gold: #ffa500;
+            --bg-dark: #050811;
+            --card-bg: rgba(18, 24, 43, 0.85);
+            --border-glow: rgba(255, 215, 0, 0.3);
+            --text-main: #ffffff;
+            --text-sub: #94a3b8;
+            --accent-purple: #8b5cf6;
+        }
+
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            margin: 0;
-            padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: radial-gradient(circle at center top, #2d124d, #0b0713);
-            color: var(--text-color);
+            background-color: var(--bg-dark);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            user-select: none;
+            overflow-x: hidden;
+            position: relative;
         }
 
-        /* Top Header */
-        .header {
+        /* Canvas Background for Pixel Stars & Snow + Pixel Forest */
+        #bgCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Main Container */
+        .app-container {
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            max-width: 480px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* App Header */
+        .app-header {
             text-align: center;
-            padding: 30px 20px 10px;
+            margin-top: 10px;
+            margin-bottom: 20px;
         }
-        .header h1 {
+
+        .app-header h1 {
             color: var(--primary-gold);
-            font-size: 2rem;
-            margin: 0;
-            text-transform: uppercase;
+            font-size: 2.2rem;
+            font-weight: 900;
             letter-spacing: 2px;
-            font-weight: 800;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5), 2px 2px 0px #000;
+            margin-bottom: 4px;
         }
-        .header p {
+
+        .app-header p {
             color: var(--text-sub);
-            font-size: 0.9rem;
-            margin-top: 5px;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 2px #000;
         }
 
-        /* Container for Pages */
-        .container {
-            padding: 20px;
-            flex-grow: 1;
-        }
-
+        /* Pages */
         .page {
             display: none;
-            animation: fadeIn 0.3s ease-in-out;
+            animation: fadeIn 0.3s forwards ease-in-out;
         }
+
         .page.active {
             display: block;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Ad Card Style (Similar to Screenshot) */
+        /* Balance Card */
+        .balance-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-glow);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.7), inset 0 0 15px rgba(255, 215, 0, 0.05);
+            backdrop-filter: blur(8px);
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .balance-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--primary-gold), transparent);
+        }
+
+        .balance-label {
+            color: var(--text-sub);
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .balance-amount {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: var(--primary-gold);
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+            direction: ltr;
+        }
+
+        .balance-amount span {
+            font-size: 1.2rem;
+            color: #fff;
+            margin-left: 5px;
+        }
+
+        /* Section Title */
+        .section-title {
+            font-size: 1rem;
+            color: var(--text-sub);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Ad Cards */
         .ad-card {
             background: var(--card-bg);
-            backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 15px 20px;
+            border-radius: 18px;
+            padding: 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-top: 20px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            margin-bottom: 14px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            transition: transform 0.2s, border-color 0.2s;
         }
-        .ad-info {
+
+        .ad-card:hover {
+            border-color: rgba(255, 215, 0, 0.4);
+        }
+
+        .ad-brand {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
-        .ad-icon {
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(135deg, #a855f7, #6366f1);
-            border-radius: 50%;
+
+        .ad-banner-img {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            object-fit: cover;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
             justify-content: center;
+            font-weight: bold;
             font-size: 1.2rem;
-            font-weight: bold;
         }
-        .ad-details span {
-            display: block;
+
+        .ad-info {
+            display: flex;
+            flex-direction: column;
         }
+
         .ad-title {
-            font-weight: bold;
-            font-size: 1rem;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #fff;
         }
+
+        .ad-platform-tag {
+            font-size: 0.75rem;
+            color: var(--accent-purple);
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
         .ad-reward {
+            font-size: 0.8rem;
             color: var(--primary-gold);
-            font-size: 0.85rem;
-            margin-top: 3px;
+            margin-top: 2px;
+            font-weight: 600;
+            direction: ltr;
+            text-align: right;
         }
-        .watch-btn {
-            background: linear-gradient(135deg, #fcd34d, #f59e0b);
+
+        /* Action Buttons */
+        .btn-action {
+            background: linear-gradient(135deg, var(--primary-gold), var(--secondary-gold));
             color: #000;
             border: none;
-            padding: 10px 20px;
+            padding: 10px 18px;
             border-radius: 25px;
-            font-weight: bold;
+            font-weight: 800;
+            font-size: 0.85rem;
             cursor: pointer;
-            transition: transform 0.2s;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            min-width: 90px;
+            justify-content: center;
         }
-        .watch-btn:active {
+
+        .btn-action:active {
             transform: scale(0.95);
         }
 
-        /* Balance Dashboard */
-        .balance-box {
-            text-align: center;
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 20px;
-            margin-bottom: 20px;
-        }
-        .balance-amount {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: var(--primary-gold);
+        .btn-claim {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
         }
 
-        /* Form Inputs for Withdraw */
-        .input-group {
-            margin-bottom: 15px;
+        /* Form Controls for Withdraw & Ref */
+        .form-group {
+            margin-bottom: 16px;
+            text-align: right;
         }
-        .input-group label {
+
+        .form-group label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
             color: var(--text-sub);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
-        .input-group input {
+
+        .form-input {
             width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            background: rgba(0, 0, 0, 0.4);
-            color: #fff;
-            box-sizing: border-box;
-        }
-        .submit-btn {
-            width: 100%;
-            background: var(--primary-gold);
-            color: #000;
-            border: none;
             padding: 14px;
             border-radius: 12px;
-            font-weight: bold;
-            font-size: 1rem;
-            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
         }
 
-        /* Bottom Navigation Bar */
+        .form-input:focus {
+            border-color: var(--primary-gold);
+        }
+
+        .btn-full {
+            width: 100%;
+            padding: 14px;
+            font-size: 1rem;
+            border-radius: 14px;
+            margin-top: 10px;
+        }
+
+        /* Toast Alert */
+        .toast-msg {
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid var(--primary-gold);
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 12px;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 999;
+            font-size: 0.85rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+            display: none;
+            text-align: center;
+            max-width: 90%;
+        }
+
+        /* Bottom Nav Bar */
         .nav-bar {
-            background: rgba(11, 7, 19, 0.95);
+            position: sticky;
+            bottom: 0;
+            z-index: 10;
+            background: rgba(5, 8, 17, 0.95);
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             justify-content: space-around;
-            padding: 12px 0;
-            position: sticky;
-            bottom: 0;
+            padding: 12px 0 15px;
+            backdrop-filter: blur(10px);
         }
+
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
             color: var(--text-sub);
-            text-decoration: none;
             font-size: 0.75rem;
             cursor: pointer;
             gap: 4px;
+            transition: color 0.2s;
+            width: 33.33%;
         }
+
         .nav-item.active {
             color: var(--primary-gold);
         }
+
         .nav-item svg {
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
             fill: currentColor;
         }
     </style>
 </head>
 <body>
 
-    <!-- Header Section -->
-    <div class="header">
-        <h1>MADARA CRYPTO</h1>
-        <p>WATCH ADS, EARN USDT — SIMPLE AS THAT.</p>
-    </div>
+    <!-- Canvas Background -->
+    <canvas id="bgCanvas"></canvas>
 
-    <!-- Main Content Pages -->
-    <div class="container">
+    <!-- Global Notification Toast -->
+    <div id="toastMsg" class="toast-msg"></div>
+
+    <div class="app-container">
         
-        <!-- PAGE 1: HOME -->
+        <!-- Header -->
+        <div class="app-header">
+            <h1>MADARA CRYPTO</h1>
+            <p>WATCH ADS, EARN USDT — SIMPLE AS THAT.</p>
+        </div>
+
+        <!-- ================= PAGE 1: HOME ================= -->
         <div id="homePage" class="page active">
-            <div class="balance-box">
-                <span style="color: var(--text-sub);">الرصيد الحالي</span>
-                <div class="balance-amount"><span id="userBalance">0.000</span> USDT</div>
+            
+            <!-- Balance Card -->
+            <div class="balance-card">
+                <div class="balance-label">الرصيد الحالي</div>
+                <div class="balance-amount"><span id="userBalance">0.0000</span><span>USDT</span></div>
             </div>
 
-            <!-- Adsterra Reward Card -->
+            <div class="section-title">📺 المهام المتاحة ومشاهدة الإعلانات</div>
+
+            <!-- Adsgram Ad Box -->
             <div class="ad-card">
-                <div class="ad-info">
-                    <div class="ad-icon">▶</div>
-                    <div class="ad-details">
-                        <span class="ad-title">WATCH AN AD</span>
-                        <span class="ad-reward">+$0.001 PER AD</span>
+                <div class="ad-brand">
+                    <div class="ad-banner-img" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff;">AG</div>
+                    <div class="ad-info">
+                        <span class="ad-title">Adsgram Reward Ad</span>
+                        <span class="ad-platform-tag">منصة Adsgram الرسمية</span>
+                        <span class="ad-reward">+$0.0005 USDT</span>
                     </div>
                 </div>
-                <button class="watch-btn" onclick="watchAdsterraAd()">▶ WATCH</button>
+                <button id="adsgramBtn" class="btn-action" onclick="handleAdsgramAd()">▶ مشاهدة</button>
             </div>
+
+            <!-- Adsterra Smartlink Ad Box -->
+            <div class="ad-card">
+                <div class="ad-brand">
+                    <div class="ad-banner-img" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff;">AD</div>
+                    <div class="ad-info">
+                        <span class="ad-title">Adsterra Direct Ad</span>
+                        <span class="ad-platform-tag">منصة Adsterra النظيفة</span>
+                        <span class="ad-reward">+$0.0003 USDT</span>
+                    </div>
+                </div>
+                <button id="adsterraBtn" class="btn-action" onclick="handleAdsterraAd()">▶ مشاهدة</button>
+            </div>
+
         </div>
 
-        <!-- PAGE 2: REFERRAL -->
+        <!-- ================= PAGE 2: REFERRAL ================= -->
         <div id="referralPage" class="page">
-            <div class="balance-box">
-                <h3>دعوة الأصدقاء</h3>
-                <p style="color: var(--text-sub);">احصل على $0.005 لكل صديق يدخل عن طريق رابطك!</p>
-                <div class="input-group">
-                    <input type="text" id="refLink" readonly value="https://t.me/YourBotName?start=ref">
+            <div class="balance-card">
+                <h3 style="color: var(--primary-gold); margin-bottom: 10px;">🤝 نظام الإحالة والمكافآت</h3>
+                <p style="color: var(--text-sub); font-size: 0.85rem; line-height: 1.5; margin-bottom: 15px;">
+                    شارِك رابطك الخاص مع أصدقائك واكسب أرباحاً إضافية فور انضمامهم!
+                </p>
+                <div class="form-group">
+                    <label>رابط الإحالة الخاص بك:</label>
+                    <input type="text" id="refLinkInput" class="form-input" readonly value="جاري التحميل...">
                 </div>
-                <button class="submit-btn" onclick="copyRefLink()">نسخ الرابط</button>
+                <button class="btn-action btn-full" onclick="copyReferralLink()">📋 نسخ الرابط</button>
             </div>
         </div>
 
-        <!-- PAGE 3: WITHDRAW -->
+        <!-- ================= PAGE 3: WITHDRAW ================= -->
         <div id="withdrawPage" class="page">
-            <div class="balance-box">
-                <h3>طلب سحب الأرباح</h3>
-                <p style="color: var(--text-sub); font-size: 0.8rem;">الحد الأدنى للسحب هو 0.5 USDT</p>
-                
-                <div class="input-group" style="text-align: right;">
-                    <label>عنوان محفظة USDT (TRC20):</label>
-                    <input type="text" id="walletAddress" placeholder="T...">
-                </div>
-                
-                <div class="input-group" style="text-align: right;">
-                    <label>المبلغ المراد سحبه:</label>
-                    <input type="number" id="withdrawAmount" placeholder="0.5">
+            <div class="balance-card">
+                <h3 style="color: var(--primary-gold); margin-bottom: 10px;">💸 طلب سحب الأرباح</h3>
+                <p style="color: var(--text-sub); font-size: 0.8rem; margin-bottom: 15px;">
+                    الشبكة: <b style="color:#fff;">USDT (BEP20 - BNB Smart Chain)</b><br>
+                    الحد الأدنى للسحب: <b style="color:var(--primary-gold);">0.05 USDT</b>
+                </p>
+
+                <div class="form-group">
+                    <label>عنوان محفظة USDT (BEP20):</label>
+                    <input type="text" id="walletInput" class="form-input" placeholder="0x...">
                 </div>
 
-                <button class="submit-btn" onclick="requestWithdrawal()">تأكيد طلب السحب</button>
+                <div class="form-group">
+                    <label>المبلغ المراد سحبه (USDT):</label>
+                    <input type="number" id="withdrawAmountInput" class="form-input" step="0.001" placeholder="0.05">
+                </div>
+
+                <button class="btn-action btn-full" onclick="submitWithdrawal()">إرسال طلب السحب</button>
             </div>
         </div>
 
     </div>
 
-    <!-- Bottom Navigation Bar (Same as screenshot) -->
+    <!-- Navigation Bar -->
     <div class="nav-bar">
-        <div class="nav-item active" onclick="switchPage('homePage', this)">
+        <div class="nav-item active" onclick="switchTab('homePage', this)">
             <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
             <span>HOME</span>
         </div>
-        <div class="nav-item" onclick="switchPage('referralPage', this)">
+        <div class="nav-item" onclick="switchTab('referralPage', this)">
             <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
             <span>REFERRAL</span>
         </div>
-        <div class="nav-item" onclick="switchPage('withdrawPage', this)">
+        <div class="nav-item" onclick="switchTab('withdrawPage', this)">
             <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
             <span>WITHDRAW</span>
         </div>
     </div>
 
-    <!-- Application Script -->
+    <!-- MAIN LOGIC SCRIPT -->
     <script>
-        // إعدادات البوت والإعلانات الخاصة بك
+        /* CONFIGURATION */
         const BOT_TOKEN = "8934745041:AAFnoIhabF440pZM17YDIektjN9XFuZ4u1Y";
         const ADMIN_CHAT_ID = "5557254074";
-        const ADSTERRA_URL = "https://www.effectivecpmnetwork.com/a1vfkyh00?key=0a2e384c7e26526ab5a723803a4254e2";
+        const ADSTERRA_URL = "https://www.effectivecpmnetwork.com/jbniegah7?key=c25a066401baecd24398a891da71814d";
+        const ADSGRAM_BLOCK_ID = "YOUR_ADSGRAM_BLOCK_ID";
 
-        // تهيئة Telegram WebApp
+        const REWARD_ADSGRAM = 0.0005;
+        const REWARD_ADSTERRA = 0.0003;
+        const MIN_WITHDRAWAL = 0.05;
+        const ADSTERRA_WAIT_SECONDS = 12; // مدة البقاء المطلوبة بالموقع
+        const COOLDOWN_SECONDS = 15;       // وقت الانتظار بين الإعلانات
+
+        /* TELEGRAM WEBAPP */
         const tg = window.Telegram ? window.Telegram.WebApp : null;
-        if (tg) tg.expand();
+        if (tg) { tg.expand(); tg.ready(); }
 
-        // تحميل وتحديث الرصيد المخزن
-        let balance = parseFloat(localStorage.getItem('madara_balance') || '0.000');
-        document.getElementById('userBalance').innerText = balance.toFixed(3);
+        /* STATE */
+        let userBalance = parseFloat(localStorage.getItem('madara_bal') || '0.0000');
+        let adsterraStartTime = 0;
+        let isAdsterraPending = false;
+        let lastAdTime = parseInt(localStorage.getItem('madara_last_ad') || '0');
 
-        // التنقل بين الصفحات
-        function switchPage(pageId, element) {
+        document.getElementById('userBalance').innerText = userBalance.toFixed(4);
+
+        const tgUser = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) ? tg.initDataUnsafe.user : null;
+        const userId = tgUser ? tgUser.id : '12345678';
+        document.getElementById('refLinkInput').value = `https://t.me/MadaraCryptoBot?start=${userId}`;
+
+        function showToast(msg, duration = 3500) {
+            const toast = document.getElementById('toastMsg');
+            toast.innerText = msg;
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, duration);
+        }
+
+        function switchTab(pageId, navEl) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            
             document.getElementById(pageId).classList.add('active');
-            element.classList.add('active');
+            navEl.classList.add('active');
         }
 
-        // تشغيل إعلان Adsterra
-        function watchAdsterraAd() {
-            // 1. فتح رابط Adsterra المباشر
-            if (tg) {
-                tg.openLink(ADSTERRA_URL);
+        function checkCooldown() {
+            const now = Math.floor(Date.now() / 1000);
+            const passed = now - lastAdTime;
+            if (passed < COOLDOWN_SECONDS) {
+                const remaining = COOLDOWN_SECONDS - passed;
+                showToast(`⏳ يرجى الانتظار ${remaining} ثانية قبل مشاهدة إعلان جديد.`);
+                return false;
+            }
+            return true;
+        }
+
+        function markAdWatched() {
+            lastAdTime = Math.floor(Date.now() / 1000);
+            localStorage.setItem('madara_last_ad', lastAdTime.toString());
+        }
+
+        /* ADSGRAM HANDLER */
+        function handleAdsgramAd() {
+            if (!checkCooldown()) return;
+
+            if (window.Adsgram) {
+                const AdController = window.Adsgram.init({ blockId: ADSGRAM_BLOCK_ID });
+                AdController.show().then(() => {
+                    userBalance += REWARD_ADSGRAM;
+                    updateBalance();
+                    markAdWatched();
+                    showToast(`🎉 مبروك! حصلت على +$${REWARD_ADSGRAM} USDT من إعلان Adsgram.`);
+                }).catch(() => {
+                    showToast("⚠️ لم تكتمل مشاهدة الإعلان أو لا توجد إعلانات متاحة حالياً.");
+                });
             } else {
-                window.open(ADSTERRA_URL, '_blank');
+                showToast("⚠️ جاري تحميل إعلان Adsgram... (ضع Block ID الخاص بك)");
+                setTimeout(() => {
+                    userBalance += REWARD_ADSGRAM;
+                    updateBalance();
+                    markAdWatched();
+                    showToast(`🎉 [تجريبي] تم إضافة +$${REWARD_ADSGRAM} USDT!`);
+                }, 2000);
             }
-
-            // 2. إعطاء المكافأة فورية ($0.001)
-            balance += 0.001;
-            localStorage.setItem('madara_balance', balance.toString());
-            document.getElementById('userBalance').innerText = balance.toFixed(3);
-
-            alert("🎉 تم تشغيل الإعلان وإضافة $0.001 إلى رصيدك!");
         }
 
-        // نسخ رابط الدعوة
-        function copyRefLink() {
-            const userId = tg && tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : '123456';
-            const link = `https://t.me/MadaraCryptoBot?start=${userId}`;
-            navigator.clipboard.writeText(link);
-            alert("تم نسخ رابط الدعوة بنجاح!");
-        }
+        /* ADSTERRA HANDLER (WITH TIMER & ANTI-CHEAT) */
+        function handleAdsterraAd() {
+            if (!checkCooldown()) return;
 
-        // طلب السحب وإرسال إشعار للبوت
-        function requestWithdrawal() {
-            const wallet = document.getElementById('walletAddress').value.trim();
-            const amount = parseFloat(document.getElementById('withdrawAmount').value);
+            const btn = document.getElementById('adsterraBtn');
 
-            if (!wallet) {
-                alert("يرجى أدخال عنوان المحفظة!");
-                return;
-            }
+            if (!isAdsterraPending) {
+                isAdsterraPending = true;
+                adsterraStartTime = Date.now();
 
-            if (isNaN(amount) || amount < 0.5) {
-                alert("الحد الأدنى للسحب هو 0.5 USDT!");
-                return;
-            }
+                if (tg && tg.openLink) { tg.openLink(ADSTERRA_URL); }
+                else { window.open(ADSTERRA_URL, '_blank'); }
 
-            if (amount > balance) {
-                alert("رصيدك الحالي غير كافٍ للسحب!");
-                return;
-            }
+                btn.className = "btn-action btn-claim";
+                btn.innerText = "🎁 استلام المكافأة";
+                showToast(`⏱️ ابقَ في صفحة الإعلان لمدة ${ADSTERRA_WAIT_SECONDS} ثوانٍ ثم ارجع واضغط 'استلام'.`);
+            } else {
+                const elapsedSeconds = Math.floor((Date.now() - adsterraStartTime) / 1000);
 
-            // خصم الرصيد
-            balance -= amount;
-            localStorage.setItem('madara_balance', balance.toString());
-            document.getElementById('userBalance').innerText = balance.toFixed(3);
-
-            // بيانات المستخدم في التليجرام
-            const user = tg && tg.initDataUnsafe ? tg.initDataUnsafe.user : null;
-            const username = user ? (user.username ? `@${user.username}` : user.first_name) : "مستخدم تجريبي";
-            const userId = user ? user.id : "غير معروف";
-
-            // نص الرسالة الموجهة للادمن
-            const message = `🚨 *طلب سحب جديد في Madara Crypto* 🚨\n\n` +
-                            `👤 *المستخدم:* ${username} (ID: \`${userId}\`)\n` +
-                            `💰 *المبلغ:* ${amount} USDT\n` +
-                            `🏦 *المحفظة:* \`${wallet}\``;
-
-            // إرسال الرسالة إلى البوت
-            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    chat_id: ADMIN_CHAT_ID,
-                    text: message,
-                    parse_mode: "Markdown"
-                })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if(data.ok) {
-                    alert("✅ تم تقديم طلب السحب بنجاح! سيتم فحص الطلب وإرسال الأرباح.");
+                if (elapsedSeconds < ADSTERRA_WAIT_SECONDS) {
+                    const remaining = ADSTERRA_WAIT_SECONDS - elapsedSeconds;
+                    showToast(`⚠️ لقد عدت سريعاً! يجب البقاء ${remaining} ثوانٍ إضافية في موقع الإعلان.`);
                 } else {
-                    alert("حدث خطأ أثناء إرسال الطلب، يرجى المحاولة لاحقاً.");
+                    userBalance += REWARD_ADSTERRA;
+                    updateBalance();
+                    markAdWatched();
+
+                    isAdsterraPending = false;
+                    btn.className = "btn-action";
+                    btn.innerText = "▶ مشاهدة";
+                    showToast(`🎉 مبروك! حصلت على +$${REWARD_ADSTERRA} USDT من إعلان Adsterra.`);
                 }
-            })
-            .catch(() => alert("خطأ في الاتصال بالخادم."));
+            }
         }
-    </script>
-</body>
-</html>
 
+     function updateBalance() {
+    // تحديث النص في الواجهة للمستخدم
+    const balanceElement = document.getElementById('user-balance');
+    if (balanceElement) {
+        balanceElement.innerText = userBalance.toFixed(2);
+    }
 
+    // حفظ الرصيد الجديد في localStorage
+    localStorage.setItem('userBalance', userBalance.toString());
+}
 
+// دالة لحفظ حالة الإعلان كـ مشاهد
+function markAdWatched() {
+    localStorage.setItem('adWatched', 'true');
+}
+
+// دالة لاسترجاع البيانات عند فتح التطبيق/الصفحة
+function loadUserData() {
+    const savedBalance = localStorage.getItem('userBalance');
+    if (savedBalance !== null) {
+        userBalance = parseFloat(savedBalance);
+        updateBalance();
+    }
+}
+        
