@@ -377,6 +377,192 @@
     </div>
 
     <div id="toast" class="toast"></div>
+    <script>
+    const ADSTERRA_URL = "https://www.effectivecpmnetwork.com/jbniegah7?key=c25a066401baecd24398a891da71814d";
+    const ADSGRAM_BLOCK_ID = "YOUR_ADSGRAM_BLOCK_ID";
+    const BOT_TOKEN = "YOUR_BOT_TOKEN";
+    const ADMIN_CHAT_ID = "YOUR_ADMIN_CHAT_ID";
+
+    const REWARD_ADSGRAM = 0.0005;
+    const REWARD_ADSTERRA = 0.0003;
+    const ADSTERRA_WAIT_SECONDS = 12;
+    const COOLDOWN_SECONDS = 15;
+
+    let userBalance = 0.0000;
+    let isAdsterraPending = false;
+    let adsterraTimer = null;
+    let lastAdTime = 0;
+
+    const tg = window.Telegram?.WebApp;
+    if (tg) tg.expand();
+
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.innerText = msg;
+        t.style.display = 'block';
+        setTimeout(() => { t.style.display = 'none'; }, 3800);
+    }
+
+    function switchPage(pageId, element) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.getElementById(`page-${pageId}`).classList.add('active');
+        element.classList.add('active');
+    }
+
+    function updateBalance() {
+        document.querySelectorAll('.user-balance').forEach(el => {
+            el.innerText = userBalance.toFixed(4);
+        });
+        localStorage.setItem('userBalance', userBalance.toString());
+    }
+
+    function loadUserData() {
+        const saved = localStorage.getItem('userBalance');
+        if (saved !== null) {
+            userBalance = parseFloat(saved);
+            updateBalance();
+        }
+    }
+
+    function checkCooldown() {
+        const now = Date.now();
+        const passed = Math.floor((now - lastAdTime) / 1000);
+        if (passed < COOLDOWN_SECONDS) {
+            const remain = COOLDOWN_SECONDS - passed;
+            showToast(`⏳ انتظر ${remain} ثانية قبل إعلان آخر`);
+            return false;
+        }
+        return true;
+    }
+
+    function handleAdsgramClick() {
+        if (!checkCooldown()) return;
+
+        if (window.Adsgram) {
+            const AdController = window.Adsgram.init({ blockId: ADSGRAM_BLOCK_ID });
+            AdController.show().then((result) => {
+                userBalance += REWARD_ADSGRAM;
+                updateBalance();
+                lastAdTime = Date.now();
+                showToast("✅ +0.0005 USDT (Adsgram)");
+            }).catch((result) => {
+                showToast("❌ الإعلان لم يكتمل");
+            });
+        } else {
+            userBalance += REWARD_ADSGRAM;
+            updateBalance();
+            lastAdTime = Date.now();
+            showToast("🔹 (تجريبي) +0.0005 USDT");
+        }
+    }
+
+    function handleAdsterraClick() {
+        const btn = document.getElementById('adsterra-btn');
+
+        if (!isAdsterraPending) {
+            if (!checkCooldown()) return;
+
+            if (tg && tg.openLink) {
+                tg.openLink(ADSTERRA_URL);
+            } else {
+                window.open(ADSTERRA_URL, '_blank');
+            }
+
+            isAdsterraPending = true;
+            adsterraTimer = Date.now();
+            btn.innerText = "⏳ انتظر ...";
+            showToast(`⏱ ابق في الموقع ${ADSTERRA_WAIT_SECONDS} ثانية`);
+        } else {
+            const elapsed = Math.floor((Date.now() - adsterraTimer) / 1000);
+            if (elapsed < ADSTERRA_WAIT_SECONDS) {
+                const remain = ADSTERRA_WAIT_SECONDS - elapsed;
+                showToast(`⚠️ عدت مبكراً! انتظر ${remain} ثانية إضافية`);
+            } else {
+                userBalance += REWARD_ADSTERRA;
+                updateBalance();
+                lastAdTime = Date.now();
+                isAdsterraPending = false;
+                btn.innerText = "▷ فتح";
+                showToast("✅ +0.0003 USDT (Adsterra)");
+            }
+        }
+    }
+
+    function copyRefLink() {
+        const copyText = document.getElementById("ref-link");
+        navigator.clipboard.writeText(copyText.value);
+        showToast("📋 تم نسخ رابط الإحالة!");
+    }
+
+    function submitWithdrawal() {
+        const wallet = document.getElementById('wallet-address').value.trim();
+        if (!wallet || !wallet.startsWith('0x')) {
+            showToast("⚠️ أدخل عنوان BEP20 صحيح (0x...)");
+            return;
+        }
+        if (userBalance < 0.05) {
+            showToast("⚠️ الحد الأدنى للسحب 0.05 USDT");
+            return;
+        }
+
+        const userName = tg?.initDataUnsafe?.user?.first_name || "مستخدم";
+        const userId = tg?.initDataUnsafe?.user?.id || "غير معروف";
+        const userHandle = tg?.initDataUnsafe?.user?.username ? `@${tg.initDataUnsafe.user.username}` : "بدون يوزر";
+
+        const message = `🚨 *طلب سحب - Madara Pixel*\n\n` +
+                        `👤 *المستخدم:* ${userName} (${userHandle})\n` +
+                        `🆔 *ID:* \`${userId}\`\n` +
+                        `💰 *المبلغ:* \`${userBalance.toFixed(4)} USDT\`\n` +
+                        `🌐 *الشبكة:* BNB Smart Chain (BEP20)\n` +
+                        `🏦 *المحفظة:* \`${wallet}\``;
+
+        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                chat_id: ADMIN_CHAT_ID,
+                text: message,
+                parse_mode: 'Markdown'
+            })
+        }).then(res => {
+            userBalance = 0;
+            updateBalance();
+            document.getElementById('wallet-address').value = '';
+            showToast("✅ تم إرسال طلب السحب للإدارة");
+        }).catch(err => {
+            showToast("❌ خطأ في الإرسال، حاول لاحقاً");
+        });
+    }
+
+    function createAtmosphere() {
+        for (let i = 0; i < 25; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.width = (Math.random() * 6 + 4) + 'px';
+            star.style.height = star.style.width;
+            star.style.left = Math.random() * 100 + 'vw';
+            star.style.top = Math.random() * 60 + 'vh';
+            star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+            document.body.appendChild(star);
+        }
+        for (let i = 0; i < 16; i++) {
+            const flake = document.createElement('div');
+            flake.className = 'snowflake';
+            flake.innerText = '❄';
+            flake.style.left = Math.random() * 100 + 'vw';
+            flake.style.animationDuration = (Math.random() * 4 + 4) + 's';
+            flake.style.opacity = 0.5 + Math.random() * 0.5;
+            flake.style.fontSize = (Math.random() * 14 + 18) + 'px';
+            document.body.appendChild(flake);
+        }
+    }
+
+    window.onload = function() {
+        loadUserData();
+        createAtmosphere();
+    };
+</script>
 </body>
 </html>
                 
