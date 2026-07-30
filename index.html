@@ -106,8 +106,8 @@
       display: block;
       width: 100%;
       border: 3px solid #000;
-      padding: 16px;
-      font-size: 15px;
+      padding: 14px;
+      font-size: 14px;
       font-weight: 900;
       cursor: pointer;
       text-align: center;
@@ -154,6 +154,16 @@
       outline: none;
       margin: 8px 0 12px 0;
       text-align: center;
+    }
+
+    .withdraw-status-card {
+      background: #081c15;
+      border: 2px dashed #e9c46a;
+      padding: 12px;
+      margin-top: 15px;
+      border-radius: 4px;
+      text-align: right;
+      font-size: 12px;
     }
 
     .bottom-nav { 
@@ -259,11 +269,21 @@
     <main id="page-tasks" class="page">
       <h2 style="font-size: 16px; color: #fff; margin-bottom: 12px; text-align: center;">📜 المهام المتاحة</h2>
       
+      <!-- مهمة القناة -->
       <div class="pixel-box">
         <h3 style="font-size: 14px; color: #fff;">📢 الاشتراك بقناة التلجرام</h3>
         <p style="font-size: 12px; color: #74c69d; margin: 6px 0;">المكافأة: <b>+0.004$</b></p>
         <button id="task-channel-btn" class="pixel-btn btn-task" onclick="handleBtnClick(handleChannelTask)">
           🚀 انضمام للقناة
+        </button>
+      </div>
+
+      <!-- مهمة تعزيز للقناة -->
+      <div class="pixel-box">
+        <h3 style="font-size: 14px; color: #fff;">🦈 تعزيز للقناة</h3>
+        <p style="font-size: 12px; color: #74c69d; margin: 6px 0;">المكافأة: <b>+0.005$</b></p>
+        <button id="task-boost-btn" class="pixel-btn btn-task" onclick="handleBtnClick(handleBoostTask)">
+          🚀 تعزيز القناة الآن
         </button>
       </div>
     </main>
@@ -281,9 +301,19 @@
         <label style="display: block; font-size: 12px;">مبلغ السحب (USDT):</label>
         <input type="number" step="0.001" id="withdraw-amount" class="pixel-input" placeholder="0.01" />
         
-        <button class="pixel-btn btn-withdraw" onclick="handleBtnClick(executeWithdrawal)">
+        <button id="withdraw-submit-btn" class="pixel-btn btn-withdraw" onclick="handleBtnClick(executeWithdrawal)">
           📤 إرسال طلب السحب الان
         </button>
+
+        <!-- سجل و تفاصيل حالة السحب -->
+        <div id="withdraw-details" class="withdraw-status-card" style="display: none;">
+          <p style="color: #e9c46a; font-weight: bold; text-align: center; margin-bottom: 6px;">⏳ السحب قيد المعالجة (سيصل خلال 10 - 24 ساعة)</p>
+          <div style="border-top: 1px solid #2d6a4f; padding-top: 6px; font-size: 11px; color: #b7e4c7;">
+            <p>👤 <b>المستخدم:</b> <span id="wd-user">-</span></p>
+            <p>💵 <b>مبلغ السحب:</b> <span id="wd-amount">-</span> USDT</p>
+            <p>🏦 <b>المحفظة:</b> <span id="wd-address" style="word-break: break-all;">-</span></p>
+          </div>
+        </div>
       </div>
     </main>
 
@@ -309,16 +339,19 @@
   <script>
     const BOT_TOKEN = "8934745041:AAFnoIhabF440pZM17YDIektjN9XFuZ4u1Y";
     const ADMIN_CHAT_ID = "5557254074";
-    const ADSGRAM_BLOCK_ID = "40248";
+    const ADSGRAM_BLOCK_ID_1 = "40248";
+    const ADSGRAM_BLOCK_ID_2 = "int-40243";
     const ADSTERRA_URL = "https://www.effectivecpmnetwork.com/jbniegah7?key=c25a066401baecd24398a891da71814d";
     const SHRINKME_URL = "https://shrinkme.click/PixelFantas";
     const CHANNEL_URL = "https://t.me/madara_crypto20";
+    const BOOST_URL = "https://t.me/boost/madara_crypto20";
 
     const MIN_WITHDRAW = 0.01;
     const ADSGRAM_REWARD = 0.0008;
     const ADSTERRA_REWARD = 0.002;
     const SHRINKME_REWARD = 0.005;
     const TASK_REWARD = 0.004;
+    const BOOST_REWARD = 0.005;
     const COOLDOWN_30MIN = 30 * 60 * 1000;
     const MAX_DAILY_ADSGRAM = 20;
 
@@ -327,6 +360,7 @@
     let lastAdsterraTime = 0;
     let lastShrinkmeTime = 0;
     let isTaskDone = false;
+    let isBoostDone = false;
 
     let isClickLocked = false;
     let shrinkmeTimer = null;
@@ -415,6 +449,18 @@
         disableTaskBtn();
       }
 
+      if (localStorage.getItem('boost_task_completed') === 'true') {
+        isBoostDone = true;
+        disableBoostBtn();
+      }
+
+      // عرض حالة طلب السحب السابق إن وجد
+      const savedWd = localStorage.getItem('last_withdrawal_data');
+      if (savedWd) {
+        const wdData = JSON.parse(savedWd);
+        showWithdrawDetails(wdData.user, wdData.amount, wdData.address);
+      }
+
       updateBalance();
       checkTimers();
       setInterval(checkTimers, 1000);
@@ -467,7 +513,7 @@
       }
     }
 
-    // دالة Adsgram المُحدثة والذكية
+    // مشاهدة Adsgram المحدثة والمجربة لكلا الـ Block IDs
     async function watchAdsgram() {
       if (adsgramCount >= MAX_DAILY_ADSGRAM) {
         showToast("⚠️ لقد استنفدت جميع الإعلانات اليومية (20/20)!");
@@ -479,22 +525,37 @@
         return;
       }
 
+      let adSuccess = false;
+
+      // محاولة التشغيل بالكود الأول 40248
       try {
-        const AdController = window.Adsgram.init({ blockId: ADSGRAM_BLOCK_ID, debug: false });
-        await AdController.show();
-        
+        const AdController1 = window.Adsgram.init({ blockId: ADSGRAM_BLOCK_ID_1, debug: false });
+        await AdController1.show();
+        adSuccess = true;
+      } catch (e1) {
+        console.log("Block 1 failed, trying Block 2...");
+        // محاولة التشغيل بالكود الثاني int-40243
+        try {
+          const AdController2 = window.Adsgram.init({ blockId: ADSGRAM_BLOCK_ID_2, debug: false });
+          await AdController2.show();
+          adSuccess = true;
+        } catch (e2) {
+          adSuccess = false;
+        }
+      }
+
+      if (adSuccess) {
         balance += ADSGRAM_REWARD;
         adsgramCount++;
         localStorage.setItem('adsgram_daily_count', adsgramCount.toString());
         document.getElementById('adsgram-count').innerText = MAX_DAILY_ADSGRAM - adsgramCount;
         updateBalance();
         showToast("🎉 تم مشاهدة الإعلان بنجاح! المكافأة: +0.0008$");
-      } catch (err) {
-        showToast("⚠️ لم يتم إكمال الإعلان أو تعذر عرضه حالياً.");
+      } else {
+        showToast("⚠️ الإعلانات غير متوفرة الآن، عد لاحقاً");
       }
     }
 
-    // إعلان Adsterra مع توقف الموقت إذا خرج المستخدم من الموقع الإعلاني
     function startAdsterra() {
       if (Date.now() - lastAdsterraTime < COOLDOWN_30MIN) return;
 
@@ -522,7 +583,7 @@
 
         if (adsterraSecondsLeft <= 0) {
           clearInterval(adsterraTimer);
-          adTimerText.style.display = 'none';
+                    adTimerText.style.display = 'none';
           balance += ADSTERRA_REWARD;
           lastAdsterraTime = Date.now();
           localStorage.setItem('last_adsterra', lastAdsterraTime.toString());
@@ -565,6 +626,7 @@
       }, 1000);
     }
 
+    // مهمة قناة التلجرام
     function handleChannelTask() {
       if (isTaskDone) return;
 
@@ -592,11 +654,40 @@
       btn.disabled = true;
     }
 
+    // مهمة تعزيز القناة 🦈
+    function handleBoostTask() {
+      if (isBoostDone) return;
+
+      if (tg && tg.openTelegramLink) {
+        tg.openTelegramLink(BOOST_URL);
+      } else {
+        window.open(BOOST_URL, '_blank');
+      }
+
+      const btn = document.getElementById('task-boost-btn');
+      btn.innerText = "✅ تأكيد التعزيز";
+      btn.onclick = () => {
+        balance += BOOST_REWARD;
+        isBoostDone = true;
+        localStorage.setItem('boost_task_completed', 'true');
+        updateBalance();
+        disableBoostBtn();
+        showToast("🎉 تم التحقق وحصلت على +0.005$!");
+      };
+    }
+
+    function disableBoostBtn() {
+      const btn = document.getElementById('task-boost-btn');
+      btn.innerText = "✔️ تم إنجاز المهمة";
+      btn.disabled = true;
+    }
+
+    // إرسال طلب السحب وحفظه محلياً دون تعليق
     function executeWithdrawal() {
       const address = document.getElementById('withdraw-address').value.trim();
       const amount = parseFloat(document.getElementById('withdraw-amount').value);
 
-      if (!address || address.address.length < 15) {
+      if (!address || address.length < 15) {
         showToast("⚠️ يرجى كتابة عنوان محفظة صحيحة!");
         return;
       }
@@ -615,12 +706,33 @@
       const username = user?.username ? `@${user.username}` : (user?.first_name || 'غير معروف');
       const userId = user?.id || 'غير معروف';
 
+      const btn = document.getElementById('withdraw-submit-btn');
+      btn.disabled = true;
+      btn.innerText = "⏳ جاري إرسال الطلب...";
+
       const text = `💰 *طلب سحب جديد (Madara Crypto)*\n\n` +
                    `👤 *المستخدم:* ${username}\n` +
                    `🆔 *الآيدي:* \`${userId}\`\n` +
                    `💵 *المبلغ المطلوب:* \`${amount.toFixed(4)} USDT\`\n` +
                    `🏦 *عنوان BEP20:*\n\`${address}\``;
 
+      // خصم الرصيد وتحديثه
+      balance -= amount;
+      updateBalance();
+
+      // حفظ التفاصيل محلياً وعرض الخانة السفلية فوراً
+      const wdInfo = { user: username, amount: amount.toFixed(4), address: address };
+      localStorage.setItem('last_withdrawal_data', JSON.stringify(wdInfo));
+      showWithdrawDetails(username, amount.toFixed(4), address);
+
+      document.getElementById('withdraw-address').value = '';
+      document.getElementById('withdraw-amount').value = '';
+      showToast("✅ تم إرسال طلب السحب بنجاح إلى الإدارة!");
+
+      btn.disabled = false;
+      btn.innerText = "📤 إرسال طلب السحب الان";
+
+      // الإرسال للبوت في الخلفية
       fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -629,22 +741,14 @@
           text: text,
           parse_mode: 'Markdown'
         })
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.ok) {
-          balance -= amount;
-          updateBalance();
-          document.getElementById('withdraw-address').value = '';
-          document.getElementById('withdraw-amount').value = '';
-          showToast("✅ تم إرسال طلب السحب بنجاح إلى الإدارة!");
-        } else {
-          showToast("❌ حدث خطأ، يرجى التأكد من تشغيل البوت مع الآيدي!");
-        }
-      })
-      .catch(() => {
-        showToast("❌ تعذر الاتصال بالسيرفر، حاول لاحقاً.");
-      });
+      }).catch(e => console.error("Telegram notify failed", e));
+    }
+
+    function showWithdrawDetails(username, amount, address) {
+      document.getElementById('wd-user').innerText = username;
+      document.getElementById('wd-amount').innerText = amount;
+      document.getElementById('wd-address').innerText = address;
+      document.getElementById('withdraw-details').style.display = 'block';
     }
 
     window.onload = loadSavedData;
