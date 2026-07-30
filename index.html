@@ -6,170 +6,317 @@
   <title>Madara Crypto - Pixel Edition</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script src="https://sad.adsgram.ai/js/sad-index.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Tajawal:wght@500;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Tajawal:wght@700;900&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; user-select: none; }
-    body { background-color: #0d1117; color: #f0f6fc; min-height: 100vh; display: flex; justify-content: center; align-items: center; overflow-x: hidden; }
     
-    .pixel-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, #050814 0%, #0d1b2a 60%, #1b263b 100%); z-index: -1; overflow: hidden; }
-    .moon { position: absolute; top: 15px; right: 20px; width: 45px; height: 45px; background: #e0e1dd; border-radius: 50%; box-shadow: 0 0 15px rgba(224, 225, 221, 0.3), inset -6px -4px 0px #778da9; opacity: 0.8; }
-    .star { position: absolute; background: #fff; width: 2px; height: 2px; opacity: 0.8; animation: twinkle 2s infinite alternate; }
-    @keyframes twinkle { 0% { opacity: 0.2; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.3); } }
-    .snowflake { position: absolute; color: #e0e1dd; font-size: 10px; opacity: 0.7; animation: fall linear infinite; }
-    @keyframes fall { 0% { transform: translateY(-10px); } 100% { transform: translateY(100vh); } }
+    body { 
+      background-color: #050814; 
+      color: #fff; 
+      min-height: 100vh; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      overflow-x: hidden; 
+    }
     
-    .app-container { width: 100%; max-width: 450px; min-height: 100vh; padding: 15px 16px 80px 16px; display: flex; flex-direction: column; position: relative; }
-    .app-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 2px dashed rgba(255, 255, 255, 0.1); margin-bottom: 15px; }
-    .brand { display: flex; align-items: center; gap: 8px; }
-    .pixel-title { font-family: 'Press Start 2P', cursive; font-size: 13px; color: #00f5d4; text-shadow: 2px 2px #000; }
-    .user-pill { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); padding: 5px 10px; border-radius: 20px; font-size: 11px; display: flex; align-items: center; gap: 6px; z-index: 2; }
-    .status-dot { width: 7px; height: 7px; background: #38b000; border-radius: 50%; box-shadow: 0 0 8px #38b000; }
-    
-    .page { display: none; animation: fadeIn 0.3s ease-in-out; }
-    .page.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-    
-    .balance-card { background: rgba(13, 27, 42, 0.85); border: 2px solid #415a77; border-radius: 16px; padding: 18px; text-align: center; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4); backdrop-filter: blur(8px); margin-bottom: 15px; }
-    .card-label { font-size: 13px; color: #778da9; }
-    .balance-value { font-size: 32px; font-weight: 900; color: #70e000; margin: 8px 0; font-family: 'Press Start 2P', cursive; text-shadow: 0 0 10px rgba(112, 224, 0, 0.3); }
-    .pixel-badge { display: inline-block; background: #1b263b; color: #e0e1dd; font-size: 10px; padding: 4px 8px; border-radius: 6px; border: 1px solid #778da9; }
-    
-    .knight-container { display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 15px 0; text-align: center; }
-    .knight-avatar { width: 130px; height: 130px; border-radius: 50%; border: 3px solid #00f5d4; box-shadow: 0 0 20px rgba(0, 245, 212, 0.4); object-fit: cover; animation: float 3s ease-in-out infinite; background: #1b263b; }
-    @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
-    .knight-title { margin-top: 10px; font-family: 'Press Start 2P', cursive; font-size: 10px; color: #e0e1dd; text-shadow: 1px 1px #000; }
+    /* خلفية الفارس والغابة الفانتازية */
+    .bg-knight { 
+      position: fixed; 
+      top: 0; left: 0; width: 100%; height: 100%; 
+      background: url('https://i.ibb.co/6R2qg5j/pixel-knight-forest.jpg') center center / cover no-repeat;
+      z-index: -2; 
+      image-rendering: pixelated;
+    }
 
-    .quick-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-    .stat-box { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-align: center; }
-    .stat-title { font-size: 11px; color: #a0aab0; }
-    .stat-num { font-size: 13px; font-weight: 700; color: #00f5d4; font-family: 'Press Start 2P', cursive; }
+    /* طبقة تعتيم خفيفة لإبراز الواجهة */
+    .bg-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(5, 12, 10, 0.45);
+      backdrop-filter: blur(2px);
+      z-index: -1;
+    }
+
+    .app-container { 
+      width: 100%; 
+      max-width: 450px; 
+      min-height: 100vh; 
+      padding: 15px 16px 85px 16px; 
+      display: flex; 
+      flex-direction: column; 
+      justify-content: space-between;
+      position: relative; 
+    }
+
+    /* الهيدر */
+    .app-header { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      padding: 10px 14px;
+      background: rgba(10, 25, 18, 0.75);
+      border: 3px solid #2d6a4f;
+      box-shadow: 0 4px 0 #1b4332, inset 0 0 10px rgba(82, 183, 136, 0.2);
+    }
     
-    .section-title { font-size: 15px; font-weight: 700; margin-bottom: 12px; color: #e0e1dd; }
-    .task-card { background: rgba(13, 27, 42, 0.7); border: 1px solid #415a77; border-radius: 12px; padding: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
-    .task-info { display: flex; align-items: center; gap: 10px; }
-    .task-icon { font-size: 22px; }
-    .task-info h3 { font-size: 13px; color: #fff; }
-    .reward-tag { font-size: 11px; color: #70e000; font-weight: bold; }
-    .pixel-btn { border: none; padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 0px rgba(0, 0, 0, 0.4); }
-    .pixel-btn:active { transform: translateY(2px); box-shadow: 0 2px 0px rgba(0, 0, 0, 0.4); }
-    .btn-primary { background: #00b4d8; color: #000; }
-    .btn-secondary { background: #7209b7; color: #fff; }
-    .btn-success { background: #38b000; color: #000; width: 100%; padding: 12px; font-size: 14px; margin-top: 10px; }
-    .withdraw-card, .referral-card { background: rgba(13, 27, 42, 0.7); border: 1px solid #415a77; border-radius: 12px; padding: 16px; }
-    .withdraw-note { font-size: 12px; color: #a0aab0; margin-bottom: 12px; }
-    .input-group { margin-bottom: 10px; }
-    .input-group label { display: block; font-size: 11px; color: #e0e1dd; margin-bottom: 5px; }
-    .pixel-input { width: 100%; background: rgba(0, 0, 0, 0.3); border: 1px solid #415a77; padding: 10px; border-radius: 8px; color: #fff; font-size: 12px; outline: none; }
-    .pixel-input:focus { border-color: #00f5d4; }
+    .pixel-title { 
+      font-family: 'Press Start 2P', cursive; 
+      font-size: 11px; 
+      color: #52b788; 
+      text-shadow: 2px 2px #000; 
+    }
     
-    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; max-width: 450px; margin: 0 auto; background: rgba(13, 27, 42, 0.95); border-top: 1px solid #415a77; display: flex; justify-content: space-around; padding: 8px 0; backdrop-filter: blur(10px); }
-    .nav-item { background: none; border: none; color: #778da9; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 10px; cursor: pointer; }
-    .nav-item.active { color: #00f5d4; font-weight: bold; }
-    .nav-icon { font-size: 16px; }
-    .toast { position: fixed; bottom: 70px; left: 50%; transform: translateX(-50%); background: #1b263b; color: #fff; padding: 8px 16px; border-radius: 20px; border: 1px solid #00f5d4; font-size: 12px; display: none; z-index: 1000; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); }
+    .user-pill { 
+      background: #1b4332; 
+      border: 2px solid #52b788; 
+      padding: 4px 10px; 
+      font-size: 11px; 
+      display: flex; 
+      align-items: center; 
+      gap: 6px; 
+      font-weight: bold;
+    }
+    .status-dot { width: 8px; height: 8px; background: #74c69d; box-shadow: 0 0 6px #74c69d; }
+
+    .page { display: none; animation: fadeIn 0.25s ease-in-out; }
+    .page.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* بطاقات البكسل احترافية */
+    .pixel-box {
+      background: rgba(15, 30, 22, 0.85);
+      border: 3px solid #40916c;
+      box-shadow: 4px 4px 0px #081c15, inset 0 0 12px rgba(82, 183, 136, 0.15);
+      padding: 16px;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .card-label { font-size: 12px; color: #b7e4c7; font-weight: bold; }
+    .balance-value { 
+      font-size: 30px; 
+      font-weight: 900; 
+      color: #74c69d; 
+      margin: 8px 0; 
+      font-family: 'Press Start 2P', cursive; 
+      text-shadow: 3px 3px #081c15; 
+    }
+    .pixel-badge { 
+      display: inline-block; 
+      background: #081c15; 
+      color: #d8f3dc; 
+      font-size: 10px; 
+      padding: 4px 10px; 
+      border: 1px solid #52b788; 
+      font-family: 'Press Start 2P', cursive;
+    }
+
+    /* أزرار Pixel الاحترافية */
+    .pixel-btn {
+      display: block;
+      width: 100%;
+      border: 3px solid #000;
+      padding: 12px;
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      position: relative;
+      transition: all 0.1s;
+    }
+
+    .btn-ad {
+      background: #74c69d;
+      color: #081c15;
+      box-shadow: 0 5px 0 #2d6a4f, 0 8px 0 #000;
+    }
+
+    .btn-ad:active:not(:disabled) {
+      transform: translateY(4px);
+      box-shadow: 0 1px 0 #2d6a4f, 0 4px 0 #000;
+    }
+
+    .btn-ad:disabled {
+      background: #40916c;
+      color: #b7e4c7;
+      opacity: 0.7;
+      cursor: not-allowed;
+      box-shadow: 0 2px 0 #1b4332, 0 4px 0 #000;
+    }
+
+    .btn-task {
+      background: #48cae4;
+      color: #03045e;
+      box-shadow: 0 5px 0 #0077b6, 0 8px 0 #000;
+    }
+    .btn-task:active:not(:disabled) {
+      transform: translateY(4px);
+      box-shadow: 0 1px 0 #0077b6, 0 4px 0 #000;
+    }
+
+    .btn-withdraw {
+      background: #52b788;
+      color: #081c15;
+      box-shadow: 0 5px 0 #1b4332, 0 8px 0 #000;
+    }
+
+    .timer-text {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 11px;
+      color: #ffddd2;
+      margin-top: 8px;
+    }
+
+    /* صفحة المهام والسحب */
+    .task-card {
+      background: rgba(10, 25, 18, 0.9);
+      border: 2px solid #52b788;
+      padding: 14px;
+      margin-bottom: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .task-header { display: flex; justify-content: space-between; align-items: center; }
+    .task-title { font-size: 14px; color: #fff; font-weight: bold; }
+    .task-reward { font-size: 12px; color: #74c69d; font-family: 'Press Start 2P', cursive; }
+
+    .pixel-input {
+      width: 100%;
+      background: #081c15;
+      border: 2px solid #52b788;
+      padding: 10px;
+      color: #fff;
+      font-size: 12px;
+      outline: none;
+      margin: 8px 0 14px 0;
+    }
+
+    /* الشريط السفلي */
+    .bottom-nav { 
+      position: fixed; 
+      bottom: 0; left: 0; right: 0; 
+      max-width: 450px; 
+      margin: 0 auto; 
+      background: rgba(8, 28, 21, 0.95); 
+      border-top: 3px solid #40916c; 
+      display: flex; 
+      justify-content: space-around; 
+      padding: 8px 0; 
+    }
+    
+    .nav-item { 
+      background: none; 
+      border: none; 
+      color: #74c69d; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      gap: 4px; 
+      font-size: 11px; 
+      font-weight: bold;
+      cursor: pointer; 
+    }
+    .nav-item.active { color: #d8f3dc; text-shadow: 0 0 5px #74c69d; }
+    .nav-icon { font-size: 18px; }
+
+    .toast { 
+      position: fixed; 
+      bottom: 75px; left: 50%; 
+      transform: translateX(-50%); 
+      background: #081c15; 
+      color: #d8f3dc; 
+      padding: 10px 18px; 
+      border: 2px solid #74c69d; 
+      font-size: 12px; 
+      display: none; 
+      z-index: 1000; 
+      box-shadow: 0 4px 0 #000;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
 
-  <div class="pixel-bg">
-    <div class="moon"></div>
-    <div id="stars-container"></div>
-    <div id="snow-container"></div>
-  </div>
+  <!-- صورة الفارس والغابة -->
+  <div class="bg-knight"></div>
+  <div class="bg-overlay"></div>
 
   <div class="app-container">
     <header class="app-header">
-      <div class="brand">
-        <span class="pixel-icon">🌲</span>
-        <h1 class="pixel-title">Madara Crypto</h1>
-      </div>
+      <div class="pixel-title">⚔️ MADARA CRYPTO</div>
       <div class="user-pill">
         <span class="status-dot"></span>
-        <span id="user-display-name">المستخدم</span>
+        <span id="user-display-name">فارس البكسل</span>
       </div>
     </header>
 
-    <!-- الرئيسية -->
+    <!-- الصفحة الرئيسية -->
     <main id="page-home" class="page active">
-      <div class="balance-card">
+      <div class="pixel-box">
         <span class="card-label">الرصيد الحالي (USDT)</span>
         <div class="balance-value" id="user-balance">0.0000</div>
-        <div class="pixel-badge">شبكة BEP20</div>
+        <div class="pixel-badge">BEP20 NETWORK</div>
       </div>
 
-      <div class="knight-container">
-        <!-- رابط مباشر لصورة الفارس بدون مشاكل حجب -->
-        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/dragon-scale.png" onerror="this.src='https://api.iconify.design/game-icons:knight-helmet.svg?color=%2300f5d4'" alt="Pixel Knight" class="knight-avatar">
-        <div class="knight-title">⚔️ Praise The Sun! ⚔️</div>
-      </div>
-
-      <div class="quick-stats">
-        <div class="stat-box">
-          <span class="stat-title">مكافأة Adsgram</span>
-          <span class="stat-num">+1.00$</span>
-        </div>
-        <div class="stat-box">
-          <span class="stat-title">مكافأة Adsterra</span>
-          <span class="stat-num">+1.00$</span>
-        </div>
+      <!-- منطقة الإعلانات في الرئيسية -->
+      <div class="pixel-box" style="margin-top: 20px;">
+        <h3 style="font-size: 14px; color: #d8f3dc; margin-bottom: 10px;">📺 إعلان Adsgram اليومي</h3>
+        <p style="font-size: 12px; color: #b7e4c7; margin-bottom: 12px;">شاهد الإعلان كل 30 دقيقة واحصل على <b>+0.005$</b></p>
+        
+        <button id="ad-btn" class="pixel-btn btn-ad" onclick="watchAd()">
+          🎬 مشاهدة الإعلان (+0.005$)
+        </button>
+        <div id="timer-display" class="timer-text" style="display: none;"></div>
       </div>
     </main>
 
-    <!-- المهام -->
+    <!-- صفحة المهام -->
     <main id="page-tasks" class="page">
-      <div class="section-title">⚔️ المهام المتاحة</div>
+      <h2 style="font-size: 15px; color: #d8f3dc; margin-bottom: 12px; text-shadow: 2px 2px #000;">⚔️ مهام البكسل</h2>
+      
       <div class="task-card">
-        <div class="task-info">
-          <div class="task-icon">📺</div>
-          <div>
-            <h3>إعلان Adsgram</h3>
-            <p class="reward-tag">+1.00 USDT</p>
-          </div>
+        <div class="task-header">
+          <span class="task-title">📢 اشترك في قناة التلجرام</span>
+          <span class="task-reward">+0.004$</span>
         </div>
-        <button class="pixel-btn btn-primary" onclick="handleAdsgramClick()">مشاهدة</button>
-      </div>
-      <div class="task-card">
-        <div class="task-info">
-          <div class="task-icon">🚀</div>
-          <div>
-            <h3>رابط Adsterra الذكي</h3>
-            <p class="reward-tag">+1.00 USDT</p>
-          </div>
-        </div>
-        <button class="pixel-btn btn-secondary" onclick="handleAdsterraClick()">زيارة الإعلان</button>
+        <button id="channel-task-btn" class="pixel-btn btn-task" onclick="doChannelTask()">
+          انضمام للقناة 🚀
+        </button>
       </div>
     </main>
 
-    <!-- السحب -->
+    <!-- صفحة السحب -->
     <main id="page-withdraw" class="page">
-      <div class="section-title">💳 سحب الأرباح</div>
-      <div class="withdraw-card">
-        <p class="withdraw-note">الحد الأدنى للسحب هو <b>0.05 USDT</b> عبر شبكة BEP20.</p>
-        <div class="input-group">
-          <label>عنوان محفظة BEP20:</label>
-          <input type="text" id="wallet-address" class="pixel-input" placeholder="0x..." />
-        </div>
-        <button class="pixel-btn btn-success" onclick="submitWithdrawal()">طلب السحب الآن</button>
-      </div>
-      <div class="section-title" style="margin-top: 15px;">👥 رابط الإحالة</div>
-      <div class="referral-card">
-        <input type="text" id="ref-link-input" class="pixel-input" readonly value="جاري التحميل..." />
-        <button class="pixel-btn btn-primary" style="margin-top: 8px; width: 100%;" onclick="copyRefLink()">نسخ الرابط</button>
+      <h2 style="font-size: 15px; color: #d8f3dc; margin-bottom: 12px; text-shadow: 2px 2px #000;">💳 سحب المحفظة</h2>
+      
+      <div class="pixel-box" style="text-align: right;">
+        <p style="font-size: 12px; color: #b7e4c7;">📌 الحد الأدنى للسحب هو: <b style="color: #74c69d;">0.085 USDT</b></p>
+        
+        <label style="display: block; font-size: 11px; margin-top: 10px; color: #d8f3dc;">عنوان محفظة BEP20:</label>
+        <input type="text" id="wallet-address" class="pixel-input" placeholder="0x..." />
+        
+        <button class="pixel-btn btn-withdraw" onclick="submitWithdrawal()">
+          📤 إرسال طلب السحب
+        </button>
       </div>
     </main>
 
     <!-- الشريط السفلي -->
     <nav class="bottom-nav">
       <button class="nav-item active" onclick="switchPage('home', this)">
-        <span class="nav-icon">🏠</span>
+        <span class="nav-icon">⚔️</span>
         <span>الرئيسية</span>
       </button>
       <button class="nav-item" onclick="switchPage('tasks', this)">
-        <span class="nav-icon">⚔️</span>
+        <span class="nav-icon">📜</span>
         <span>المهام</span>
       </button>
       <button class="nav-item" onclick="switchPage('withdraw', this)">
-        <span class="nav-icon">💳</span>
+        <span class="nav-icon">💰</span>
         <span>السحب</span>
       </button>
     </nav>
@@ -178,169 +325,194 @@
   <div id="toast" class="toast"></div>
 
   <script>
-    const ADSTERRA_URL = "https://www.effectivecpmnetwork.com/jbniegah77key=c25a066401baecd24398a891da71d0e5";
+    // إعدادات البوت والشبكة
     const ADSGRAM_BLOCK_ID = "40248"; 
     const BOT_TOKEN = "YOUR_BOT_TOKEN"; 
     const ADMIN_CHAT_ID = "YOUR_ADMIN_CHAT_ID"; 
-
-    // تم تعديل قيمة المكافآت إلى 1$
-    const REWARD_ADSGRAM = 1.00;
-    const REWARD_ADSTERRA = 1.00;
+    const MIN_WITHDRAW = 0.085;
+    const AD_REWARD = 0.005;
+    const TASK_REWARD = 0.004;
+    const COOLDOWN_TIME = 30 * 60 * 1000; // 30 دقيقة
 
     let userBalance = 0.0000;
+    let lastAdTimestamp = 0;
+    let isTaskDone = false;
 
     const tg = window.Telegram?.WebApp;
     if (tg) {
       tg.expand();
       if (tg.initDataUnsafe?.user) {
-        const u = tg.initDataUnsafe.user;
-        const userDisplay = document.getElementById('user-display-name');
-        if (userDisplay) userDisplay.innerText = u.first_name || u.username || "المستخدم";
+        document.getElementById('user-display-name').innerText = tg.initDataUnsafe.user.first_name || "الفارس";
       }
     }
 
     function showToast(msg) {
       const t = document.getElementById('toast');
-      if (!t) return;
       t.innerText = msg;
       t.style.display = 'block';
-      setTimeout(() => { t.style.display = 'none'; }, 3500);
+      setTimeout(() => { t.style.display = 'none'; }, 3000);
     }
 
     function switchPage(pageId, element) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-      const targetPage = document.getElementById(`page-${pageId}`);
-      if (targetPage) targetPage.classList.add('active');
-      if (element) element.classList.add('active');
+      document.getElementById(`page-${pageId}`).classList.add('active');
+      element.classList.add('active');
     }
 
     function updateBalance() {
-      const balanceElem = document.getElementById('user-balance');
-      if (balanceElem) balanceElem.innerText = userBalance.toFixed(4);
+      document.getElementById('user-balance').innerText = userBalance.toFixed(4);
       localStorage.setItem('userBalance', userBalance.toString());
     }
 
-    function loadUserData() {
+    function loadData() {
       const savedBalance = localStorage.getItem('userBalance');
-      if (savedBalance !== null) {
-        userBalance = parseFloat(savedBalance);
-        updateBalance();
+      if (savedBalance !== null) userBalance = parseFloat(savedBalance);
+      
+      const savedAdTime = localStorage.getItem('lastAdTimestamp');
+      if (savedAdTime !== null) lastAdTimestamp = parseInt(savedAdTime);
+
+      const taskStatus = localStorage.getItem('isChannelTaskDone');
+      if (taskStatus === 'true') {
+        isTaskDone = true;
+        disableTaskBtn();
       }
-      const userId = tg?.initDataUnsafe?.user?.id || '123456';
-      const refInput = document.getElementById('ref-link-input');
-      if (refInput) refInput.value = `https://t.me/MadaraCryptoBot?start=${userId}`;
+
+      updateBalance();
+      checkAdCooldown();
     }
 
-    // إعلان Adsgram (بدون مؤقت)
-    function handleAdsgramClick() {
+    // إدارة مؤقت 30 دقيقة للإعلان
+    function checkAdCooldown() {
+      const adBtn = document.getElementById('ad-btn');
+      const timerDisplay = document.getElementById('timer-display');
+      const now = Date.now();
+      const elapsed = now - lastAdTimestamp;
+
+      if (elapsed < COOLDOWN_TIME) {
+        adBtn.disabled = true;
+        timerDisplay.style.display = 'block';
+        
+        const remainingMs = COOLDOWN_TIME - elapsed;
+        const minutes = Math.floor(remainingMs / 60000);
+        const seconds = Math.floor((remainingMs % 60000) / 1000);
+        
+        timerDisplay.innerText = `⏳ المتبقي: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        setTimeout(checkAdCooldown, 1000);
+      } else {
+        adBtn.disabled = false;
+        timerDisplay.style.display = 'none';
+        adBtn.innerText = "🎬 مشاهدة الإعلان (+0.005$)";
+      }
+    }
+
+    // تشغيل الإعلان
+    function watchAd() {
+      const now = Date.now();
+      if (now - lastAdTimestamp < COOLDOWN_TIME) {
+        showToast("⚠️ يرجى الانتظار لحين انتهاء الوقت!");
+        return;
+      }
+
       if (window.Adsgram) {
         const AdController = window.Adsgram.init({ blockId: ADSGRAM_BLOCK_ID });
-        AdController.show().then((result) => {
-          userBalance += REWARD_ADSGRAM;
-          updateBalance();
-          showToast("🎉 تم إضافة +1.00 USDT بنجاح!");
-        }).catch((result) => {
-          showToast("❌ لم يتم إكمال الإعلان!");
+        AdController.show().then(() => {
+          grantAdReward();
+        }).catch(() => {
+          showToast("❌ لم يتم اكتمال مشاهدة الإعلان!");
         });
       } else {
-        userBalance += REWARD_ADSGRAM;
-        updateBalance();
-        showToast("🎉 (وضع تجريبي) تم إضافة +1.00 USDT!");
+        // وضع تجريبي في حال الاختبار خارج تلجرام
+        grantAdReward();
       }
     }
 
-    // إعلان Adsterra (مباشر وبدون انتظار)
-    function handleAdsterraClick() {
-      if (tg && tg.openLink) { 
-        tg.openLink(ADSTERRA_URL); 
-      } else { 
-        window.open(ADSTERRA_URL, '_blank'); 
-      }
-      
-      userBalance += REWARD_ADSTERRA;
+    function grantAdReward() {
+      userBalance += AD_REWARD;
+      lastAdTimestamp = Date.now();
+      localStorage.setItem('lastAdTimestamp', lastAdTimestamp.toString());
       updateBalance();
-      showToast("🎉 تم إضافة +1.00 USDT بنجاح!");
+      checkAdCooldown();
+      showToast("🎉 تمت إضافة +0.005$ إلى رصيدك!");
     }
 
-    function copyRefLink() {
-      const refInput = document.getElementById('ref-link-input');
-      if (refInput) {
-        refInput.select();
-        document.execCommand('copy');
-        showToast("📋 تم نسخ رابط الإحالة!");
+    // مهمة القناة
+    function doChannelTask() {
+      if (isTaskDone) return;
+      
+      const channelUrl = "https://t.me/madara_crypto20";
+      if (tg && tg.openTelegramLink) {
+        tg.openTelegramLink(channelUrl);
+      } else {
+        window.open(channelUrl, '_blank');
       }
+
+      showToast("⏳ يتم التحقق... اضغط لتأكيد الاستلام بعد الانضمام");
+      
+      const btn = document.getElementById('channel-task-btn');
+      btn.innerText = "✅ تأكيد الانضمام والاستلام";
+      btn.onclick = () => {
+        userBalance += TASK_REWARD;
+        isTaskDone = true;
+        localStorage.setItem('isChannelTaskDone', 'true');
+        updateBalance();
+        disableTaskBtn();
+        showToast("🎉 تم إضافة +0.004$ لحسابك!");
+      };
     }
 
+    function disableTaskBtn() {
+      const btn = document.getElementById('channel-task-btn');
+      btn.innerText = "✔️ تم إنجاز المهمة";
+      btn.disabled = true;
+      btn.style.background = "#2d6a4f";
+      btn.style.color = "#b7e4c7";
+    }
+
+    // طلب السحب
     function submitWithdrawal() {
-      const walletInput = document.getElementById('wallet-address');
-      const wallet = walletInput ? walletInput.value.trim() : '';
-      if (!wallet || (!wallet.startsWith('0x') && wallet.length < 10)) {
-        showToast("⚠️ يرجى إدخال عنوان محفظة BEP20 صحيح!");
+      const wallet = document.getElementById('wallet-address').value.trim();
+      
+      if (!wallet || wallet.length < 10) {
+        showToast("⚠️ يرجى إدخال عنوان محفظة صحيح!");
         return;
       }
-      if (userBalance < 0.05) {
-        showToast("⚠️ الحد الأدنى للسحب هو 0.05 USDT!");
+
+      if (userBalance < MIN_WITHDRAW) {
+        showToast(`⚠️ الرصيد غير كافٍ! الحد الأدنى ${MIN_WITHDRAW}$`);
         return;
       }
+
       const userName = tg?.initDataUnsafe?.user?.first_name || 'غير معروف';
       const userId = tg?.initDataUnsafe?.user?.id || 'غير معروف';
-      const userHandle = tg?.initDataUnsafe?.user?.username ? `@${tg.initDataUnsafe.user.username}` : 'لا يوجد';
-      const message = `🌲 *طلب سحب جديد - Madara Crypto*\n\n` +
-                      `👤 *المستخدم:* ${userName} (${userHandle})\n` +
+      
+      const message = `⚔️ *طلب سحب جديد (Pixel Fantasy)*\n\n` +
+                      `👤 *المستخدم:* ${userName}\n` +
                       `🆔 *الآيدي:* \`${userId}\`\n` +
-                      `💰 *المبلغ المطلوب:* \`${userBalance.toFixed(4)} USDT\`\n` +
-                      `🏦 *عنوان المحفظة (BEP20):*\n\`${wallet}\``;
+                      `💰 *المبلغ:* \`${userBalance.toFixed(4)} USDT\`\n` +
+                      `🏦 *المحفظة (BEP20):*\n\`${wallet}\``;
 
       fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ chat_id: ADMIN_CHAT_ID, text: message, parse_mode: 'Markdown' })
       })
-      .then(res => {
+      .then(() => {
         userBalance = 0;
         updateBalance();
-        if (walletInput) walletInput.value = '';
-        showToast("✅ تم إرسال طلب السحب بنجاح إلى الإدارة!");
+        document.getElementById('wallet-address').value = '';
+        showToast("✅ تم إرسال طلب السحب بنجاح!");
       })
-      .catch(err => {
-        showToast("❌ حدث خطأ أثناء إرسال الطلب، تحقق من البيانات.");
+      .catch(() => {
+        showToast("❌ حدث خطأ في الاتصال، حاول مجدداً.");
       });
     }
 
-    function createAtmosphere() {
-      const starsContainer = document.getElementById('stars-container');
-      const snowContainer = document.getElementById('snow-container');
-      if (starsContainer) {
-        for (let i = 0; i < 35; i++) {
-          const star = document.createElement('div');
-          star.className = 'star';
-          star.style.left = `${Math.random() * 100}%`;
-          star.style.top = `${Math.random() * 60}%`;
-          star.style.animationDelay = `${Math.random() * 2}s`;
-          starsContainer.appendChild(star);
-        }
-      }
-      if (snowContainer) {
-        for (let i = 0; i < 15; i++) {
-          const snow = document.createElement('div');
-          snow.className = 'snowflake';
-          snow.innerText = '❄';
-          snow.style.left = `${Math.random() * 100}%`;
-          snow.style.animationDuration = `${Math.random() * 3 + 4}s`;
-          snow.style.animationDelay = `${Math.random() * 2}s`;
-          snowContainer.appendChild(snow);
-        }
-      }
-    }
-
-    window.onload = () => {
-      loadUserData();
-      createAtmosphere();
-    };
+    window.onload = loadData;
   </script>
 </body>
 </html>
+
 
 
 
