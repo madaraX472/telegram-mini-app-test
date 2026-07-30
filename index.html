@@ -14,18 +14,16 @@
             user-select: none;
             image-rendering: pixelated;
         }
-
         @font-face {
             font-family: 'PixelFont';
             src: local('Courier New'), local('Arial');
             font-weight: bold;
         }
-
         body {
             background: #0a0f1a;
             background-image:
-                linear-gradient(45deg, rgba(20, 30, 20, 0.3) 1px, transparent 1px),
-                linear-gradient(-45deg, rgba(20, 30, 20, 0.3) 1px, transparent 1px),
+                linear-gradient(45deg, rgba(20,30,20,0.3) 1px, transparent 1px),
+                linear-gradient(-45deg, rgba(20,30,20,0.3) 1px, transparent 1px),
                 radial-gradient(circle at 20% 30%, #142e1e 0%, #03060b 90%);
             background-size: 12px 12px, 12px 12px, 100% 100%;
             color: #e0f0e0;
@@ -40,7 +38,6 @@
             padding-bottom: 90px;
             text-shadow: 2px 2px 0 #0a1a0a;
         }
-
         .moon {
             position: absolute;
             top: 20px;
@@ -51,8 +48,6 @@
             border-radius: 4px;
             box-shadow: 0 0 0 4px #2d3a2d, 0 0 20px #c8e6b0, 0 0 40px #6d8f5a;
             z-index: 2;
-            image-rendering: pixelated;
-            transform: rotate(0deg);
             border: 2px solid #1f2a1f;
         }
         .moon::after {
@@ -65,7 +60,6 @@
             opacity: 0.3;
             letter-spacing: -8px;
         }
-
         .star {
             position: fixed;
             background: #f5ffe0;
@@ -74,15 +68,12 @@
             box-shadow: 0 0 0 1px #a0b080;
             animation: twinkle var(--duration) infinite alternate;
             z-index: 1;
-            image-rendering: pixelated;
             border: 1px solid #2a3a1a;
         }
-
         @keyframes twinkle {
             0% { opacity: 0.2; transform: scale(0.9); }
             100% { opacity: 1; transform: scale(1.2); }
         }
-
         .snowflake {
             position: fixed;
             top: -20px;
@@ -92,30 +83,22 @@
             animation: fall linear infinite;
             font-size: 22px;
             text-shadow: 0 0 4px #1f3a1f;
-            image-rendering: pixelated;
             font-family: 'Courier New', monospace;
-            transform: rotate(0deg);
         }
         @keyframes fall {
             to { transform: translateY(110vh) rotate(360deg); }
         }
-
         .pixel-trees {
             position: fixed;
             bottom: 70px;
             width: 100%;
             height: 60px;
-            background:
-                repeating-linear-gradient(90deg,
-                    #0b1f0b 0px, #0b1f0b 8px,
-                    transparent 8px, transparent 16px
-                );
+            background: repeating-linear-gradient(90deg, #0b1f0b 0px, #0b1f0b 8px, transparent 8px, transparent 16px);
             opacity: 0.8;
             pointer-events: none;
             z-index: 2;
             border-top: 4px solid #1f3a1f;
             box-shadow: inset 0 -20px 30px rgba(0,0,0,0.7);
-            image-rendering: pixelated;
         }
         .pixel-trees::before {
             content: "▲ ▲ ▲ ▲ ▲ ▲ ▲";
@@ -130,25 +113,20 @@
             white-space: nowrap;
             overflow: hidden;
         }
-
         .app-container {
             width: 92%;
             max-width: 420px;
             margin-top: 60px;
-            background: rgba(10, 22, 12, 0.92);
+            background: rgba(10,22,12,0.92);
             backdrop-filter: blur(2px);
             border: 4px solid #2a4a2a;
-            border-radius: 0px;
             padding: 18px 12px;
             text-align: center;
             box-shadow: 8px 8px 0 #0a120a, 12px 12px 20px rgba(0,0,0,0.9);
             z-index: 10;
-            image-rendering: pixelated;
         }
-
         .page { display: none; }
         .page.active { display: block; }
-
         .balance-title {
             font-size: 12px;
             color: #8bb08b;
@@ -172,24 +150,20 @@
             text-shadow: 0 0 12px #2f8f2f;
             font-family: 'Courier New', monospace;
         }
-
         .ad-card {
-            background: rgba(20, 40, 20, 0.7);
+            background: rgba(20,40,20,0.7);
             border: 4px solid #2f4f2f;
-            border-radius: 0px;
             padding: 14px 10px;
             margin-bottom: 16px;
             box-shadow: inset 0 0 0 2px #1a2f1a, 4px 4px 0 #0a180a;
             text-align: right;
         }
-
         .ad-header {
             display: flex;
             align-items: center;
             gap: 12px;
             margin-bottom: 10px;
         }
-
         .ad-icon {
             width: 40px;
             height: 40px;
@@ -202,7 +176,6 @@
             color: #d0f0c0;
             box-shadow: 3px 3px 0 #0a150a;
         }
-
         .ad-title {
             font-size: 16px;
             font-weight: bold;
@@ -218,7 +191,6 @@
             border: 2px solid #2f5f2f;
             display: inline-block;
         }
-
         .btn-action {
             width: 100%;
             background: #2f5f2f;
@@ -227,10 +199,8 @@
             padding: 14px 0;
             font-size: 16px;
             font-weight: bold;
-            border-radius: 0px;
             cursor: pointer;
             box-shadow: 4px 4px 0 #0a1a0a, inset 0 -4px 0 #1f3f1f;
-            transition: all 0.05s linear;
             text-transform: uppercase;
             letter-spacing: 2px;
             font-family: 'Courier New', monospace;
@@ -246,13 +216,11 @@
             box-shadow: 2px 2px 0 #0a0f0a;
             transform: none;
         }
-
         .input-field {
             width: 100%;
             padding: 14px 10px;
             background: #0f1f0f;
             border: 4px solid #2f5a2f;
-            border-radius: 0px;
             color: #d0f0d0;
             text-align: center;
             outline: none;
@@ -261,7 +229,6 @@
             margin-bottom: 14px;
             box-shadow: inset 0 0 10px #0a1a0a;
         }
-
         .nav-bar {
             position: fixed;
             bottom: 0;
@@ -275,7 +242,6 @@
             z-index: 100;
             box-shadow: 0 -6px 0 #0a120a;
         }
-
         .nav-item {
             color: #5f7f5f;
             font-size: 14px;
@@ -287,7 +253,6 @@
             font-family: 'Courier New', monospace;
             padding: 4px 10px;
             border: 2px solid transparent;
-            transition: 0s;
         }
         .nav-item.active {
             color: #b0f0b0;
@@ -295,7 +260,6 @@
             border: 2px solid #4f9f4f;
             box-shadow: 4px 4px 0 #0a150a;
         }
-
         .toast {
             position: fixed;
             bottom: 85px;
@@ -322,7 +286,7 @@
 
     <div class="app-container">
         <div id="page-home" class="page active">
-            <h2 style="margin-bottom: 12px; font-size: 28px; letter-spacing: 4px; color: #b0e0b0; text-shadow: 4px 4px 0 #0a1a0a;">🌲 MADARA</h2>
+            <h2 style="margin-bottom:12px; font-size:28px; letter-spacing:4px; color:#b0e0b0; text-shadow:4px 4px 0 #0a1a0a;">🌲 MADARA</h2>
             <div class="balance-title">♢ الرصيد الحالي (USDT)</div>
             <div class="balance-value user-balance">0.0000</div>
 
@@ -350,8 +314,8 @@
         </div>
 
         <div id="page-referral" class="page">
-            <h2 style="font-size: 24px; letter-spacing: 3px;">👥 إحالة</h2>
-            <p style="color: #8bb08b; margin: 14px 0; font-size: 14px; border: 2px dotted #2f5f2f; padding: 10px;">
+            <h2 style="font-size:24px; letter-spacing:3px;">👥 إحالة</h2>
+            <p style="color:#8bb08b; margin:14px 0; font-size:14px; border:2px dotted #2f5f2f; padding:10px;">
                 ⚡ شارك الرابط واربح عن كل صديق
             </p>
             <input type="text" id="ref-link" class="input-field" readonly value="https://t.me/MadaraCryptoBot?start=user">
@@ -359,10 +323,10 @@
         </div>
 
         <div id="page-withdraw" class="page">
-            <h2 style="font-size: 24px; letter-spacing: 3px;">💸 سحب</h2>
+            <h2 style="font-size:24px; letter-spacing:3px;">💸 سحب</h2>
             <div class="balance-title" style="margin-top:8px;">الرصيد المتاح</div>
             <div class="balance-value user-balance">0.0000</div>
-            <p style="font-size: 12px; color: #d0b060; background: #1a2a1a; padding: 6px; border: 2px solid #4f7f3f;">
+            <p style="font-size:12px; color:#d0b060; background:#1a2a1a; padding:6px; border:2px solid #4f7f3f;">
                 شبكة: USDT (BEP20) · الحد الأدنى 0.05
             </p>
             <input type="text" id="wallet-address" class="input-field" placeholder="0x... محفظة BEP20">
@@ -377,192 +341,188 @@
     </div>
 
     <div id="toast" class="toast"></div>
+
     <script>
-    const ADSTERRA_URL = "https://www.effectivecpmnetwork.com/jbniegah7?key=c25a066401baecd24398a891da71814d";
-    const ADSGRAM_BLOCK_ID = "YOUR_ADSGRAM_BLOCK_ID";
-    const BOT_TOKEN = "YOUR_BOT_TOKEN";
-    const ADMIN_CHAT_ID = "YOUR_ADMIN_CHAT_ID";
+        // ====== الإعدادات الأساسية (غيّر هذه القيم) ======
+        const ADSTERRA_URL = "https://www.effectivecpmnetwork.com/jbniegah7?key=c25a066401baecd24398a891da71814d";
+        const ADSGRAM_BLOCK_ID = "YOUR_ADSGRAM_BLOCK_ID";   // ضع معرفك
+        const BOT_TOKEN = "YOUR_BOT_TOKEN";                 // توكن البوت
+        const ADMIN_CHAT_ID = "YOUR_ADMIN_CHAT_ID";         // معرف الأدمن
 
-    const REWARD_ADSGRAM = 0.0005;
-    const REWARD_ADSTERRA = 0.0003;
-    const ADSTERRA_WAIT_SECONDS = 12;
-    const COOLDOWN_SECONDS = 15;
+        const REWARD_ADSGRAM = 0.0005;
+        const REWARD_ADSTERRA = 0.0003;
+        const ADSTERRA_WAIT_SECONDS = 12;
+        const COOLDOWN_SECONDS = 15;
 
-    let userBalance = 0.0000;
-    let isAdsterraPending = false;
-    let adsterraTimer = null;
-    let lastAdTime = 0;
+        let userBalance = 0.0000;
+        let isAdsterraPending = false;
+        let adsterraTimer = null;
+        let lastAdTime = 0;
 
-    const tg = window.Telegram?.WebApp;
-    if (tg) tg.expand();
+        const tg = window.Telegram?.WebApp;
+        if (tg) tg.expand();
 
-    function showToast(msg) {
-        const t = document.getElementById('toast');
-        t.innerText = msg;
-        t.style.display = 'block';
-        setTimeout(() => { t.style.display = 'none'; }, 3800);
-    }
-
-    function switchPage(pageId, element) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        document.getElementById(`page-${pageId}`).classList.add('active');
-        element.classList.add('active');
-    }
-
-    function updateBalance() {
-        document.querySelectorAll('.user-balance').forEach(el => {
-            el.innerText = userBalance.toFixed(4);
-        });
-        localStorage.setItem('userBalance', userBalance.toString());
-    }
-
-    function loadUserData() {
-        const saved = localStorage.getItem('userBalance');
-        if (saved !== null) {
-            userBalance = parseFloat(saved);
-            updateBalance();
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.innerText = msg;
+            t.style.display = 'block';
+            setTimeout(() => { t.style.display = 'none'; }, 3800);
         }
-    }
 
-    function checkCooldown() {
-        const now = Date.now();
-        const passed = Math.floor((now - lastAdTime) / 1000);
-        if (passed < COOLDOWN_SECONDS) {
-            const remain = COOLDOWN_SECONDS - passed;
-            showToast(`⏳ انتظر ${remain} ثانية قبل إعلان آخر`);
-            return false;
+        function switchPage(pageId, element) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(`page-${pageId}`).classList.add('active');
+            element.classList.add('active');
         }
-        return true;
-    }
 
-    function handleAdsgramClick() {
-        if (!checkCooldown()) return;
+        function updateBalance() {
+            document.querySelectorAll('.user-balance').forEach(el => {
+                el.innerText = userBalance.toFixed(4);
+            });
+            localStorage.setItem('userBalance', userBalance.toString());
+        }
 
-        if (window.Adsgram) {
-            const AdController = window.Adsgram.init({ blockId: ADSGRAM_BLOCK_ID });
-            AdController.show().then((result) => {
+        function loadUserData() {
+            const saved = localStorage.getItem('userBalance');
+            if (saved !== null) {
+                userBalance = parseFloat(saved);
+                updateBalance();
+            }
+        }
+
+        function checkCooldown() {
+            const now = Date.now();
+            const passed = Math.floor((now - lastAdTime) / 1000);
+            if (passed < COOLDOWN_SECONDS) {
+                const remain = COOLDOWN_SECONDS - passed;
+                showToast(`⏳ انتظر ${remain} ثانية قبل إعلان آخر`);
+                return false;
+            }
+            return true;
+        }
+
+        function handleAdsgramClick() {
+            if (!checkCooldown()) return;
+            if (window.Adsgram) {
+                const AdController = window.Adsgram.init({ blockId: ADSGRAM_BLOCK_ID });
+                AdController.show().then((result) => {
+                    userBalance += REWARD_ADSGRAM;
+                    updateBalance();
+                    lastAdTime = Date.now();
+                    showToast("✅ +0.0005 USDT (Adsgram)");
+                }).catch((result) => {
+                    showToast("❌ الإعلان لم يكتمل");
+                });
+            } else {
                 userBalance += REWARD_ADSGRAM;
                 updateBalance();
                 lastAdTime = Date.now();
-                showToast("✅ +0.0005 USDT (Adsgram)");
-            }).catch((result) => {
-                showToast("❌ الإعلان لم يكتمل");
-            });
-        } else {
-            userBalance += REWARD_ADSGRAM;
-            updateBalance();
-            lastAdTime = Date.now();
-            showToast("🔹 (تجريبي) +0.0005 USDT");
+                showToast("🔹 (تجريبي) +0.0005 USDT");
+            }
         }
-    }
 
-    function handleAdsterraClick() {
-        const btn = document.getElementById('adsterra-btn');
+        function handleAdsterraClick() {
+            const btn = document.getElementById('adsterra-btn');
+            if (!isAdsterraPending) {
+                if (!checkCooldown()) return;
+                if (tg && tg.openLink) tg.openLink(ADSTERRA_URL);
+                else window.open(ADSTERRA_URL, '_blank');
 
-        if (!isAdsterraPending) {
-            if (!checkCooldown()) return;
-
-            if (tg && tg.openLink) {
-                tg.openLink(ADSTERRA_URL);
+                isAdsterraPending = true;
+                adsterraTimer = Date.now();
+                btn.innerText = "⏳ انتظر ...";
+                showToast(`⏱ ابق في الموقع ${ADSTERRA_WAIT_SECONDS} ثانية`);
             } else {
-                window.open(ADSTERRA_URL, '_blank');
+                const elapsed = Math.floor((Date.now() - adsterraTimer) / 1000);
+                if (elapsed < ADSTERRA_WAIT_SECONDS) {
+                    const remain = ADSTERRA_WAIT_SECONDS - elapsed;
+                    showToast(`⚠️ عدت مبكراً! انتظر ${remain} ثانية إضافية`);
+                } else {
+                    userBalance += REWARD_ADSTERRA;
+                    updateBalance();
+                    lastAdTime = Date.now();
+                    isAdsterraPending = false;
+                    btn.innerText = "▷ فتح";
+                    showToast("✅ +0.0003 USDT (Adsterra)");
+                }
+            }
+        }
+
+        function copyRefLink() {
+            const copyText = document.getElementById("ref-link");
+            navigator.clipboard.writeText(copyText.value);
+            showToast("📋 تم نسخ رابط الإحالة!");
+        }
+
+        function submitWithdrawal() {
+            const wallet = document.getElementById('wallet-address').value.trim();
+            if (!wallet || !wallet.startsWith('0x')) {
+                showToast("⚠️ أدخل عنوان BEP20 صحيح (0x...)");
+                return;
+            }
+            if (userBalance < 0.05) {
+                showToast("⚠️ الحد الأدنى للسحب 0.05 USDT");
+                return;
             }
 
-            isAdsterraPending = true;
-            adsterraTimer = Date.now();
-            btn.innerText = "⏳ انتظر ...";
-            showToast(`⏱ ابق في الموقع ${ADSTERRA_WAIT_SECONDS} ثانية`);
-        } else {
-            const elapsed = Math.floor((Date.now() - adsterraTimer) / 1000);
-            if (elapsed < ADSTERRA_WAIT_SECONDS) {
-                const remain = ADSTERRA_WAIT_SECONDS - elapsed;
-                showToast(`⚠️ عدت مبكراً! انتظر ${remain} ثانية إضافية`);
-            } else {
-                userBalance += REWARD_ADSTERRA;
+            const userName = tg?.initDataUnsafe?.user?.first_name || "مستخدم";
+            const userId = tg?.initDataUnsafe?.user?.id || "غير معروف";
+            const userHandle = tg?.initDataUnsafe?.user?.username ? `@${tg.initDataUnsafe.user.username}` : "بدون يوزر";
+
+            const message = `🚨 *طلب سحب - Madara Pixel*\n\n` +
+                            `👤 *المستخدم:* ${userName} (${userHandle})\n` +
+                            `🆔 *ID:* \`${userId}\`\n` +
+                            `💰 *المبلغ:* \`${userBalance.toFixed(4)} USDT\`\n` +
+                            `🌐 *الشبكة:* BNB Smart Chain (BEP20)\n` +
+                            `🏦 *المحفظة:* \`${wallet}\``;
+
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: ADMIN_CHAT_ID,
+                    text: message,
+                    parse_mode: 'Markdown'
+                })
+            }).then(res => {
+                userBalance = 0;
                 updateBalance();
-                lastAdTime = Date.now();
-                isAdsterraPending = false;
-                btn.innerText = "▷ فتح";
-                showToast("✅ +0.0003 USDT (Adsterra)");
+                document.getElementById('wallet-address').value = '';
+                showToast("✅ تم إرسال طلب السحب للإدارة");
+            }).catch(err => {
+                showToast("❌ خطأ في الإرسال، حاول لاحقاً");
+            });
+        }
+
+        function createAtmosphere() {
+            for (let i = 0; i < 25; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = (Math.random() * 6 + 4) + 'px';
+                star.style.height = star.style.width;
+                star.style.left = Math.random() * 100 + 'vw';
+                star.style.top = Math.random() * 60 + 'vh';
+                star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+                document.body.appendChild(star);
+            }
+            for (let i = 0; i < 16; i++) {
+                const flake = document.createElement('div');
+                flake.className = 'snowflake';
+                flake.innerText = '❄';
+                flake.style.left = Math.random() * 100 + 'vw';
+                flake.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                flake.style.opacity = 0.5 + Math.random() * 0.5;
+                flake.style.fontSize = (Math.random() * 14 + 18) + 'px';
+                document.body.appendChild(flake);
             }
         }
-    }
 
-    function copyRefLink() {
-        const copyText = document.getElementById("ref-link");
-        navigator.clipboard.writeText(copyText.value);
-        showToast("📋 تم نسخ رابط الإحالة!");
-    }
-
-    function submitWithdrawal() {
-        const wallet = document.getElementById('wallet-address').value.trim();
-        if (!wallet || !wallet.startsWith('0x')) {
-            showToast("⚠️ أدخل عنوان BEP20 صحيح (0x...)");
-            return;
-        }
-        if (userBalance < 0.05) {
-            showToast("⚠️ الحد الأدنى للسحب 0.05 USDT");
-            return;
-        }
-
-        const userName = tg?.initDataUnsafe?.user?.first_name || "مستخدم";
-        const userId = tg?.initDataUnsafe?.user?.id || "غير معروف";
-        const userHandle = tg?.initDataUnsafe?.user?.username ? `@${tg.initDataUnsafe.user.username}` : "بدون يوزر";
-
-        const message = `🚨 *طلب سحب - Madara Pixel*\n\n` +
-                        `👤 *المستخدم:* ${userName} (${userHandle})\n` +
-                        `🆔 *ID:* \`${userId}\`\n` +
-                        `💰 *المبلغ:* \`${userBalance.toFixed(4)} USDT\`\n` +
-                        `🌐 *الشبكة:* BNB Smart Chain (BEP20)\n` +
-                        `🏦 *المحفظة:* \`${wallet}\``;
-
-        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                chat_id: ADMIN_CHAT_ID,
-                text: message,
-                parse_mode: 'Markdown'
-            })
-        }).then(res => {
-            userBalance = 0;
-            updateBalance();
-            document.getElementById('wallet-address').value = '';
-            showToast("✅ تم إرسال طلب السحب للإدارة");
-        }).catch(err => {
-            showToast("❌ خطأ في الإرسال، حاول لاحقاً");
-        });
-    }
-
-    function createAtmosphere() {
-        for (let i = 0; i < 25; i++) {
-            const star = document.createElement('div');
-            star.className = 'star';
-            star.style.width = (Math.random() * 6 + 4) + 'px';
-            star.style.height = star.style.width;
-            star.style.left = Math.random() * 100 + 'vw';
-            star.style.top = Math.random() * 60 + 'vh';
-            star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
-            document.body.appendChild(star);
-        }
-        for (let i = 0; i < 16; i++) {
-            const flake = document.createElement('div');
-            flake.className = 'snowflake';
-            flake.innerText = '❄';
-            flake.style.left = Math.random() * 100 + 'vw';
-            flake.style.animationDuration = (Math.random() * 4 + 4) + 's';
-            flake.style.opacity = 0.5 + Math.random() * 0.5;
-            flake.style.fontSize = (Math.random() * 14 + 18) + 'px';
-            document.body.appendChild(flake);
-        }
-    }
-
-    window.onload = function() {
-        loadUserData();
-        createAtmosphere();
-    };
-</script>
+        window.onload = function() {
+            loadUserData();
+            createAtmosphere();
+        };
+    </script>
 </body>
 </html>
                 
