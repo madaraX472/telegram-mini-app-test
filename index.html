@@ -549,7 +549,7 @@ input {
     <button class="nav-item" onclick="switchPage('withdraw', this)">
         <span style="font-size:18px;">👤</span> Account
     </button>
-                </div>
+    </div>
     <script>
 let points = Number(localStorage.getItem("xp_points")) || 0;
 let usdtBalance = Number(localStorage.getItem("usdt_bal")) || 0;
@@ -721,7 +721,7 @@ function resetXO() {
 }
 document.getElementById("resetXo").onclick = resetXO;
 
-/* Swap & Withdraw */
+/* Swap Logic */
 document.getElementById("swapBtn").onclick = function() {
     let val = Number(document.getElementById("swapAmount").value);
     if(val < 10 || val > points) {
@@ -736,16 +736,59 @@ document.getElementById("swapBtn").onclick = function() {
     showMsg(`✅ Swapped ${val} XP to $${usdt.toFixed(4)} USDT!`);
 };
 
-document.getElementById("withdrawBtn").onclick = function() {
-    let addr = document.getElementById("wallet").value;
+/* Withdraw Logic (مربوط مباشرة مع بوت تليجرام الخاص بك) */
+document.getElementById("withdrawBtn").onclick = async function() {
+    let addr = document.getElementById("wallet").value.trim();
     let amt = Number(document.getElementById("withdrawAmt").value);
-    if(!addr || amt <= 0 || amt > usdtBalance) {
-        showMsg("❌ Invalid Withdrawal Request!");
+
+    if(!addr || addr.length < 15) {
+        showMsg("❌ Please enter a valid wallet address!");
         return;
     }
-    usdtBalance -= amt;
-    updateUI();
-    showMsg("🚀 Withdrawal Request Submitted!");
+    if(amt <= 0 || amt > usdtBalance) {
+        showMsg("❌ Invalid amount or insufficient balance!");
+        return;
+    }
+
+    // تم وضع التوكن والـ ID الخاصين بك هنا مباشرة
+    const BOT_TOKEN = "8934745041:AAFnoIhabF440pZM17YDIektjN9XFuZ4u1Y"; 
+    const CHAT_ID = "5557254074"; 
+
+    let tgUser = window.Telegram?.WebApp?.initDataUnsafe?.user;
+    let username = tgUser ? `@${tgUser.username}` : "Unknown / Browser";
+    let userId = tgUser ? tgUser.id : "N/A";
+
+    let messageText = `🚀 *New Withdrawal Request* 🚀\n\n` +
+                      `👤 *User:* ${username}\n` +
+                      `🆔 *ID:* \`${userId}\`\n` +
+                      `💰 *Amount:* $${amt.toFixed(4)} USDT\n` +
+                      `🏦 *Wallet (BEP20):*\n\`${addr}\``;
+
+    showMsg("⏳ Processing request...");
+
+    try {
+        let response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                chat_id: CHAT_ID,
+                text: messageText,
+                parse_mode: 'Markdown'
+            })
+        });
+
+        if (response.ok) {
+            usdtBalance -= amt;
+            updateUI();
+            document.getElementById("wallet").value = "";
+            document.getElementById("withdrawAmt").value = "";
+            showMsg("🚀 Withdrawal Request Sent Successfully!");
+        } else {
+            showMsg("❌ Failed to send request!");
+        }
+    } catch (error) {
+        showMsg("❌ Network error!");
+    }
 };
 
 updateUI();
