@@ -324,7 +324,6 @@
 
     let balance = 0.0000;
     let adsgramCount = 0;
-    let lastAdsgramDate = "";
     let lastAdsterraTime = 0;
     let lastShrinkmeTime = 0;
     let isTaskDone = false;
@@ -424,7 +423,6 @@
     function checkTimers() {
       const now = Date.now();
 
-      // Adsgram Limit Check
       const agBtn = document.getElementById('adsgram-btn');
       if (adsgramCount >= MAX_DAILY_ADSGRAM) {
         agBtn.disabled = true;
@@ -434,7 +432,6 @@
         agBtn.innerText = "🎬 مشاهدة الإعلان (+0.0008$)";
       }
 
-      // Adsterra Timer
       const adElapsed = now - lastAdsterraTime;
       const adBtn = document.getElementById('adsterra-btn');
       const adTimerText = document.getElementById('adsterra-timer');
@@ -452,7 +449,6 @@
         }
       }
 
-      // ShrinkMe Timer
       const smElapsed = now - lastShrinkmeTime;
       const smBtn = document.getElementById('shrinkme-btn');
       const smTimerText = document.getElementById('shrinkme-timer');
@@ -471,31 +467,34 @@
       }
     }
 
-    // مشاهدة Adsgram عبر SDK المباشر
-    function watchAdsgram() {
+    // دالة Adsgram المُحدثة والذكية
+    async function watchAdsgram() {
       if (adsgramCount >= MAX_DAILY_ADSGRAM) {
         showToast("⚠️ لقد استنفدت جميع الإعلانات اليومية (20/20)!");
         return;
       }
 
-      if (window.Adsgram) {
-        const AdController = window.Adsgram.init({ blockId: ADSGRAM_BLOCK_ID });
-        AdController.show().then(() => {
-          balance += ADSGRAM_REWARD;
-          adsgramCount++;
-          localStorage.setItem('adsgram_daily_count', adsgramCount.toString());
-          document.getElementById('adsgram-count').innerText = MAX_DAILY_ADSGRAM - adsgramCount;
-          updateBalance();
-          showToast("🎉 تم مشاهدة الإعلان بنجاح! المكافأة: +0.0008$");
-        }).catch((err) => {
-          showToast("⚠️ لم يتم إكمال الإعلان أو لا يوجد إعلان متوفر حالياً.");
-        });
-      } else {
-        showToast("⚠️ تعذر تحميل مكتبة الإعلانات، تأكد من فتح البوت من التلجرام.");
+      if (!window.Adsgram) {
+        showToast("⚠️ جاري تحميل سكريبت الإعلانات، حاول بعد ثوانٍ...");
+        return;
+      }
+
+      try {
+        const AdController = window.Adsgram.init({ blockId: ADSGRAM_BLOCK_ID, debug: false });
+        await AdController.show();
+        
+        balance += ADSGRAM_REWARD;
+        adsgramCount++;
+        localStorage.setItem('adsgram_daily_count', adsgramCount.toString());
+        document.getElementById('adsgram-count').innerText = MAX_DAILY_ADSGRAM - adsgramCount;
+        updateBalance();
+        showToast("🎉 تم مشاهدة الإعلان بنجاح! المكافأة: +0.0008$");
+      } catch (err) {
+        showToast("⚠️ لم يتم إكمال الإعلان أو تعذر عرضه حالياً.");
       }
     }
 
-    // Adsterra مع اشتراط البقاء داخل موقع الإعلان
+    // إعلان Adsterra مع توقف الموقت إذا خرج المستخدم من الموقع الإعلاني
     function startAdsterra() {
       if (Date.now() - lastAdsterraTime < COOLDOWN_30MIN) return;
 
@@ -508,7 +507,6 @@
       if (adsterraTimer) clearInterval(adsterraTimer);
 
       adsterraTimer = setInterval(() => {
-        // إذا رجع المستخدم للتطبيق قبل انتهاء الـ 10 ثوانٍ
         if (!document.hidden && adsterraSecondsLeft > 0) {
           clearInterval(adsterraTimer);
           adBtn.disabled = false;
@@ -518,9 +516,13 @@
         }
 
         adsterraSecondsLeft--;
+        const adTimerText = document.getElementById('adsterra-timer');
+        adTimerText.style.display = 'block';
+        adTimerText.innerText = `⏳ متبقي بالاعلان: ${adsterraSecondsLeft} ثواني`;
 
         if (adsterraSecondsLeft <= 0) {
           clearInterval(adsterraTimer);
+          adTimerText.style.display = 'none';
           balance += ADSTERRA_REWARD;
           lastAdsterraTime = Date.now();
           localStorage.setItem('last_adsterra', lastAdsterraTime.toString());
@@ -594,8 +596,8 @@
       const address = document.getElementById('withdraw-address').value.trim();
       const amount = parseFloat(document.getElementById('withdraw-amount').value);
 
-      if (!address || address.length < 15) {
-                showToast("⚠️ يرجى كتابة عنوان محفظة صحيحة!");
+      if (!address || address.address.length < 15) {
+        showToast("⚠️ يرجى كتابة عنوان محفظة صحيحة!");
         return;
       }
 
@@ -649,5 +651,6 @@
   </script>
 </body>
 </html>
+
 
     
