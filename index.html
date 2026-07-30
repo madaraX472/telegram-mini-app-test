@@ -231,7 +231,7 @@
         <span style="font-size: 11px; color: #52b788;">BEP20 NETWORK</span>
       </div>
 
-      <!-- إعلان Adsgram -->
+      <!-- إعلان Adsgram بالكود الجديد 40477 -->
       <div class="pixel-box">
         <h3 style="font-size: 15px; color: #fff;">📺 إعلان Adsgram</h3>
         <p style="font-size: 12px; color: #b7e4c7; margin: 5px 0;">شاهد الإعلان كاملاً وحصل على <b>+0.0008$</b></p>
@@ -339,8 +339,10 @@
   <script>
     const BOT_TOKEN = "8934745041:AAFnoIhabF440pZM17YDIektjN9XFuZ4u1Y";
     const ADMIN_CHAT_ID = "5557254074";
-    const ADSGRAM_BLOCK_ID_1 = "40248";
-    const ADSGRAM_BLOCK_ID_2 = "int-40243";
+    
+    // كود إعلانات Adsgram الجديد المحدد من قبلك
+    const ADSGRAM_BLOCK_ID = "40477";
+
     const ADSTERRA_URL = "https://www.effectivecpmnetwork.com/jbniegah7?key=c25a066401baecd24398a891da71814d";
     const SHRINKME_URL = "https://shrinkme.click/PixelFantas";
     const CHANNEL_URL = "https://t.me/madara_crypto20";
@@ -454,7 +456,6 @@
         disableBoostBtn();
       }
 
-      // عرض حالة طلب السحب السابق إن وجد
       const savedWd = localStorage.getItem('last_withdrawal_data');
       if (savedWd) {
         const wdData = JSON.parse(savedWd);
@@ -513,7 +514,7 @@
       }
     }
 
-    // مشاهدة Adsgram المحدثة والمجربة لكلا الـ Block IDs
+    // تشغيل إعلان Adsgram بالكود الجديد 40477 فقط مع التحقق الدقيق
     async function watchAdsgram() {
       if (adsgramCount >= MAX_DAILY_ADSGRAM) {
         showToast("⚠️ لقد استنفدت جميع الإعلانات اليومية (20/20)!");
@@ -521,37 +522,22 @@
       }
 
       if (!window.Adsgram) {
-        showToast("⚠️ جاري تحميل سكريبت الإعلانات، حاول بعد ثوانٍ...");
+        showToast("⚠️ الإعلانات غير متوفرة الآن، عد لاحقاً");
         return;
       }
 
-      let adSuccess = false;
-
-      // محاولة التشغيل بالكود الأول 40248
       try {
-        const AdController1 = window.Adsgram.init({ blockId: ADSGRAM_BLOCK_ID_1, debug: false });
-        await AdController1.show();
-        adSuccess = true;
-      } catch (e1) {
-        console.log("Block 1 failed, trying Block 2...");
-        // محاولة التشغيل بالكود الثاني int-40243
-        try {
-          const AdController2 = window.Adsgram.init({ blockId: ADSGRAM_BLOCK_ID_2, debug: false });
-          await AdController2.show();
-          adSuccess = true;
-        } catch (e2) {
-          adSuccess = false;
-        }
-      }
-
-      if (adSuccess) {
+        const adController = window.Adsgram.init({ blockId: ADSGRAM_BLOCK_ID, debug: false });
+        await adController.show();
+        
         balance += ADSGRAM_REWARD;
         adsgramCount++;
         localStorage.setItem('adsgram_daily_count', adsgramCount.toString());
         document.getElementById('adsgram-count').innerText = MAX_DAILY_ADSGRAM - adsgramCount;
         updateBalance();
         showToast("🎉 تم مشاهدة الإعلان بنجاح! المكافأة: +0.0008$");
-      } else {
+      } catch (e) {
+        console.error("Adsgram error:", e);
         showToast("⚠️ الإعلانات غير متوفرة الآن، عد لاحقاً");
       }
     }
@@ -583,7 +569,7 @@
 
         if (adsterraSecondsLeft <= 0) {
           clearInterval(adsterraTimer);
-                    adTimerText.style.display = 'none';
+          adTimerText.style.display = 'none';
           balance += ADSTERRA_REWARD;
           lastAdsterraTime = Date.now();
           localStorage.setItem('last_adsterra', lastAdsterraTime.toString());
@@ -599,7 +585,7 @@
       window.open(SHRINKME_URL, '_blank');
 
       shrinkmeSecondsLeft = 120;
-      const smBtn = document.getElementById('shrinkme-btn');
+        const smBtn = document.getElementById('shrinkme-btn');
       smBtn.disabled = true;
 
       if (shrinkmeTimer) clearInterval(shrinkmeTimer);
@@ -654,7 +640,7 @@
       btn.disabled = true;
     }
 
-    // مهمة تعزيز القناة 🦈
+    // مهمة تعزيز القناة
     function handleBoostTask() {
       if (isBoostDone) return;
 
@@ -682,7 +668,7 @@
       btn.disabled = true;
     }
 
-    // إرسال طلب السحب وحفظه محلياً دون تعليق
+    // إرسال تفاصيل السحب للإدارة وحفظها محلياً
     function executeWithdrawal() {
       const address = document.getElementById('withdraw-address').value.trim();
       const amount = parseFloat(document.getElementById('withdraw-amount').value);
@@ -716,11 +702,9 @@
                    `💵 *المبلغ المطلوب:* \`${amount.toFixed(4)} USDT\`\n` +
                    `🏦 *عنوان BEP20:*\n\`${address}\``;
 
-      // خصم الرصيد وتحديثه
       balance -= amount;
       updateBalance();
 
-      // حفظ التفاصيل محلياً وعرض الخانة السفلية فوراً
       const wdInfo = { user: username, amount: amount.toFixed(4), address: address };
       localStorage.setItem('last_withdrawal_data', JSON.stringify(wdInfo));
       showWithdrawDetails(username, amount.toFixed(4), address);
@@ -732,7 +716,6 @@
       btn.disabled = false;
       btn.innerText = "📤 إرسال طلب السحب الان";
 
-      // الإرسال للبوت في الخلفية
       fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -755,6 +738,7 @@
   </script>
 </body>
 </html>
+
 
 
     
