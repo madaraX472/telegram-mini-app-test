@@ -101,7 +101,6 @@
       text-shadow: 3px 3px #000; 
     }
 
-    /* أزرار Pixel والمؤثرات */
     .pixel-btn {
       display: block;
       width: 100%;
@@ -129,7 +128,6 @@
       box-shadow: 0 2px 0 #000;
     }
 
-    /* تأثير بصري عند الضغط */
     .pixel-btn::after {
       content: "";
       position: absolute;
@@ -262,7 +260,7 @@
       <!-- اختصار الروابط ShrinkMe -->
       <div class="pixel-box">
         <h3 style="font-size: 15px; color: #fff;">🔗 اختصار الروابط (ShrinkMe)</h3>
-        <p style="font-size: 12px; color: #b7e4c7; margin: 5px 0;">تخطى الرابط وابقَ 2 دقيقة داخل التطبيق لربح <b>+0.005$</b></p>
+        <p style="font-size: 12px; color: #b7e4c7; margin: 5px 0;">اختصر الرابط بالكامل وإلا لن تحصل على المكافأة</p>
         
         <button id="shrinkme-btn" class="pixel-btn btn-shrinkme" onclick="handleBtnClick(startShrinkMe)">
           🌐 دخول الرابط المختصر (+0.005$)
@@ -289,13 +287,13 @@
       <h2 style="font-size: 16px; color: #fff; margin-bottom: 12px; text-align: center;">💳 سحب الأرباح</h2>
       
       <div class="pixel-box" style="text-align: right;">
-        <p style="font-size: 12px; color: #e9c46a; text-align: center;">📌 الحد الأدنى للسحب: <b>0.085 USDT</b></p>
+        <p style="font-size: 12px; color: #e9c46a; text-align: center;">📌 الحد الأدنى للسحب هو: <b>0.01 USDT</b></p>
         
         <label style="display: block; font-size: 12px; margin-top: 12px;">عنوان المحفظة (BEP20):</label>
         <input type="text" id="withdraw-address" class="pixel-input" placeholder="0x..." />
         
         <label style="display: block; font-size: 12px;">مبلغ السحب (USDT):</label>
-        <input type="number" step="0.001" id="withdraw-amount" class="pixel-input" placeholder="0.085" />
+        <input type="number" step="0.001" id="withdraw-amount" class="pixel-input" placeholder="0.01" />
         
         <button class="pixel-btn btn-withdraw" onclick="handleBtnClick(executeWithdrawal)">
           📤 إرسال طلب السحب الان
@@ -330,7 +328,7 @@
     const SHRINKME_URL = "https://shrinkme.click/PixelFantas";
     const CHANNEL_URL = "https://t.me/madara_crypto20";
 
-    const MIN_WITHDRAW = 0.085;
+    const MIN_WITHDRAW = 0.01;
     const ADSGRAM_REWARD = 0.005;
     const ADSTERRA_REWARD = 0.002;
     const SHRINKME_REWARD = 0.005;
@@ -357,7 +355,6 @@
       }
     }
 
-    // صوت النقر 8-bit للبكسل
     function playPixelClickSound() {
       try {
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -375,7 +372,6 @@
       } catch (e) {}
     }
 
-    // مانع الضغط السريع والغش
     function handleBtnClick(fn) {
       playPixelClickSound();
       if (isClickLocked) return;
@@ -463,7 +459,7 @@
         }
       }
 
-      // ShrinkMe Timer
+      // ShrinkMe Timer (مخفي بدون إظهار عداد رقمي)
       const smElapsed = now - lastShrinkmeTime;
       const smBtn = document.getElementById('shrinkme-btn');
       const smTimerText = document.getElementById('shrinkme-timer');
@@ -482,7 +478,6 @@
       }
     }
 
-    // 1. Adsgram المطور المعالج
     function watchAdsgram() {
       if (Date.now() - lastAdsgramTime < COOLDOWN_30MIN) return;
 
@@ -506,7 +501,6 @@
       }
     }
 
-    // 2. Adsterra
     function startAdsterra() {
       if (Date.now() - lastAdsterraTime < COOLDOWN_30MIN) return;
 
@@ -522,7 +516,7 @@
       if (adsterraTimer) clearInterval(adsterraTimer);
 
       adsterraTimer = setInterval(() => {
-        if (document.hidden) return; // مانع غش: إيقاف العداد عند مغادرة التطبيق
+        if (document.hidden) return;
 
         adsterraSecondsLeft--;
         adTimerText.innerText = `⏱️ يرجى الانتظار داخل التطبيق: ${adsterraSecondsLeft} ثانية`;
@@ -538,7 +532,7 @@
       }, 1000);
     }
 
-    // 3. ShrinkMe - مؤقت 2 دقيقة (120 ثانية) + مانع الغش
+    // ShrinkMe بدون إظهار مؤقت الترقيم
     function startShrinkMe() {
       if (Date.now() - lastShrinkmeTime < COOLDOWN_30MIN) return;
 
@@ -546,20 +540,22 @@
 
       shrinkmeSecondsLeft = 120; // 2 دقيقة
       const smBtn = document.getElementById('shrinkme-btn');
-      const smTimerText = document.getElementById('shrinkme-timer');
-
+      
       smBtn.disabled = true;
-      smTimerText.style.display = 'block';
 
       if (shrinkmeTimer) clearInterval(shrinkmeTimer);
 
       shrinkmeTimer = setInterval(() => {
-        if (document.hidden) return; // مانع الغش والتنقل للخارج
+        // إذا عاد المستخدم شاشته للتطبيق قبل انتهاء الوقت
+        if (!document.hidden && shrinkmeSecondsLeft > 0) {
+          clearInterval(shrinkmeTimer);
+          smBtn.disabled = false;
+          shrinkmeSecondsLeft = 0;
+          showToast("⚠️ يجب عليك اختصار الرابط بالكامل للحصول على المكافأة!");
+          return;
+        }
 
         shrinkmeSecondsLeft--;
-        const mins = Math.floor(shrinkmeSecondsLeft / 60);
-        const secs = shrinkmeSecondsLeft % 60;
-        smTimerText.innerText = `⏱️ يرجى الانتظار داخل التطبيق: ${mins}:${secs < 10 ? '0' : ''}${secs}`;
 
         if (shrinkmeSecondsLeft <= 0) {
           clearInterval(shrinkmeTimer);
@@ -572,7 +568,6 @@
       }, 1000);
     }
 
-    // 4. المهمة
     function handleChannelTask() {
       if (isTaskDone) return;
 
@@ -594,14 +589,13 @@
       };
     }
 
-        function disableTaskBtn() {
+    function disableTaskBtn() {
       const btn = document.getElementById('task-channel-btn');
       btn.innerText = "✔️ تم إنجاز المهمة";
       btn.disabled = true;
     }
 
-    // 5. طلب السحب
-    function executeWithdrawal() {
+        function executeWithdrawal() {
       const address = document.getElementById('withdraw-address').value.trim();
       const amount = parseFloat(document.getElementById('withdraw-amount').value);
 
@@ -660,5 +654,3 @@
   </script>
 </body>
 </html>
-
-     
