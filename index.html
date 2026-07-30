@@ -155,7 +155,6 @@ body {
 .page { display: none; }
 .page.active { display: block; }
 
-/* لعبة XO */
 .xo-wrapper {
     background: rgba(15, 23, 42, 0.9);
     border: 2px solid #3b82f6;
@@ -286,7 +285,6 @@ input {
         <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">Pixel Fantasy Bot</div>
     </div>
 
-    <!-- كارت الرصيد -->
     <div class="balance-card">
         <div>رصيد النقاط الحالي</div>
         <h1 id="points">0</h1>
@@ -295,7 +293,6 @@ input {
 
     <div id="msg" class="msg"></div>
 
-    <!-- 1. الرئيسية -->
     <div id="page-home" class="page active">
         <div class="warrior-card" style="border-color: #f59e0b; text-align: center;">
             <h3 style="color:#fbbf24; margin-bottom: 10px;">⚔️ مرحباً بك يا بطل في بوت Pixel Fantasy</h3>
@@ -304,7 +301,6 @@ input {
             </p>
         </div>
 
-        <!-- مهمة الاشتراك بالقناة -->
         <div class="warrior-card" style="border-color: #22c55e;">
             <h3 style="color:#22c55e; margin-bottom: 8px;">🎯 تنفيذ المهام (Tasks)</h3>
             <p style="font-size: 14px; color: #cbd5e1; margin-bottom: 12px;">
@@ -321,7 +317,6 @@ input {
         </div>
     </div>
 
-    <!-- 2. صفحة لعبة X O -->
     <div id="page-xo" class="page">
         <div class="xo-wrapper">
             <h2>⚔️ تحدي X O</h2>
@@ -343,7 +338,6 @@ input {
         </div>
     </div>
 
-    <!-- 3. صفحة الإعلانات وتخطي الروابط -->
     <div id="page-ads" class="page">
         <div class="warrior-card" style="border-color: #22c55e;">
             <h2>🎬 مشاهدة الإعلانات</h2>
@@ -379,7 +373,6 @@ input {
         </div>
     </div>
 
-    <!-- 4. صفحة التعدين الاحترافي USDT -->
     <div id="page-mining" class="page">
         <div class="warrior-card" style="border-color: #38bdf8;">
             <h2>⛏️ تعدين عملة USDT</h2>
@@ -405,7 +398,6 @@ input {
         </div>
     </div>
 
-    <!-- 5. صفحة الصرافة والسحب -->
     <div id="page-withdraw" class="page">
         <div class="warrior-card" style="border-color: #eab308;">
             <h2>💱 صرافة النقاط إلى USDT</h2>
@@ -431,7 +423,6 @@ input {
     </div>
 </div>
 
-<!-- شريط التنقل السفلي -->
 <div class="nav-bar">
     <button class="nav-btn active" onclick="switchPage('home', this)">
         <span>🏕️</span> الرئيسية
@@ -448,10 +439,8 @@ input {
     <button class="nav-btn" onclick="switchPage('withdraw', this)">
         <span>💸</span> الصرافة/سحب
     </button>
-</div>
-
-<script>
-// البيانات والتخزين
+    </div>
+    <script>
 let points = Number(localStorage.getItem("points")) || 0;
 let usdtBalance = Number(localStorage.getItem("usdtBalance")) || 0;
 
@@ -465,7 +454,6 @@ let miningPool = Number(localStorage.getItem("miningPool")) || 0;
 let lastMiningClaim = Number(localStorage.getItem("lastMiningClaim")) || Date.now();
 let unclaimedRewards = Number(localStorage.getItem("unclaimedRewards")) || 0;
 
-// بيانات مهمة تليجرام
 let tgTaskDone = localStorage.getItem("tgTaskDone") === "true";
 let tgTaskPending = localStorage.getItem("tgTaskPending") === "true";
 
@@ -516,7 +504,6 @@ function updateUI() {
     localStorage.setItem("miningPool", miningPool);
 }
 
-// فحص أزرار مهمة تليجرام
 function checkTgTaskUI() {
     let taskBtn = document.getElementById("tgTaskBtn");
     let claimBtn = document.getElementById("claimTgBtn");
@@ -592,8 +579,6 @@ setInterval(() => {
     updateUI();
 }, 1000);
 
-updateUI();
-
 function message(text) {
     let box = document.getElementById("msg");
     box.innerText = text;
@@ -609,25 +594,29 @@ function switchPage(pageId, btn) {
     btn.classList.add("active");
 }
 
-// Adsgram Integration
-const AdController = window.Adsgram.init({ blockId: "40248" });
-
+// دالة حماية إعلانات Adsgram لضمان عدم توقف الأزرار
 async function showAd() {
-    try {
-        message("⏳ جاري تحميل الإعلان...");
-        await AdController.show();
+    message("⏳ جاري تحميل الإعلان...");
+    if (window.Adsgram && window.Adsgram.init) {
+        try {
+            const AdController = window.Adsgram.init({ blockId: "40248" });
+            await AdController.show();
+            return true;
+        } catch (e) {
+            message("❌ تعذر تحميل الإعلان أو تم إغلاقه!");
+            return false;
+        }
+    } else {
+        // حماية تجريبية في حال كان السكربت مفتوح خارج التليجرام
+        await new Promise(r => setTimeout(r, 1000));
         return true;
-    } catch (e) {
-        message("❌ تعذر تحميل الإعلان أو تم إغلاقه مبكراً!");
-        return false;
     }
 }
 
 // لعبة XO
 let board = ["", "", "", "", "", "", "", "", ""];
 let gameActive = true;
-const cells = document.qu
-erySelectorAll(".xo-cell");
+const cells = document.querySelectorAll(".xo-cell");
 const winPatterns = [
     [0,1,2], [3,4,5], [6,7,8],
     [0,3,6], [1,4,7], [2,5,8],
@@ -700,9 +689,9 @@ function resetXO() {
         cell.classList.remove("o");
     });
 }
+
 document.getElementById("resetXo").onclick = resetXO;
 
-// مشاهدة الإعلانات
 document.getElementById("watchAdBtn").onclick = async function() {
     if (adsWatchedCount < 10) {
         let success = await showAd();
@@ -716,7 +705,6 @@ document.getElementById("watchAdBtn").onclick = async function() {
     }
 };
 
-// تخطي الرابط
 function onLinkClick() {
     lastLinkTime = Date.now();
     linkClickedPending = true;
@@ -732,7 +720,6 @@ function claimLinkReward() {
     message("🎉 مبروك! تم إضافة +30 نقطة لتخطي الرابط.");
 }
 
-// التعدين
 document.getElementById("mineAdBtn").onclick = async function() {
     let success = await showAd();
     if (success) {
@@ -754,7 +741,6 @@ document.getElementById("claimMiningBtn").onclick = function() {
     updateUI();
 };
 
-// الصرافة والسحب
 document.getElementById("swapBtn").onclick = function() {
     let pts = Number(document.getElementById("swapPts").value);
     if (!pts || pts < 10) {
@@ -799,6 +785,8 @@ document.getElementById("withdrawBtn").onclick = function() {
     
     message(`✅ تم تقديم طلب سحب $${amount.toFixed(3)} USDT بنجاح إلى محفظتك!`);
 };
+
+updateUI();
 </script>
 </body>
 </html>
