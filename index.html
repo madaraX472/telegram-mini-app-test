@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>مادارا كريبتو - MADARA CRYPTO</title>
+<title>مادارا كريبتو - Pixel Fantasy</title>
 <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Tajawal:wght@500;700;900&display=swap" rel="stylesheet">
 <style>
 * {
     box-sizing: border-box;
     font-family: 'Tajawal', sans-serif;
-    image-rendering: pixelated; /* نمط بيكسل */
+    image-rendering: pixelated;
 }
 
 body {
@@ -20,10 +20,9 @@ body {
     color: #e0e1dd;
     overflow-x: hidden;
     position: relative;
-    padding-bottom: 70px;
+    padding-bottom: 80px;
 }
 
-/* خلفية غابة البيكسل الخيالية */
 .forest-bg {
     position: fixed;
     top: 0;
@@ -36,7 +35,6 @@ body {
     z-index: -2;
 }
 
-/* القمر والجسيمات السحرية */
 .magic-moon {
     position: fixed;
     top: 20px;
@@ -71,7 +69,6 @@ body {
     padding: 15px;
 }
 
-/* محارب البيكسل في استراحة (Header Art) */
 .warrior-card {
     background: rgba(15, 23, 42, 0.85);
     border: 3px solid #3b82f6;
@@ -80,7 +77,6 @@ body {
     text-align: center;
     box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
     margin-bottom: 15px;
-    position: relative;
 }
 
 .pixel-art-container {
@@ -91,13 +87,12 @@ body {
 
 .title {
     font-family: 'Press Start 2P', 'Tajawal', cursive;
-    font-size: 20px;
+    font-size: 18px;
     color: #60a5fa;
     text-shadow: 2px 2px #1e3a8a;
     margin-top: 5px;
 }
 
-/* محفظة النقاط */
 .balance-card {
     background: linear-gradient(135deg, #1e293b, #0f172a);
     border: 2px solid #f59e0b;
@@ -125,7 +120,6 @@ body {
     display: inline-block;
 }
 
-/* أشرطة التنقل السفلي (Tabs) */
 .nav-bar {
     position: fixed;
     bottom: 0;
@@ -145,27 +139,23 @@ body {
     background: none;
     border: none;
     color: #94a3b8;
-    font-size: 13px;
+    font-size: 11px;
     font-weight: bold;
     cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 3px;
-    width: 25%;
+    width: 20%;
 }
 
-.nav-btn.active {
-    color: #60a5fa;
-}
-
+.nav-btn.active { color: #60a5fa; }
 .nav-btn span { font-size: 18px; }
 
-/* الصفحات */
 .page { display: none; }
 .page.active { display: block; }
 
-/* واجهة X O الاحترافية */
+/* لعبة XO */
 .xo-wrapper {
     background: rgba(15, 23, 42, 0.9);
     border: 2px solid #3b82f6;
@@ -196,30 +186,19 @@ body {
     cursor: pointer;
     color: #38bdf8;
     box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
-    transition: all 0.2s ease;
 }
 
-.xo-cell:active { transform: scale(0.95); }
 .xo-cell.o { color: #f43f5e; }
-
-/* صفحة الإعلانات الساعات 5 */
-.ads-timer-box {
-    background: #1e293b;
-    border-radius: 15px;
-    padding: 15px;
-    margin-bottom: 15px;
-    border: 1px solid #334155;
-}
 
 .btn-primary {
     width: 100%;
     border: none;
     background: linear-gradient(135deg, #2563eb, #1d4ed8);
     color: white;
-    padding: 15px;
-    font-size: 16px;
+    padding: 14px;
+    font-size: 15px;
     font-weight: bold;
-    border-radius: 15px;
+    border-radius: 12px;
     cursor: pointer;
     box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
     margin-top: 10px;
@@ -231,10 +210,25 @@ body {
     cursor: not-allowed;
 }
 
-/* المدخلات */
+.btn-link {
+    background: linear-gradient(135deg, #a855f7, #7e22ce);
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 16px;
+    box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+    margin-top: 10px;
+}
+
 input {
     width: 100%;
-    padding: 14px;
+    padding: 12px;
     margin: 8px 0;
     border-radius: 12px;
     border: 1px solid #334155;
@@ -253,6 +247,21 @@ input {
     margin-bottom: 15px;
     font-weight: bold;
 }
+
+/* بطاقات التعدين */
+.mining-stat {
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 10px;
+    text-align: right;
+}
+.mining-stat span {
+    float: left;
+    color: #38bdf8;
+    font-weight: bold;
+}
 </style>
 </head>
 <body>
@@ -260,9 +269,8 @@ input {
 <div class="forest-bg"></div>
 <div class="magic-moon"></div>
 
-<!-- جسيمات سحرية بالخلفية -->
 <script>
-    for (let i = 0; i < 25; i++) {
+    for (let i = 0; i < 20; i++) {
         let p = document.createElement("div");
         p.className = "particle";
         p.style.left = Math.random() * 100 + "vw";
@@ -273,30 +281,27 @@ input {
 </script>
 
 <div class="app">
-    <!-- استراحة المحارب (Header) -->
     <div class="warrior-card">
-        <div class="pixel-art-container">
-            ⚔️ 🏕️ 🛡️
-        </div>
+        <div class="pixel-art-container">🛡️ ⛺ ⚔️</div>
         <div class="title">MADARA CRYPTO</div>
-        <div style="font-size: 13px; color: #94a3b8; margin-top: 4px;">غابة الأسرار - استراحة المحارب</div>
+        <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">Pixel Fantasy Bot</div>
     </div>
 
     <!-- كارت الرصيد -->
     <div class="balance-card">
-        <div>رصيدك الحالي</div>
+        <div>رصيد النقاط الحالي</div>
         <h1 id="points">0</h1>
-        <div class="usd-val">يعادل ≈ $<span id="usdVal">0.00</span> USDT</div>
+        <div class="usd-val">رصيد USDT المباشر: $<span id="usdtBalance">0.0000</span></div>
     </div>
 
     <div id="msg" class="msg"></div>
 
-    <!-- 1. الرئيسية / الخريطة -->
+    <!-- 1. الرئيسية -->
     <div id="page-home" class="page active">
-        <div class="warrior-card" style="border-color: #f59e0b;">
-            <h3>🗡️ مرحباً بك يا بطل!</h3>
-            <p style="font-size: 14px; color: #cbd5e1; line-height: 1.6;">
-                استكشف غابة مادارا الخيالية، العب لعبة X O وسجل الانتصارات لتحصل على النقاط، أو شاهد الإعلانات اليومية واجمع العملات لسحبها مباشرة إلى محفظتك!
+        <div class="warrior-card" style="border-color: #f59e0b; text-align: center;">
+            <h3 style="color:#fbbf24; margin-bottom: 10px;">⚔️ مرحباً بك يا بطل في بوت Pixel Fantasy</h3>
+            <p style="font-size: 15px; color: #cbd5e1; line-height: 1.6;">
+                للربح من مشاهدة الاعلانات وتنفيذ المهام ولعب الألعاب
             </p>
         </div>
     </div>
@@ -304,8 +309,8 @@ input {
     <!-- 2. صفحة لعبة X O -->
     <div id="page-xo" class="page">
         <div class="xo-wrapper">
-            <h2>⚔️ تحدي X O (سهل جداً)</h2>
-            <p style="font-size: 13px; color: #94a3b8;">اهزم الذكاء الاصطناعي واحصل على <b>+20 نقطة</b> وإعلان إجباري!</p>
+            <h2>⚔️ تحدي X O</h2>
+            <p style="font-size: 13px; color: #94a3b8;">الفوز يمنحك <b>+10 نقاط</b> بعد مشاهدة الإعلان الإجباري!</p>
             
             <div class="xo-board" id="xoBoard">
                 <div class="xo-cell" data-index="0"></div>
@@ -323,16 +328,16 @@ input {
         </div>
     </div>
 
-    <!-- 3. صفحة الإعلانات -->
+    <!-- 3. صفحة الإعلانات وتخطي الروابط -->
     <div id="page-ads" class="page">
         <div class="warrior-card" style="border-color: #22c55e;">
-            <h2>🎬 برج الإعلانات اليومي</h2>
-            <p style="font-size: 13px; color: #94a3b8;">يمكنك مشاهدة 10 إعلانات كل 5 ساعات.</p>
+            <h2>🎬 مشاهدة الإعلانات</h2>
+            <p style="font-size: 13px; color: #94a3b8;">10 إعلانات متاحة كل 5 ساعات.</p>
             
-            <div class="ads-timer-box">
-                <div>الإعلانات المتاحة حالياً: <b id="adsLeft" style="color:#22c55e; font-size:18px;">10</b> / 10</div>
-                <div id="timerContainer" style="margin-top:8px; font-size:12px; color:#f59e0b; display:none;">
-                    التجديد القادم بعد: <span id="cooldownTimer">05:00:00</span>
+            <div style="background: #1e293b; border-radius: 12px; padding: 10px; margin-bottom: 10px;">
+                <div>المتبقي: <b id="adsLeft" style="color:#22c55e;">10</b> / 10</div>
+                <div id="timerContainer" style="margin-top:5px; font-size:12px; color:#f59e0b; display:none;">
+                    تجدد بعد: <span id="cooldownTimer">05:00:00</span>
                 </div>
             </div>
 
@@ -340,16 +345,70 @@ input {
                 🎥 مشاهدة إعلان (+10 نقاط)
             </button>
         </div>
+
+        <!-- قسم تخطي الروابط -->
+        <div class="warrior-card" style="border-color: #a855f7;">
+            <h2>🔗 تخطي الروابط</h2>
+            <p style="font-size: 13px; color: #94a3b8;">تخطى الرابط كل ساعة واكسب <b>+30 نقطة</b>!</p>
+            
+            <a href="https://shrinkme.click/PixelFantas" target="_blank" class="btn-link" id="linkBtn" onclick="onLinkClick()">
+                Pixel link 🔗
+            </a>
+
+            <div id="linkTimerContainer" style="margin-top:10px; font-size:13px; color:#f59e0b; display:none;">
+                متاح الرابط القادم بعد: <span id="linkTimer">60:00</span>
+            </div>
+
+            <button class="btn-primary" id="claimLinkBtn" style="display:none; background:#a855f7;" onclick="claimLinkReward()">
+                🎁 المطالبة بـ 30 نقطة
+            </button>
+        </div>
     </div>
 
-    <!-- 4. صفحة السحب -->
-    <div id="page-withdraw" class="page">
-        <div class="warrior-card" style="border-color: #ef4444;">
-            <h2>💸 سحب الأرباح</h2>
-            <p style="font-size: 12px; color: #94a3b8;">سعر الصرف: 1,000 نقطة = 0.10$ USDT</p>
+    <!-- 4. صفحة التعدين الاحترافي USDT -->
+    <div id="page-mining" class="page">
+        <div class="warrior-card" style="border-color: #38bdf8;">
+            <h2>⛏️ تعدين عملة USDT</h2>
+            <p style="font-size: 13px; color: #94a3b8;">شاهد إعلان لإضافة <b>0.002$</b> لرصيد التعدين. تربح 3% يومياً من رصيد التعدين!</p>
 
-            <input type="text" id="walletAddr" placeholder="عنوان USDT شبكة (BNB Smart Chain - BEP20)">
-            <input type="number" id="withdrawPts" placeholder="عدد النقاط المراد سحبها">
+            <div class="mining-stat">
+                رصيد التعدين الأساسي: <span id="miningPool">$0.0000</span>
+            </div>
+            <div class="mining-stat">
+                عائد التعدين اليومي (3%): <span id="dailyRate">$0.0000</span>
+            </div>
+            <div class="mining-stat">
+                الأرباح الجاهزة للمطالبة: <span id="unclaimedRewards" style="color:#22c55e;">$0.0000</span>
+            </div>
+
+            <button class="btn-primary" id="mineAdBtn" style="background: linear-gradient(135deg, #0284c7, #0369a1);">
+                ⚡ زيادة قوة التعدين (+0.002$ إعلان)
+            </button>
+
+            <button class="btn-primary" id="claimMiningBtn" style="background: linear-gradient(135deg, #eab308, #ca8a04); margin-top:10px;">
+                💎 Claim الأرباح القابلة للمطالبة
+            </button>
+        </div>
+    </div>
+
+    <!-- 5. صفحة الصرافة والسحب -->
+    <div id="page-withdraw" class="page">
+        <div class="warrior-card" style="border-color: #eab308;">
+            <h2>💱 صرافة النقاط إلى USDT</h2>
+            <p style="font-size: 12px; color: #94a3b8;">معدل التبادل: كل 10 نقاط = 0.001$ USDT</p>
+
+            <input type="number" id="swapPts" placeholder="أدخل عدد النقاط للتحويل">
+            <button class="btn-primary" id="swapBtn" style="background: linear-gradient(135deg, #eab308, #ca8a04);">
+                🔄 تحويل إلى USDT
+            </button>
+        </div>
+
+        <div class="warrior-card" style="border-color: #ef4444;">
+            <h2>💸 سحب USDT</h2>
+            <p style="font-size: 12px; color: #94a3b8;">شبكة (BNB Smart Chain - BEP20)</p>
+
+            <input type="text" id="walletAddr" placeholder="عنوان USDT BEP20">
+            <input type="number" id="withdrawUsdtAmount" placeholder="المبلغ المراد سحبه بالدولار ($)">
             
             <button class="btn-primary" id="withdrawBtn" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
                 تأكيد طلب السحب 🚀
@@ -369,36 +428,44 @@ input {
     <button class="nav-btn" onclick="switchPage('ads', this)">
         <span>🎬</span> الإعلانات
     </button>
+    <button class="nav-btn" onclick="switchPage('mining', this)">
+        <span>⛏️</span> التعدين
+    </button>
     <button class="nav-btn" onclick="switchPage('withdraw', this)">
-        <span>💸</span> السحب
+        <span>💸</span> الصرافة/سحب
     </button>
 </div>
 
 <script>
-// --- إدارة البيانات والتخزين ---
+// البيانات والتخزين
 let points = Number(localStorage.getItem("points")) || 0;
+let usdtBalance = Number(localStorage.getItem("usdtBalance")) || 0;
+
 let adsWatchedCount = Number(localStorage.getItem("adsWatchedCount")) || 0;
 let lastAdsResetTime = Number(localStorage.getItem("lastAdsResetTime")) || Date.now();
 
-const MAX_ADS = 10;
-const COOLDOWN_MS = 5 * 60 * 60 * 1000; // 5 ساعات بالميللي ثانية
+let lastLinkTime = Number(localStorage.getItem("lastLinkTime")) || 0;
+let linkClickedPending = localStorage.getItem("linkClickedPending") === "true";
+
+let miningPool = Number(localStorage.getItem("miningPool")) || 0;
+let lastMiningClaim = Number(localStorage.getItem("lastMiningClaim")) || Date.now();
+let unclaimedRewards = Number(localStorage.getItem("unclaimedRewards")) || 0;
 
 function updateUI() {
     document.getElementById("points").innerText = points.toLocaleString();
-    document.getElementById("usdVal").innerText = (points * 0.0001).toFixed(3);
-    
-    // التحقق من مرور 5 ساعات
+    document.getElementById("usdtBalance").innerText = usdtBalance.toFixed(4);
+
+    // تحديث الإعلانات 5 ساعات
     let now = Date.now();
-    if (now - lastAdsResetTime >= COOLDOWN_MS) {
+    if (now - lastAdsResetTime >= 5 * 60 * 60 * 1000) {
         adsWatchedCount = 0;
         lastAdsResetTime = now;
         localStorage.setItem("adsWatchedCount", adsWatchedCount);
         localStorage.setItem("lastAdsResetTime", lastAdsResetTime);
     }
 
-    let remainingAds = MAX_ADS - adsWatchedCount;
+    let remainingAds = 10 - adsWatchedCount;
     document.getElementById("adsLeft").innerText = remainingAds;
-    
     let watchBtn = document.getElementById("watchAdBtn");
     let timerContainer = document.getElementById("timerContainer");
 
@@ -412,22 +479,65 @@ function updateUI() {
         timerContainer.style.display = "none";
     }
 
+    // تحديث التعدين (حساب 3% يومياً وتطبيق الفوائد بالثواني)
+    let timePassedHours = (now - lastMiningClaim) / (1000 * 3600);
+    if (timePassedHours > 0 && miningPool > 0) {
+        // 3% كل 24 ساعة => (0.03 / 24) لكل ساعة
+        let generated = miningPool * (0.03 / 24) * timePassedHours;
+        unclaimedRewards += generated;
+        lastMiningClaim = now;
+        localStorage.setItem("unclaimedRewards", unclaimedRewards);
+        localStorage.setItem("lastMiningClaim", lastMiningClaim);
+    }
+
+    document.getElementById("miningPool").innerText = "$" + miningPool.toFixed(4);
+    document.getElementById("dailyRate").innerText = "$" + (miningPool * 0.03).toFixed(4);
+    document.getElementById("unclaimedRewards").innerText = "$" + unclaimedRewards.toFixed(5);
+
+    // حفظ البيانات
     localStorage.setItem("points", points);
+    localStorage.setItem("usdtBalance", usdtBalance);
+    localStorage.setItem("miningPool", miningPool);
 }
 
-// العداد التنازلي للـ 5 ساعات
+// مؤقت الروابط والإعلانات
 setInterval(() => {
     let now = Date.now();
-    let diff = COOLDOWN_MS - (now - lastAdsResetTime);
-    if (diff > 0 && adsWatchedCount >= MAX_ADS) {
-        let hrs = Math.floor(diff / (1000 * 60 * 60));
-        let mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        let secs = Math.floor((diff % (1000 * 60)) / 1000);
-        document.getElementById("cooldownTimer").innerText = 
-            `${hrs.toString().padStart(2,'0')}:${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
-    } else {
-        updateUI();
+    
+    // مؤقت الإعلانات 5 ساعات
+    let diffAds = (5 * 60 * 60 * 1000) - (now - lastAdsResetTime);
+    if (diffAds > 0 && adsWatchedCount >= 10) {
+        let h = Math.floor(diffAds / (1000 * 3600));
+        let m = Math.floor((diffAds % (1000 * 3600)) / (1000 * 60));
+        let s = Math.floor((diffAds % (1000 * 60)) / 1000);
+        document.getElementById("cooldownTimer").innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
     }
+
+    // مؤقت تخطي الرابط (1 ساعة)
+    let diffLink = (60 * 60 * 1000) - (now - lastLinkTime);
+    let linkBtn = document.getElementById("linkBtn");
+    let linkTimerContainer = document.getElementById("linkTimerContainer");
+    let claimLinkBtn = document.getElementById("claimLinkBtn");
+
+    if (diffLink > 0) {
+        linkBtn.style.display = "none";
+        if (linkClickedPending) {
+            claimLinkBtn.style.display = "block";
+            linkTimerContainer.style.display = "none";
+        } else {
+            claimLinkBtn.style.display = "none";
+            linkTimerContainer.style.display = "block";
+            let m = Math.floor(diffLink / (1000 * 60));
+            let s = Math.floor((diffLink % (1000 * 60)) / 1000);
+            document.getElementById("linkTimer").innerText = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+        }
+    } else {
+        linkBtn.style.display = "flex";
+        linkTimerContainer.style.display = "none";
+        claimLinkBtn.style.display = "none";
+    }
+
+    updateUI();
 }, 1000);
 
 updateUI();
@@ -439,7 +549,6 @@ function message(text) {
     setTimeout(() => { box.style.display = "none"; }, 3500);
 }
 
-// التنقل بين الصفحات
 function switchPage(pageId, btn) {
     document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
     document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
@@ -448,24 +557,22 @@ function switchPage(pageId, btn) {
     btn.classList.add("active");
 }
 
-// تهيئة الإعلانات Adsgram
+// Adsgram Integration
 const AdController = window.Adsgram.init({ blockId: "40248" });
 
-async function triggerAd(reward = 10) {
+// دالة عرض الإعلان مع إرجاع النتيجة (True/False)
+async function showAd() {
     try {
-        message("⏳ جاري تحميل الإعلان الإجباري...");
+        message("⏳ جاري تحميل الإعلان...");
         await AdController.show();
-        points += reward;
-        updateUI();
-        message(`🎉 رائع! تم إضافة +${reward} نقطة لحسابك.`);
+        return true;
     } catch (e) {
-        message("❌ لم يتوفر إعلان، تم إضافة النقاط مجاناً!");
-        points += reward;
-        updateUI();
+        message("❌ تعذر تحميل الإعلان أو تم إغلاقه مبكراً!");
+        return false;
     }
 }
 
-// --- لعبة X O (مستوى سهل جداً) ---
+// --- لعبة XO مع اشتراط الإعلان بعد الفوز ---
 let board = ["", "", "", "", "", "", "", "", ""];
 let gameActive = true;
 const cells = document.querySelectorAll(".xo-cell");
@@ -483,16 +590,23 @@ cells.forEach(cell => {
             if (checkWin("X")) {
                 gameActive = false;
                 setTimeout(async () => {
-                    message("🎉 مبروك! لقد فزت (+20 نقطة)");
-                    await triggerAd(20);
+                    message("🎉 فزت! يجب مشاهدة الإعلان لاستلام الـ 10 نقاط...");
+                    let adSuccess = await showAd();
+                    if (adSuccess) {
+                        points += 10;
+                        updateUI();
+                        message("✅ مبروك! تم إضافة 10 نقاط لرصيدك.");
+                    } else {
+                        message("⚠️ لم تكتمل مشاهدة الإعلان، لم تضاف النقاط!");
+                    }
                     resetXO();
                 }, 300);
             } else if (board.every(c => c !== "")) {
                 gameActive = false;
-                message("🤝 تعادل! حاول مرة أخرى.");
+                message("🤝 تعادل! حاول مجدداً.");
             } else {
                 gameActive = false;
-                setTimeout(aiEasyTurn, 400); // دور الذكاء الاصطناعي السهل
+                setTimeout(aiEasyTurn, 400);
             }
         }
     });
@@ -508,7 +622,6 @@ function checkWin(player) {
     return winPatterns.some(pattern => pattern.every(i => board[i] === player));
 }
 
-// ذكاء اصطناعي سهل جداً (اختيار عشوائي شبه تام)
 function aiEasyTurn() {
     let emptyIndices = board.map((val, idx) => val === "" ? idx : null).filter(val => val !== null);
     if (emptyIndices.length > 0) {
@@ -518,7 +631,7 @@ function aiEasyTurn() {
         if (checkWin("O")) {
             message("💻 فاز الذكاء الاصطناعي! حاول مجدداً.");
             gameActive = false;
-        } else if (board.every(c => c !== "")) {
+         } else if (board.every(c => c !== "")) {
             message("🤝 تعادل!");
             gameActive = false;
         } else {
@@ -539,41 +652,100 @@ document.getElementById("resetXo").onclick = resetXO;
 
 // --- مشاهدة الإعلانات ---
 document.getElementById("watchAdBtn").onclick = async function() {
-    if (adsWatchedCount < MAX_ADS) {
-        await triggerAd(10);
-        adsWatchedCount++;
-        localStorage.setItem("adsWatchedCount", adsWatchedCount);
-        updateUI();
+    if (adsWatchedCount < 10) {
+        let success = await showAd();
+        if (success) {
+            points += 10;
+            adsWatchedCount++;
+            localStorage.setItem("adsWatchedCount", adsWatchedCount);
+            updateUI();
+            message("🎉 تم مشاهدة الإعلان وحصلت على +10 نقاط!");
+        }
     }
 };
 
-// --- نظام السحب ---
+// --- تخطي الرابط ---
+function onLinkClick() {
+    lastLinkTime = Date.now();
+    linkClickedPending = true;
+    localStorage.setItem("lastLinkTime", lastLinkTime);
+    localStorage.setItem("linkClickedPending", "true");
+}
+
+function claimLinkReward() {
+    points += 30;
+    linkClickedPending = false;
+    localStorage.setItem("linkClickedPending", "false");
+    updateUI();
+    message("🎉 مبروك! تم إضافة +30 نقطة لتخطي الرابط.");
+}
+
+// --- التعدين USDT ---
+document.getElementById("mineAdBtn").onclick = async function() {
+    let success = await showAd();
+    if (success) {
+        miningPool += 0.002;
+        updateUI();
+        message("⚡ تم إضافة +0.002$ لرصيد التعدين وزادت القوة التعدينية!");
+    }
+};
+
+document.getElementById("claimMiningBtn").onclick = function() {
+    if (unclaimedRewards <= 0) {
+        message("❌ لا توجد أرباح معدنة مجهزة حالياً!");
+        return;
+    }
+    usdtBalance += unclaimedRewards;
+    message(`💎 تم المطالبة بـ $${unclaimedRewards.toFixed(5)} USDT وإضافتها لرصيدك المباشر!`);
+    unclaimedRewards = 0;
+    localStorage.setItem("unclaimedRewards", 0);
+    updateUI();
+};
+
+// --- الصرافة والسحب ---
+document.getElementById("swapBtn").onclick = function() {
+    let pts = Number(document.getElementById("swapPts").value);
+    if (!pts || pts < 10) {
+        message("❌ الحد الأدنى للتحويل هو 10 نقاط!");
+        return;
+    }
+    if (pts > points) {
+        message("❌ رصيد النقاط لا يكفي!");
+        return;
+    }
+
+    points -= pts;
+    let convertedUsdt = (pts / 10) * 0.001; // 10 نقاط = 0.001$
+    usdtBalance += convertedUsdt;
+    
+    document.getElementById("swapPts").value = "";
+    updateUI();
+    message(`✅ تم تحويل ${pts} نقطة إلى $${convertedUsdt.toFixed(4)} USDT بنجاح!`);
+};
+
 document.getElementById("withdrawBtn").onclick = function() {
     let addr = document.getElementById("walletAddr").value.trim();
-    let amount = Number(document.getElementById("withdrawPts").value);
+    let amount = Number(document.getElementById("withdrawUsdtAmount").value);
 
     if (!addr || addr.length < 20) {
         message("❌ يرجى إدخال عنوان USDT BEP20 صحيح!");
         return;
     }
-
-    if (!amount || amount < 1000) {
-        message("❌ الحد الأدنى للسحب هو 1,000 نقطة (0.10$)!");
+    if (!amount || amount <= 0) {
+        message("❌ يرجى إدخال مبلغ سحب صحيح!");
+        return;
+    }
+    if (amount > usdtBalance) {
+        message("❌ رصيد USDT غير كافٍ للسحب!");
         return;
     }
 
-    if (amount > points) {
-        message("❌ رصيد النقاط غير كافٍ!");
-        return;
-    }
-
-    points -= amount;
+    usdtBalance -= amount;
     updateUI();
     document.getElementById("walletAddr").value = "";
-    document.getElementById("withdrawPts").value = "";
+    document.getElementById("withdrawUsdtAmount").value = "";
     
-    let usd = (amount * 0.0001).toFixed(2);
-    message(`✅ تم تقديم طلب السحب بنجاح! سيتم إرسال $${usd} USDT إلى محفظتك خلال 24 ساعة.`);
+    message(`✅ تم تقديم طلب سحب $${amount.toFixed(3)} USDT بنجاح إلى محفظتك!`);
 };
 </script>
 </body>
