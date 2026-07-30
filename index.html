@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>Pixel Fantasy - Madara Crypto</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <!-- Adsgram SDK -->
   <script src="https://sad.adsgram.ai/js/sad-index.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Tajawal:wght@700;900&display=swap" rel="stylesheet">
   <style>
@@ -128,21 +129,6 @@
       box-shadow: 0 2px 0 #000;
     }
 
-    .pixel-btn::after {
-      content: "";
-      position: absolute;
-      top: 50%; left: 50%;
-      width: 0; height: 0;
-      background: rgba(255, 255, 255, 0.4);
-      transform: translate(-50%, -50%);
-      opacity: 0;
-      transition: width 0.2s ease-out, height 0.2s ease-out, opacity 0.2s ease-out;
-    }
-    .pixel-btn:active::after {
-      width: 200%; height: 200%;
-      opacity: 1;
-    }
-
     .pixel-btn:disabled {
       background: #2b4c3f !important;
       color: #728c81 !important;
@@ -238,12 +224,12 @@
       <!-- إعلان Adsgram -->
       <div class="pixel-box">
         <h3 style="font-size: 15px; color: #fff;">📺 إعلان Adsgram</h3>
-        <p style="font-size: 12px; color: #b7e4c7; margin: 5px 0;">شاهد الإعلان كاملاً وحصل على <b>+0.005$</b></p>
+        <p style="font-size: 12px; color: #b7e4c7; margin: 5px 0;">شاهد الإعلان كاملاً وحصل على <b>+0.0008$</b></p>
+        <p style="font-size: 11px; color: #e9c46a;">المتبقي اليوم: <span id="adsgram-count">20</span>/20</p>
         
         <button id="adsgram-btn" class="pixel-btn btn-adsgram" onclick="handleBtnClick(watchAdsgram)">
-          🎬 مشاهدة الإعلان (+0.005$)
+          🎬 مشاهدة الإعلان (+0.0008$)
         </button>
-        <div id="adsgram-timer" class="timer-text" style="display: none;"></div>
       </div>
 
       <!-- إعلان Adsterra -->
@@ -329,14 +315,16 @@
     const CHANNEL_URL = "https://t.me/madara_crypto20";
 
     const MIN_WITHDRAW = 0.01;
-    const ADSGRAM_REWARD = 0.005;
+    const ADSGRAM_REWARD = 0.0008;
     const ADSTERRA_REWARD = 0.002;
     const SHRINKME_REWARD = 0.005;
     const TASK_REWARD = 0.004;
     const COOLDOWN_30MIN = 30 * 60 * 1000;
+    const MAX_DAILY_ADSGRAM = 20;
 
     let balance = 0.0000;
-    let lastAdsgramTime = 0;
+    let adsgramCount = 0;
+    let lastAdsgramDate = "";
     let lastAdsterraTime = 0;
     let lastShrinkmeTime = 0;
     let isTaskDone = false;
@@ -403,8 +391,19 @@
       const b = localStorage.getItem('user_balance');
       if (b) balance = parseFloat(b);
 
-      const ag = localStorage.getItem('last_adsgram');
-      if (ag) lastAdsgramTime = parseInt(ag);
+      const today = new Date().toDateString();
+      const savedDate = localStorage.getItem('adsgram_date');
+      
+      if (savedDate !== today) {
+        adsgramCount = 0;
+        localStorage.setItem('adsgram_date', today);
+        localStorage.setItem('adsgram_daily_count', '0');
+      } else {
+        const c = localStorage.getItem('adsgram_daily_count');
+        if (c) adsgramCount = parseInt(c);
+      }
+
+      document.getElementById('adsgram-count').innerText = MAX_DAILY_ADSGRAM - adsgramCount;
 
       const ad = localStorage.getItem('last_adsterra');
       if (ad) lastAdsterraTime = parseInt(ad);
@@ -425,20 +424,14 @@
     function checkTimers() {
       const now = Date.now();
 
-      // Adsgram Timer
-      const agElapsed = now - lastAdsgramTime;
+      // Adsgram Limit Check
       const agBtn = document.getElementById('adsgram-btn');
-      const agTimerText = document.getElementById('adsgram-timer');
-
-      if (agElapsed < COOLDOWN_30MIN) {
+      if (adsgramCount >= MAX_DAILY_ADSGRAM) {
         agBtn.disabled = true;
-        agTimerText.style.display = 'block';
-        const rem = Math.ceil((COOLDOWN_30MIN - agElapsed) / 1000);
-        agTimerText.innerText = `⏳ المتبقي: ${Math.floor(rem / 60)}:${(rem % 60 < 10 ? '0' : '')}${rem % 60}`;
+        agBtn.innerText = "❌ وصلت للحد اليومي (20/20)";
       } else {
         agBtn.disabled = false;
-        agTimerText.style.display = 'none';
-        agBtn.innerText = "🎬 مشاهدة الإعلان (+0.005$)";
+        agBtn.innerText = "🎬 مشاهدة الإعلان (+0.0008$)";
       }
 
       // Adsterra Timer
@@ -459,7 +452,7 @@
         }
       }
 
-      // ShrinkMe Timer (مخفي بدون إظهار عداد رقمي)
+      // ShrinkMe Timer
       const smElapsed = now - lastShrinkmeTime;
       const smBtn = document.getElementById('shrinkme-btn');
       const smTimerText = document.getElementById('shrinkme-timer');
@@ -478,29 +471,31 @@
       }
     }
 
+    // مشاهدة Adsgram عبر SDK المباشر
     function watchAdsgram() {
-      if (Date.now() - lastAdsgramTime < COOLDOWN_30MIN) return;
+      if (adsgramCount >= MAX_DAILY_ADSGRAM) {
+        showToast("⚠️ لقد استنفدت جميع الإعلانات اليومية (20/20)!");
+        return;
+      }
 
       if (window.Adsgram) {
-        try {
-          const AdController = window.Adsgram.init({ blockId: ADSGRAM_BLOCK_ID });
-          AdController.show().then(() => {
-            balance += ADSGRAM_REWARD;
-            lastAdsgramTime = Date.now();
-            localStorage.setItem('last_adsgram', lastAdsgramTime.toString());
-            updateBalance();
-            showToast("🎉 تمت مشاهدة الإعلان بنجاح! المكافأة: +0.005$");
-          }).catch((err) => {
-            showToast("⚠️ لا يوجد إعلان متوفر حالياً أو لم يكتمل!");
-          });
-        } catch(e) {
-          showToast("❌ حدث خطأ أثناء تشغيل الإعلان!");
-        }
+        const AdController = window.Adsgram.init({ blockId: ADSGRAM_BLOCK_ID });
+        AdController.show().then(() => {
+          balance += ADSGRAM_REWARD;
+          adsgramCount++;
+          localStorage.setItem('adsgram_daily_count', adsgramCount.toString());
+          document.getElementById('adsgram-count').innerText = MAX_DAILY_ADSGRAM - adsgramCount;
+          updateBalance();
+          showToast("🎉 تم مشاهدة الإعلان بنجاح! المكافأة: +0.0008$");
+        }).catch((err) => {
+          showToast("⚠️ لم يتم إكمال الإعلان أو لا يوجد إعلان متوفر حالياً.");
+        });
       } else {
-        showToast("⚠️ افتح البوت من داخل تطبيق التلجرام لتظهر الإعلانات!");
+        showToast("⚠️ تعذر تحميل مكتبة الإعلانات، تأكد من فتح البوت من التلجرام.");
       }
     }
 
+    // Adsterra مع اشتراط البقاء داخل موقع الإعلان
     function startAdsterra() {
       if (Date.now() - lastAdsterraTime < COOLDOWN_30MIN) return;
 
@@ -508,18 +503,21 @@
       
       adsterraSecondsLeft = 10;
       const adBtn = document.getElementById('adsterra-btn');
-      const adTimerText = document.getElementById('adsterra-timer');
-      
       adBtn.disabled = true;
-      adTimerText.style.display = 'block';
 
       if (adsterraTimer) clearInterval(adsterraTimer);
 
       adsterraTimer = setInterval(() => {
-        if (document.hidden) return;
+        // إذا رجع المستخدم للتطبيق قبل انتهاء الـ 10 ثوانٍ
+        if (!document.hidden && adsterraSecondsLeft > 0) {
+          clearInterval(adsterraTimer);
+          adBtn.disabled = false;
+          adsterraSecondsLeft = 0;
+          showToast("⚠️ يجب عليك البقاء داخل الموقع الإعلاني لمدة 10 ثوانٍ!");
+          return;
+        }
 
         adsterraSecondsLeft--;
-        adTimerText.innerText = `⏱️ يرجى الانتظار داخل التطبيق: ${adsterraSecondsLeft} ثانية`;
 
         if (adsterraSecondsLeft <= 0) {
           clearInterval(adsterraTimer);
@@ -532,21 +530,18 @@
       }, 1000);
     }
 
-    // ShrinkMe بدون إظهار مؤقت الترقيم
     function startShrinkMe() {
       if (Date.now() - lastShrinkmeTime < COOLDOWN_30MIN) return;
 
       window.open(SHRINKME_URL, '_blank');
 
-      shrinkmeSecondsLeft = 120; // 2 دقيقة
+      shrinkmeSecondsLeft = 120;
       const smBtn = document.getElementById('shrinkme-btn');
-      
       smBtn.disabled = true;
 
       if (shrinkmeTimer) clearInterval(shrinkmeTimer);
 
       shrinkmeTimer = setInterval(() => {
-        // إذا عاد المستخدم شاشته للتطبيق قبل انتهاء الوقت
         if (!document.hidden && shrinkmeSecondsLeft > 0) {
           clearInterval(shrinkmeTimer);
           smBtn.disabled = false;
@@ -595,12 +590,12 @@
       btn.disabled = true;
     }
 
-        function executeWithdrawal() {
+    function executeWithdrawal() {
       const address = document.getElementById('withdraw-address').value.trim();
       const amount = parseFloat(document.getElementById('withdraw-amount').value);
 
       if (!address || address.length < 15) {
-        showToast("⚠️ يرجى كتابة عنوان محفظة صحيحة!");
+                showToast("⚠️ يرجى كتابة عنوان محفظة صحيحة!");
         return;
       }
 
@@ -654,3 +649,5 @@
   </script>
 </body>
 </html>
+
+    
