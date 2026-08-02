@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Pixel Fantasy - Madara Crypto</title>
+  <title>Pixel Fantasy - Monster Hunter RPG</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <!-- Adsgram SDK -->
   <script src="https://sad.adsgram.ai/js/sad-index.js"></script>
@@ -12,7 +12,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; user-select: none; }
     
     body { 
-      background-color: #0d1f18; 
+      background-color: #081c15; 
       color: #fff; 
       min-height: 100vh; 
       display: flex; 
@@ -24,8 +24,8 @@
     .bg-knight { 
       position: fixed; 
       top: 0; left: 0; width: 100%; height: 100%; 
-      background: linear-gradient(180deg, rgba(13,31,24,0.85) 0%, rgba(5,15,10,0.92) 100%),
-                  radial-gradient(circle at 50% 30%, #2d6a4f 0%, #081c15 70%);
+      background: linear-gradient(180deg, rgba(8,28,21,0.9) 0%, rgba(2,10,7,0.95) 100%),
+                  radial-gradient(circle at 50% 20%, #1b4332 0%, #050f0a 80%);
       z-index: -2; 
     }
 
@@ -35,14 +35,14 @@
       top: 0; left: 0; right: 0; bottom: 0;
       background-image: radial-gradient(#52b788 1px, transparent 1px);
       background-size: 16px 16px;
-      opacity: 0.15;
+      opacity: 0.12;
     }
 
     .app-container { 
       width: 100%; 
       max-width: 450px; 
       min-height: 100vh; 
-      padding: 15px 16px 90px 16px; 
+      padding: 15px 16px 85px 16px; 
       display: flex; 
       flex-direction: column; 
       position: relative; 
@@ -52,33 +52,33 @@
       display: flex; 
       justify-content: space-between; 
       align-items: center; 
-      padding: 12px 14px;
-      background: rgba(15, 35, 25, 0.9);
+      padding: 10px 14px;
+      background: rgba(15, 35, 25, 0.95);
       border: 3px solid #52b788;
-      box-shadow: 0 4px 0 #1b4332;
-      margin-bottom: 15px;
+      box-shadow: 0 4px 0 #081c15;
+      margin-bottom: 12px;
     }
     
     .pixel-title { 
       font-family: 'Press Start 2P', cursive; 
-      font-size: 11px; 
+      font-size: 10px; 
       color: #74c69d; 
       text-shadow: 2px 2px #000; 
     }
     
     .user-pill { 
-      background: #081c15; 
+      background: #050f0a; 
       border: 2px solid #52b788; 
-      padding: 4px 10px; 
-      font-size: 12px; 
+      padding: 4px 8px; 
+      font-size: 11px; 
       display: flex; 
       align-items: center; 
       gap: 6px; 
       font-weight: bold;
     }
-    .status-dot { width: 8px; height: 8px; background: #52b788; box-shadow: 0 0 6px #52b788; }
+    .status-dot { width: 7px; height: 7px; background: #52b788; box-shadow: 0 0 6px #52b788; }
 
-    .page { display: none; animation: fadeIn 0.2s ease-in-out; }
+    .page { display: none; animation: fadeIn 0.15s ease-in-out; }
     .page.active { display: block; }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
@@ -86,84 +86,124 @@
       background: rgba(15, 35, 25, 0.9);
       border: 3px solid #40916c;
       box-shadow: 4px 4px 0px #000;
-      padding: 18px;
-      margin-bottom: 15px;
+      padding: 15px;
+      margin-bottom: 12px;
       text-align: center;
       position: relative;
     }
 
-    .card-label { font-size: 13px; color: #b7e4c7; font-weight: bold; }
+    .card-label { font-size: 12px; color: #b7e4c7; font-weight: bold; }
     .balance-value { 
-      font-size: 32px; 
+      font-size: 26px; 
       font-weight: 900; 
       color: #74c69d; 
-      margin: 10px 0; 
+      margin: 8px 0; 
       font-family: 'Press Start 2P', cursive; 
-      text-shadow: 3px 3px #000; 
+      text-shadow: 2px 2px #000; 
+    }
+
+    /* تصميم الوحش في اللعبة */
+    .monster-arena {
+      background: radial-gradient(circle, #132a13 0%, #050f0a 100%);
+      border: 3px solid #52b788;
+      padding: 20px 10px;
+      margin-bottom: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .monster-avatar {
+      font-size: 65px;
+      margin: 10px 0;
+      cursor: pointer;
+      transition: transform 0.05s;
+      display: inline-block;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.8));
+    }
+    .monster-avatar:active {
+      transform: scale(0.90);
+    }
+
+    .hp-bar-container {
+      width: 100%;
+      background: #050f0a;
+      border: 2px solid #386641;
+      height: 18px;
+      margin: 10px 0 5px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hp-bar-fill {
+      height: 100%;
+      background: #e76f51;
+      width: 100%;
+      transition: width 0.1s linear;
+    }
+
+    .hp-text {
+      position: absolute;
+      width: 100%;
+      top: 0; left: 0;
+      font-size: 10px;
+      font-family: 'Press Start 2P', cursive;
+      line-height: 14px;
+      color: #fff;
+      text-shadow: 1px 1px #000;
     }
 
     .pixel-btn {
       display: block;
       width: 100%;
       border: 3px solid #000;
-      padding: 14px;
-      font-size: 14px;
+      padding: 12px;
+      font-size: 13px;
       font-weight: 900;
       cursor: pointer;
       text-align: center;
       text-decoration: none;
-      margin-top: 10px;
+      margin-top: 8px;
       position: relative;
-      overflow: hidden;
       transition: transform 0.05s, box-shadow 0.05s;
     }
 
-    .btn-adsgram { background: #52b788; color: #081c15; box-shadow: 0 6px 0 #1b4332, 0 9px 0 #000; }
-    .btn-adsterra { background: #e76f51; color: #fff; box-shadow: 0 6px 0 #9c6644, 0 9px 0 #000; }
-    .btn-shrinkme { background: #9b5de5; color: #fff; box-shadow: 0 6px 0 #5c3d8f, 0 9px 0 #000; }
-    .btn-task { background: #2a9d8f; color: #fff; box-shadow: 0 6px 0 #1d3557, 0 9px 0 #000; }
-    .btn-withdraw { background: #74c69d; color: #081c15; box-shadow: 0 6px 0 #2d6a4f, 0 9px 0 #000; }
+    .btn-attack { background: #e76f51; color: #fff; box-shadow: 0 5px 0 #9c6644, 0 8px 0 #000; font-size: 15px; }
+    .btn-adsgram { background: #52b788; color: #081c15; box-shadow: 0 5px 0 #1b4332, 0 8px 0 #000; }
+    .btn-adsterra { background: #4ea8de; color: #fff; box-shadow: 0 5px 0 #1d3557, 0 8px 0 #000; }
+    .btn-shrinkme { background: #9b5de5; color: #fff; box-shadow: 0 5px 0 #5c3d8f, 0 8px 0 #000; }
+    .btn-upgrade { background: #f4a261; color: #081c15; box-shadow: 0 5px 0 #b56576, 0 8px 0 #000; }
+    .btn-withdraw { background: #74c69d; color: #081c15; box-shadow: 0 5px 0 #2d6a4f, 0 8px 0 #000; }
 
     .pixel-btn:active:not(:disabled) {
-      transform: translateY(4px);
+      transform: translateY(3px);
       box-shadow: 0 2px 0 #000;
     }
 
     .pixel-btn:disabled {
       background: #2b4c3f !important;
       color: #728c81 !important;
-      opacity: 0.7;
+      opacity: 0.6;
       cursor: not-allowed;
-      box-shadow: 0 3px 0 #000 !important;
-    }
-
-    .timer-text {
-      font-family: 'Press Start 2P', cursive;
-      font-size: 10px;
-      color: #e9c46a;
-      margin-top: 10px;
+      box-shadow: 0 2px 0 #000 !important;
     }
 
     .pixel-input {
       width: 100%;
-      background: #081c15;
+      background: #050f0a;
       border: 2px solid #52b788;
-      padding: 12px;
+      padding: 10px;
       color: #fff;
-      font-size: 14px;
+      font-size: 13px;
       outline: none;
-      margin: 8px 0 12px 0;
+      margin: 6px 0 10px 0;
       text-align: center;
     }
 
-    .withdraw-status-card {
-      background: #081c15;
-      border: 2px dashed #e9c46a;
-      padding: 12px;
-      margin-top: 15px;
-      border-radius: 4px;
-      text-align: right;
-      font-size: 12px;
+    .timer-text {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 9px;
+      color: #e9c46a;
+      margin-top: 6px;
     }
 
     .bottom-nav { 
@@ -171,11 +211,12 @@
       bottom: 0; left: 0; right: 0; 
       max-width: 450px; 
       margin: 0 auto; 
-      background: #081c15; 
+      background: #050f0a; 
       border-top: 3px solid #52b788; 
       display: flex; 
       justify-content: space-around; 
-      padding: 10px 0; 
+      padding: 8px 0; 
+      z-index: 100;
     }
     
     .nav-item { 
@@ -185,26 +226,26 @@
       display: flex; 
       flex-direction: column; 
       align-items: center; 
-      gap: 4px; 
-      font-size: 12px; 
+      gap: 3px; 
+      font-size: 11px; 
       font-weight: bold;
       cursor: pointer; 
     }
     .nav-item.active { color: #fff; text-shadow: 0 0 8px #52b788; }
-    .nav-icon { font-size: 20px; }
+    .nav-icon { size: 18px; font-size: 18px; }
 
     .toast { 
       position: fixed; 
-      top: 20px; left: 50%; 
+      top: 15px; left: 50%; 
       transform: translateX(-50%); 
-      background: #081c15; 
+      background: #050f0a; 
       color: #fff; 
-      padding: 12px 20px; 
+      padding: 10px 18px; 
       border: 3px solid #52b788; 
-      font-size: 13px; 
+      font-size: 12px; 
       display: none; 
       z-index: 1000; 
-      box-shadow: 0 5px 0 #000;
+      box-shadow: 0 4px 0 #000;
       text-align: center;
       width: 85%;
     }
@@ -216,119 +257,128 @@
 
   <div class="app-container">
     <header class="app-header">
-      <div class="pixel-title">⚔️ MADARA CRYPTO</div>
+      <div class="pixel-title">⚔️ MONSTER FANTASY</div>
       <div class="user-pill">
         <span class="status-dot"></span>
         <span id="user-display-name">الفارس</span>
       </div>
     </header>
 
-    <!-- الصفحة الرئيسية -->
-    <main id="page-home" class="page active">
-      <div class="pixel-box">
-        <span class="card-label">الرصيد الحالي (USDT)</span>
-        <div class="balance-value" id="user-balance">0.0000</div>
-        <span style="font-size: 11px; color: #52b788;">BEP20 NETWORK</span>
+    <!-- صفحة اللعبة الرئيسية (Monster Tapper) -->
+    <main id="page-game" class="page active">
+      <div class="pixel-box" style="padding: 10px; margin-bottom: 10px;">
+        <div style="display: flex; justify-content: space-between; font-size: 11px; color: #b7e4c7;">
+          <span>💰 الرصيد: <b id="user-balance" style="color:#74c69d;">0.0000</b> USDT</span>
+          <span>⚡ الطاقة: <b id="energy-val">100</b>/100</span>
+        </div>
       </div>
 
-      <!-- إعلان Adsgram بالكود الجديد 40477 -->
-      <div class="pixel-box">
-        <h3 style="font-size: 15px; color: #fff;">📺 إعلان Adsgram</h3>
-        <p style="font-size: 12px; color: #b7e4c7; margin: 5px 0;">شاهد الإعلان كاملاً وحصل على <b>+0.0008$</b></p>
-        <p style="font-size: 11px; color: #e9c46a;">المتبقي اليوم: <span id="adsgram-count">20</span>/20</p>
+      <div class="monster-arena">
+        <div style="font-size: 11px; color: #e9c46a; margin-bottom: 5px;">
+          الوحش الحالي: <span id="monster-name">عفريت الظلام (مستوى 1)</span>
+        </div>
         
-        <button id="adsgram-btn" class="pixel-btn btn-adsgram" onclick="handleBtnClick(watchAdsgram)">
-          🎬 مشاهدة الإعلان (+0.0008$)
+        <!-- ائقونة الوحش النقرية -->
+        <div class="monster-avatar" id="monster-obj" onclick="hitMonster()">👹</div>
+
+        <div class="hp-bar-container">
+          <div class="hp-fill hp-bar-fill" id="hp-bar"></div>
+          <div class="hp-text" id="hp-text">100 / 100 HP</div>
+        </div>
+        <p style="font-size: 10px; color: #8ab17d; margin-top: 5px;">اضغط على الوحش ليهاجمه الفارس ويمنحك نقاط وأرباح!</p>
+      </div>
+
+      <!-- تطوير قوة السلاح -->
+      <div class="pixel-box">
+        <h3 style="font-size: 13px; color: #fff;">🗡️ ترقية سيف الفارس</h3>
+        <p style="font-size: 11px; color: #b7e4c7; margin: 4px 0;">قوة الضربة الحالية: +<span id="click-power">1</span> ضرر</p>
+        <button class="pixel-btn btn-upgrade" onclick="handleBtnClick(upgradeWeapon)">
+          ⬆️ ترقية السيف بـ <span id="upgrade-cost">0.001</span> $
+        </button>
+      </div>
+
+      <!-- تعبئة الطاقة بالإعلانات -->
+      <div class="pixel-box">
+        <h3 style="font-size: 13px; color: #fff;">⚡ استعادة الطاقة الفورية</h3>
+        <p style="font-size: 11px; color: #b7e4c7; margin: 4px 0;">شاهد إعلان Adsgram لملء الطاقة ومضاعفة الهجوم</p>
+        <button id="adsgram-energy-btn" class="pixel-btn btn-adsgram" onclick="handleBtnClick(watchAdsgramForEnergy)">
+          🎬 مشاهدة إعلان واستعادة الطاقة (+0.0008$)
+        </button>
+      </div>
+    </main>
+
+    <!-- صفحة الأرباح والمهام -->
+    <main id="page-earn" class="page">
+      <h2 style="font-size: 15px; color: #fff; margin-bottom: 10px; text-align: center;">💎 مركز الأرباح والإعلانات</h2>
+      
+      <!-- إعلان Adsgram (الكود 40477) -->
+      <div class="pixel-box">
+        <h3 style="font-size: 14px; color: #fff;">📺 إعلان Adsgram</h3>
+        <p style="font-size: 11px; color: #b7e4c7; margin: 4px 0;">المتبقي اليوم: <span id="adsgram-count">20</span>/20 (مكافأة 0.0008$)</p>
+        <button id="adsgram-btn" class="pixel-btn btn-adsgram" onclick="handleBtnClick(watchAdsgramReward)">
+          🎬 شاهد واربح الآن
         </button>
       </div>
 
       <!-- إعلان Adsterra -->
       <div class="pixel-box">
-        <h3 style="font-size: 15px; color: #fff;">🚀 رابط Adsterra الذكي</h3>
-        <p style="font-size: 12px; color: #b7e4c7; margin: 5px 0;">ابقَ في الموقع 10 ثوانٍ لتحصل على <b>+0.002$</b></p>
-        
+        <h3 style="font-size: 14px; color: #fff;">🚀 رابط Adsterra الذكي</h3>
+        <p style="font-size: 11px; color: #b7e4c7; margin: 4px 0;">ابقَ 10 ثوانٍ لتحصل على <b>+0.002$</b></p>
         <button id="adsterra-btn" class="pixel-btn btn-adsterra" onclick="handleBtnClick(startAdsterra)">
-          🔗 زيارة الإعلان (+0.002$)
+          🔗 زيارة الموقع (+0.002$)
         </button>
         <div id="adsterra-timer" class="timer-text" style="display: none;"></div>
       </div>
 
-      <!-- اختصار الروابط ShrinkMe -->
+      <!-- اختصار الروابط -->
       <div class="pixel-box">
-        <h3 style="font-size: 15px; color: #fff;">🔗 اختصار الروابط (ShrinkMe)</h3>
-        <p style="font-size: 12px; color: #b7e4c7; margin: 5px 0;">اختصر الرابط بالكامل وإلا لن تحصل على المكافأة</p>
-        
+        <h3 style="font-size: 14px; color: #fff;">🌐 اختصار الروابط (ShrinkMe)</h3>
+        <p style="font-size: 11px; color: #b7e4c7; margin: 4px 0;">أكمل الاختصار وحصل على <b>+0.005$</b></p>
         <button id="shrinkme-btn" class="pixel-btn btn-shrinkme" onclick="handleBtnClick(startShrinkMe)">
-          🌐 دخول الرابط المختصر (+0.005$)
+          🔗 دخول الرابط (+0.005$)
         </button>
         <div id="shrinkme-timer" class="timer-text" style="display: none;"></div>
       </div>
     </main>
 
-    <!-- صفحة المهام -->
-    <main id="page-tasks" class="page">
-      <h2 style="font-size: 16px; color: #fff; margin-bottom: 12px; text-align: center;">📜 المهام المتاحة</h2>
-      
-      <!-- مهمة القناة -->
-      <div class="pixel-box">
-        <h3 style="font-size: 14px; color: #fff;">📢 الاشتراك بقناة التلجرام</h3>
-        <p style="font-size: 12px; color: #74c69d; margin: 6px 0;">المكافأة: <b>+0.004$</b></p>
-        <button id="task-channel-btn" class="pixel-btn btn-task" onclick="handleBtnClick(handleChannelTask)">
-          🚀 انضمام للقناة
-        </button>
-      </div>
-
-      <!-- مهمة تعزيز للقناة -->
-      <div class="pixel-box">
-        <h3 style="font-size: 14px; color: #fff;">🦈 تعزيز للقناة</h3>
-        <p style="font-size: 12px; color: #74c69d; margin: 6px 0;">المكافأة: <b>+0.005$</b></p>
-        <button id="task-boost-btn" class="pixel-btn btn-task" onclick="handleBtnClick(handleBoostTask)">
-          🚀 تعزيز القناة الآن
-        </button>
-      </div>
-    </main>
-
-    <!-- صفحة السحب -->
+    <!-- صفحة السحب الفوري -->
     <main id="page-withdraw" class="page">
-      <h2 style="font-size: 16px; color: #fff; margin-bottom: 12px; text-align: center;">💳 سحب الأرباح</h2>
+      <h2 style="font-size: 15px; color: #fff; margin-bottom: 10px; text-align: center;">💳 سحب الأرباح</h2>
       
       <div class="pixel-box" style="text-align: right;">
-        <p style="font-size: 12px; color: #e9c46a; text-align: center;">📌 الحد الأدنى للسحب هو: <b>0.01 USDT</b></p>
+        <p style="font-size: 11px; color: #e9c46a; text-align: center;">📌 الحد الأدنى للسحب: <b>0.01 USDT</b></p>
         
-        <label style="display: block; font-size: 12px; margin-top: 12px;">عنوان المحفظة (BEP20):</label>
+        <label style="display: block; font-size: 11px; margin-top: 10px;">عنوان المحفظة (BEP20):</label>
         <input type="text" id="withdraw-address" class="pixel-input" placeholder="0x..." />
         
-        <label style="display: block; font-size: 12px;">مبلغ السحب (USDT):</label>
+        <label style="display: block; font-size: 11px;">مبلغ السحب (USDT):</label>
         <input type="number" step="0.001" id="withdraw-amount" class="pixel-input" placeholder="0.01" />
         
         <button id="withdraw-submit-btn" class="pixel-btn btn-withdraw" onclick="handleBtnClick(executeWithdrawal)">
-          📤 إرسال طلب السحب الان
+          📤 إرسال طلب السحب للإدارة
         </button>
 
-        <!-- سجل و تفاصيل حالة السحب -->
-        <div id="withdraw-details" class="withdraw-status-card" style="display: none;">
-          <p style="color: #e9c46a; font-weight: bold; text-align: center; margin-bottom: 6px;">⏳ السحب قيد المعالجة (سيصل خلال 10 - 24 ساعة)</p>
-          <div style="border-top: 1px solid #2d6a4f; padding-top: 6px; font-size: 11px; color: #b7e4c7;">
-            <p>👤 <b>المستخدم:</b> <span id="wd-user">-</span></p>
-            <p>💵 <b>مبلغ السحب:</b> <span id="wd-amount">-</span> USDT</p>
-            <p>🏦 <b>المحفظة:</b> <span id="wd-address" style="word-break: break-all;">-</span></p>
-          </div>
+        <div id="withdraw-details" style="display: none; background: #050f0a; border: 2px dashed #e9c46a; padding: 10px; margin-top: 10px; font-size: 11px;">
+          <p style="color: #e9c46a; text-align: center; font-weight: bold;">⏳ الطلب قيد المراجعة</p>
+          <p>👤 <b>المستخدم:</b> <span id="wd-user">-</span></p>
+          <p>💵 <b>المبلغ:</b> <span id="wd-amount">-</span> USDT</p>
+          <p>🏦 <b>المحفظة:</b> <span id="wd-address" style="word-break: break-all;">-</span></p>
         </div>
       </div>
     </main>
 
-    <!-- الشريط السفلي -->
+    <!-- الشريط السفلي التنقلي -->
     <nav class="bottom-nav">
-      <button class="nav-item active" onclick="handleBtnClick(() => switchPage('home', this))">
+      <button class="nav-item active" onclick="handleBtnClick(() => switchPage('game', this))">
         <span class="nav-icon">⚔️</span>
-        <span>الرئيسية</span>
+        <span>القتال</span>
       </button>
-      <button class="nav-item" onclick="handleBtnClick(() => switchPage('tasks', this))">
-        <span class="nav-icon">📜</span>
-        <span>المهام</span>
+      <button class="nav-item" onclick="handleBtnClick(() => switchPage('earn', this))">
+        <span class="nav-icon">💎</span>
+        <span>الأرباح</span>
       </button>
       <button class="nav-item" onclick="handleBtnClick(() => switchPage('withdraw', this))">
-        <span class="nav-icon">💰</span>
+        <span class="nav-icon">💳</span>
         <span>السحب</span>
       </button>
     </nav>
@@ -339,36 +389,40 @@
   <script>
     const BOT_TOKEN = "8934745041:AAFnoIhabF440pZM17YDIektjN9XFuZ4u1Y";
     const ADMIN_CHAT_ID = "5557254074";
-    
-    // كود إعلانات Adsgram الجديد المحدد من قبلك
     const ADSGRAM_BLOCK_ID = "40477";
 
     const ADSTERRA_URL = "https://www.effectivecpmnetwork.com/jbniegah7?key=c25a066401baecd24398a891da71814d";
     const SHRINKME_URL = "https://shrinkme.click/PixelFantas";
-    const CHANNEL_URL = "https://t.me/madara_crypto20";
-    const BOOST_URL = "https://t.me/boost/madara_crypto20";
 
     const MIN_WITHDRAW = 0.01;
-    const ADSGRAM_REWARD = 0.0008;
-    const ADSTERRA_REWARD = 0.002;
-    const SHRINKME_REWARD = 0.005;
-    const TASK_REWARD = 0.004;
-    const BOOST_REWARD = 0.005;
-    const COOLDOWN_30MIN = 30 * 60 * 1000;
     const MAX_DAILY_ADSGRAM = 20;
+    const COOLDOWN_30MIN = 30 * 60 * 1000;
 
+    // متغيرات اللعبة
     let balance = 0.0000;
+    let energy = 100;
+    let clickPower = 1;
+    let upgradeCost = 0.001;
+    
+    // بيانات الوحش
+    const monsters = [
+      { name: "عفريت الظلام (مستوى 1)", icon: "👹", maxHp: 50, reward: 0.0002 },
+      { name: "تنين الغابة (مستوى 2)", icon: "🐲", maxHp: 120, reward: 0.0005 },
+      { name: "فارس الهيكل العظمي (مستوى 3)", icon: "💀", maxHp: 250, reward: 0.0012 },
+      { name: "زعيم العوالم المظلمة (مستوى 4)", icon: "👑", maxHp: 500, reward: 0.0030 }
+    ];
+    let currentMonsterIndex = 0;
+    let monsterHp = 50;
+
     let adsgramCount = 0;
     let lastAdsterraTime = 0;
     let lastShrinkmeTime = 0;
-    let isTaskDone = false;
-    let isBoostDone = false;
 
     let isClickLocked = false;
-    let shrinkmeTimer = null;
-    let shrinkmeSecondsLeft = 0;
     let adsterraTimer = null;
     let adsterraSecondsLeft = 0;
+    let shrinkmeTimer = null;
+    let shrinkmeSecondsLeft = 0;
 
     const tg = window.Telegram?.WebApp;
     if (tg) {
@@ -378,363 +432,290 @@
       }
     }
 
-    function playPixelClickSound() {
+    function playSound(type) {
       try {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = 'square';
-        osc.frequency.setValueAtTime(400, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.05);
-        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = type === 'hit' ? 'square' : 'sine';
+        osc.frequency.setValueAtTime(type === 'hit' ? 300 : 600, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(type === 'hit' ? 100 : 900, ctx.currentTime + 0.08);
+        gain.gain.setValueAtTime(0.1, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.08);
         osc.connect(gain);
-        gain.connect(audioCtx.destination);
+        gain.connect(ctx.destination);
         osc.start();
-        osc.stop(audioCtx.currentTime + 0.05);
+        osc.stop(ctx.currentTime + 0.08);
       } catch (e) {}
     }
 
     function handleBtnClick(fn) {
-      playPixelClickSound();
+      playSound('click');
       if (isClickLocked) return;
       isClickLocked = true;
       fn();
-      setTimeout(() => { isClickLocked = false; }, 400);
+      setTimeout(() => { isClickLocked = false; }, 300);
     }
 
     function showToast(msg) {
       const t = document.getElementById('toast');
       t.innerText = msg;
       t.style.display = 'block';
-      setTimeout(() => { t.style.display = 'none'; }, 3500);
+      setTimeout(() => { t.style.display = 'none'; }, 3000);
     }
 
-    function switchPage(pageId, element) {
+    function switchPage(pageId, el) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
       document.getElementById(`page-${pageId}`).classList.add('active');
-      if (element) element.classList.add('active');
+      if (el) el.classList.add('active');
     }
 
-    function updateBalance() {
+    function updateUI() {
       document.getElementById('user-balance').innerText = balance.toFixed(4);
-      localStorage.setItem('user_balance', balance.toString());
-    }
-
-    function loadSavedData() {
-      const b = localStorage.getItem('user_balance');
-      if (b) balance = parseFloat(b);
-
-      const today = new Date().toDateString();
-      const savedDate = localStorage.getItem('adsgram_date');
-      
-      if (savedDate !== today) {
-        adsgramCount = 0;
-        localStorage.setItem('adsgram_date', today);
-        localStorage.setItem('adsgram_daily_count', '0');
-      } else {
-        const c = localStorage.getItem('adsgram_daily_count');
-        if (c) adsgramCount = parseInt(c);
-      }
-
+      document.getElementById('energy-val').innerText = energy;
+      document.getElementById('click-power').innerText = clickPower;
+      document.getElementById('upgrade-cost').innerText = upgradeCost.toFixed(3);
       document.getElementById('adsgram-count').innerText = MAX_DAILY_ADSGRAM - adsgramCount;
 
-      const ad = localStorage.getItem('last_adsterra');
-      if (ad) lastAdsterraTime = parseInt(ad);
+      const m = monsters[currentMonsterIndex];
+      document.getElementById('monster-name').innerText = m.name;
+      document.getElementById('monster-obj').innerText = m.icon;
 
-      const sm = localStorage.getItem('last_shrinkme');
-      if (sm) lastShrinkmeTime = parseInt(sm);
+      const hpPercent = Math.max(0, (monsterHp / m.maxHp) * 100);
+      document.getElementById('hp-bar').style.width = hpPercent + '%';
+      document.getElementById('hp-text').innerText = `${monsterHp} / ${m.maxHp} HP`;
 
-      if (localStorage.getItem('channel_task_completed') === 'true') {
-        isTaskDone = true;
-        disableTaskBtn();
-      }
-
-      if (localStorage.getItem('boost_task_completed') === 'true') {
-        isBoostDone = true;
-        disableBoostBtn();
-      }
-
-      const savedWd = localStorage.getItem('last_withdrawal_data');
-      if (savedWd) {
-        const wdData = JSON.parse(savedWd);
-        showWithdrawDetails(wdData.user, wdData.amount, wdData.address);
-      }
-
-      updateBalance();
-      checkTimers();
-      setInterval(checkTimers, 1000);
+      localStorage.setItem('game_balance', balance.toString());
+      localStorage.setItem('game_energy', energy.toString());
+      localStorage.setItem('game_power', clickPower.toString());
+      localStorage.setItem('game_monster_idx', currentMonsterIndex.toString());
+      localStorage.setItem('game_monster_hp', monsterHp.toString());
     }
 
-    function checkTimers() {
-      const now = Date.now();
-
-      const agBtn = document.getElementById('adsgram-btn');
-      if (adsgramCount >= MAX_DAILY_ADSGRAM) {
-        agBtn.disabled = true;
-        agBtn.innerText = "❌ وصلت للحد اليومي (20/20)";
-      } else {
-        agBtn.disabled = false;
-        agBtn.innerText = "🎬 مشاهدة الإعلان (+0.0008$)";
-      }
-
-      const adElapsed = now - lastAdsterraTime;
-      const adBtn = document.getElementById('adsterra-btn');
-      const adTimerText = document.getElementById('adsterra-timer');
-
-      if (adsterraSecondsLeft <= 0) {
-        if (adElapsed < COOLDOWN_30MIN) {
-          adBtn.disabled = true;
-          adTimerText.style.display = 'block';
-          const rem = Math.ceil((COOLDOWN_30MIN - adElapsed) / 1000);
-          adTimerText.innerText = `⏳ المتبقي: ${Math.floor(rem / 60)}:${(rem % 60 < 10 ? '0' : '')}${rem % 60}`;
-        } else {
-          adBtn.disabled = false;
-          adTimerText.style.display = 'none';
-          adBtn.innerText = "🔗 زيارة الإعلان (+0.002$)";
-        }
-      }
-
-      const smElapsed = now - lastShrinkmeTime;
-      const smBtn = document.getElementById('shrinkme-btn');
-      const smTimerText = document.getElementById('shrinkme-timer');
-
-      if (shrinkmeSecondsLeft <= 0) {
-        if (smElapsed < COOLDOWN_30MIN) {
-          smBtn.disabled = true;
-          smTimerText.style.display = 'block';
-          const rem = Math.ceil((COOLDOWN_30MIN - smElapsed) / 1000);
-          smTimerText.innerText = `⏳ المتبقي: ${Math.floor(rem / 60)}:${(rem % 60 < 10 ? '0' : '')}${rem % 60}`;
-        } else {
-          smBtn.disabled = false;
-          smTimerText.style.display = 'none';
-          smBtn.innerText = "🌐 دخول الرابط المختصر (+0.005$)";
-        }
-      }
-    }
-
-    // تشغيل إعلان Adsgram بالكود الجديد 40477 فقط مع التحقق الدقيق
-    async function watchAdsgram() {
-      if (adsgramCount >= MAX_DAILY_ADSGRAM) {
-        showToast("⚠️ لقد استنفدت جميع الإعلانات اليومية (20/20)!");
+    // هجوم على الوحش عند النقر
+    function hitMonster() {
+      if (energy <= 0) {
+        showToast("⚠️ نفذت طاقتك! شاهد إعلان لاستعادة الطاقة فوراً.");
         return;
       }
 
-      if (!window.Adsgram) {
-        showToast("⚠️ الإعلانات غير متوفرة الآن، عد لاحقاً");
-        return;
-      }
+      playSound('hit');
+      energy -= 1;
+      monsterHp -= clickPower;
 
-      try {
-        const adController = window.Adsgram.init({ blockId: ADSGRAM_BLOCK_ID, debug: false });
-        await adController.show();
+      // تأثير بصري خفيف على الوحش
+      const monsterEl = document.getElementById('monster-obj');
+      monsterEl.style.transform = 'scale(0.85) rotate(-5deg)';
+      setTimeout(() => { monsterEl.style.transform = 'scale(1) rotate(0deg)'; }, 80);
+
+      const m = monsters[currentMonsterIndex];
+      if (monsterHp <= 0) {
+        balance += m.reward;
+        showToast(`🎉 كفو! هزمت ${m.name} وحصلت على +${m.reward}$!`);
         
-        balance += ADSGRAM_REWARD;
+        // الانتقال للوحش التالي أو التدوير
+        currentMonsterIndex = (currentMonsterIndex + 1) % monsters.length;
+        monsterHp = monsters[currentMonsterIndex].maxHp;
+      }
+
+      updateUI();
+    }
+
+    // ترقية السيف
+    function upgradeWeapon() {
+      if (balance < upgradeCost) {
+        showToast("⚠️ رصيدك غير كافٍ لترقية السيف!");
+        return;
+      }
+      balance -= upgradeCost;
+      clickPower += 1;
+      upgradeCost *= 1.8;
+      updateUI();
+      showToast("⚔️ تمت ترقية سيف الفارس بنجاح!");
+    }
+
+    // استعادة الطاقة عبر إعلان Adsgram
+    async function watchAdsgramForEnergy() {
+      if (!window.Adsgram) {
+        showToast("⚠️ نظام الإعلانات غير متوفر حالياً");
+        return;
+      }
+      try {
+        const ad = window.Adsgram.init({ blockId: ADSGRAM_BLOCK_ID, debug: false });
+        await ad.show();
+        energy = 100;
+        updateUI();
+        showToast("⚡ تمت استعادة الطاقة كاملة (100/100)!");
+      } catch (e) {
+        showToast("⚠️ لم يتم اكتمال الإعلان");
+      }
+    }
+
+    // مشاهدة الإعلان من تبويب الأرباح
+    async function watchAdsgramReward() {
+      if (adsgramCount >= MAX_DAILY_ADSGRAM) {
+        showToast("⚠️ وصلت للحد اليومي للإعلانات (20/20)");
+        return;
+      }
+      if (!window.Adsgram) {
+        showToast("⚠️ الإعلانات غير متوفرة");
+        return;
+      }
+      try {
+        const ad = window.Adsgram.init({ blockId: ADSGRAM_BLOCK_ID, debug: false });
+        await ad.show();
+        balance += 0.0008;
         adsgramCount++;
         localStorage.setItem('adsgram_daily_count', adsgramCount.toString());
-        document.getElementById('adsgram-count').innerText = MAX_DAILY_ADSGRAM - adsgramCount;
-        updateBalance();
-        showToast("🎉 تم مشاهدة الإعلان بنجاح! المكافأة: +0.0008$");
+        updateUI();
+        showToast("🎉 حصلت على +0.0008$ بنجاح!");
       } catch (e) {
-        console.error("Adsgram error:", e);
-        showToast("⚠️ الإعلانات غير متوفرة الآن، عد لاحقاً");
+        showToast("⚠️ تعذر عرض الإعلان");
       }
     }
 
     function startAdsterra() {
       if (Date.now() - lastAdsterraTime < COOLDOWN_30MIN) return;
-
       window.open(ADSTERRA_URL, '_blank');
-      
       adsterraSecondsLeft = 10;
-      const adBtn = document.getElementById('adsterra-btn');
-      adBtn.disabled = true;
+      document.getElementById('adsterra-btn').disabled = true;
 
       if (adsterraTimer) clearInterval(adsterraTimer);
-
       adsterraTimer = setInterval(() => {
-        if (!document.hidden && adsterraSecondsLeft > 0) {
+        if (!document.hidden && adsterraSecondsLeft > 0
           clearInterval(adsterraTimer);
-          adBtn.disabled = false;
+          document.getElementById('adsterra-btn').disabled = false;
           adsterraSecondsLeft = 0;
-          showToast("⚠️ يجب عليك البقاء داخل الموقع الإعلاني لمدة 10 ثوانٍ!");
+          showToast("⚠️ يجب البقاء في الموقع الإعلاني 10 ثوانٍ!");
           return;
         }
-
         adsterraSecondsLeft--;
-        const adTimerText = document.getElementById('adsterra-timer');
-        adTimerText.style.display = 'block';
-        adTimerText.innerText = `⏳ متبقي بالاعلان: ${adsterraSecondsLeft} ثواني`;
+        const t = document.getElementById('adsterra-timer');
+        t.style.display = 'block';
+        t.innerText = `⏳ متبقي: ${adsterraSecondsLeft} ثوانٍ`;
 
         if (adsterraSecondsLeft <= 0) {
           clearInterval(adsterraTimer);
-          adTimerText.style.display = 'none';
-          balance += ADSTERRA_REWARD;
+          t.style.display = 'none';
+          balance += 0.002;
           lastAdsterraTime = Date.now();
           localStorage.setItem('last_adsterra', lastAdsterraTime.toString());
-          updateBalance();
-          showToast("🎉 تم الحصول على +0.002$ بنجاح!");
+          updateUI();
+          showToast("🎉 حصلت على +0.002$ من Adsterra!");
         }
       }, 1000);
     }
 
     function startShrinkMe() {
       if (Date.now() - lastShrinkmeTime < COOLDOWN_30MIN) return;
-
       window.open(SHRINKME_URL, '_blank');
-
-      shrinkmeSecondsLeft = 120;
-        const smBtn = document.getElementById('shrinkme-btn');
-      smBtn.disabled = true;
+      shrinkmeSecondsLeft = 60;
+      document.getElementById('shrinkme-btn').disabled = true;
 
       if (shrinkmeTimer) clearInterval(shrinkmeTimer);
-
       shrinkmeTimer = setInterval(() => {
         if (!document.hidden && shrinkmeSecondsLeft > 0) {
           clearInterval(shrinkmeTimer);
-          smBtn.disabled = false;
+          document.getElementById('shrinkme-btn').disabled = false;
           shrinkmeSecondsLeft = 0;
-          showToast("⚠️ يجب عليك اختصار الرابط بالكامل للحصول على المكافأة!");
+          showToast("⚠️ يجب إكمال اختصار الرابط بالكامل!");
           return;
         }
-
         shrinkmeSecondsLeft--;
-
         if (shrinkmeSecondsLeft <= 0) {
           clearInterval(shrinkmeTimer);
-          balance += SHRINKME_REWARD;
+          document.getElementById('shrinkme-btn').disabled = false;
+          balance += 0.005;
           lastShrinkmeTime = Date.now();
           localStorage.setItem('last_shrinkme', lastShrinkmeTime.toString());
-          updateBalance();
-          showToast("🎉 كفو! أكملت الاختصار وحصلت على +0.005$!");
+          updateUI();
+          showToast("🎉 حصلت على +0.005$ من اختصار الروابط!");
         }
       }, 1000);
     }
 
-    // مهمة قناة التلجرام
-    function handleChannelTask() {
-      if (isTaskDone) return;
-
-      if (tg && tg.openTelegramLink) {
-        tg.openTelegramLink(CHANNEL_URL);
-      } else {
-        window.open(CHANNEL_URL, '_blank');
-      }
-
-      const btn = document.getElementById('task-channel-btn');
-      btn.innerText = "✅ تأكيد الانضمام";
-      btn.onclick = () => {
-        balance += TASK_REWARD;
-        isTaskDone = true;
-        localStorage.setItem('channel_task_completed', 'true');
-        updateBalance();
-        disableTaskBtn();
-        showToast("🎉 تم التحقق وحصلت على +0.004$!");
-      };
-    }
-
-    function disableTaskBtn() {
-      const btn = document.getElementById('task-channel-btn');
-      btn.innerText = "✔️ تم إنجاز المهمة";
-      btn.disabled = true;
-    }
-
-    // مهمة تعزيز القناة
-    function handleBoostTask() {
-      if (isBoostDone) return;
-
-      if (tg && tg.openTelegramLink) {
-        tg.openTelegramLink(BOOST_URL);
-      } else {
-        window.open(BOOST_URL, '_blank');
-      }
-
-      const btn = document.getElementById('task-boost-btn');
-      btn.innerText = "✅ تأكيد التعزيز";
-      btn.onclick = () => {
-        balance += BOOST_REWARD;
-        isBoostDone = true;
-        localStorage.setItem('boost_task_completed', 'true');
-        updateBalance();
-        disableBoostBtn();
-        showToast("🎉 تم التحقق وحصلت على +0.005$!");
-      };
-    }
-
-    function disableBoostBtn() {
-      const btn = document.getElementById('task-boost-btn');
-      btn.innerText = "✔️ تم إنجاز المهمة";
-      btn.disabled = true;
-    }
-
-    // إرسال تفاصيل السحب للإدارة وحفظها محلياً
+    // نظام السحب المتكامل مع بوت تيليجرام
     function executeWithdrawal() {
       const address = document.getElementById('withdraw-address').value.trim();
       const amount = parseFloat(document.getElementById('withdraw-amount').value);
 
       if (!address || address.length < 15) {
-        showToast("⚠️ يرجى كتابة عنوان محفظة صحيحة!");
+        showToast("⚠️ يرجى إدخال عنوان محفظة BEP20 صحيح!");
         return;
       }
-
       if (isNaN(amount) || amount < MIN_WITHDRAW) {
         showToast(`⚠️ الحد الأدنى للسحب هو ${MIN_WITHDRAW}$`);
         return;
       }
-
       if (amount > balance) {
-        showToast("⚠️ المبلغ المطلوب أكبر من رصيدك الحالي!");
+        showToast("⚠️ المبلغ المطلوب أكبر من رصيدك!");
         return;
       }
 
       const user = tg?.initDataUnsafe?.user;
-      const username = user?.username ? `@${user.username}` : (user?.first_name || 'غير معروف');
+      const username = user?.username ? `@${user.username}` : (user?.first_name || 'فارس مجهول');
       const userId = user?.id || 'غير معروف';
 
-      const btn = document.getElementById('withdraw-submit-btn');
-      btn.disabled = true;
-      btn.innerText = "⏳ جاري إرسال الطلب...";
-
-      const text = `💰 *طلب سحب جديد (Madara Crypto)*\n\n` +
-                   `👤 *المستخدم:* ${username}\n` +
-                   `🆔 *الآيدي:* \`${userId}\`\n` +
-                   `💵 *المبلغ المطلوب:* \`${amount.toFixed(4)} USDT\`\n` +
-                   `🏦 *عنوان BEP20:*\n\`${address}\``;
-
       balance -= amount;
-      updateBalance();
+      updateUI();
 
       const wdInfo = { user: username, amount: amount.toFixed(4), address: address };
       localStorage.setItem('last_withdrawal_data', JSON.stringify(wdInfo));
-      showWithdrawDetails(username, amount.toFixed(4), address);
+
+      document.getElementById('wd-user').innerText = username;
+      document.getElementById('wd-amount').innerText = amount.toFixed(4);
+      document.getElementById('wd-address').innerText = address;
+      document.getElementById('withdraw-details').style.display = 'block';
 
       document.getElementById('withdraw-address').value = '';
       document.getElementById('withdraw-amount').value = '';
-      showToast("✅ تم إرسال طلب السحب بنجاح إلى الإدارة!");
+      showToast("✅ تم إرسال طلب السحب للإدارة بنجاح!");
 
-      btn.disabled = false;
-      btn.innerText = "📤 إرسال طلب السحب الان";
+      const text = `💰 *طلب سحب جديد (Monster Fantasy)*\n\n` +
+                   `👤 *المستخدم:* ${username}\n` +
+                   `🆔 *الآيدي:* \`${userId}\`\n` +
+                   `💵 *المبلغ:* \`${amount.toFixed(4)} USDT\`\n` +
+                   `🏦 *المحفظة:* \`${address}\``;
 
       fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: ADMIN_CHAT_ID,
-          text: text,
-          parse_mode: 'Markdown'
-        })
-      }).catch(e => console.error("Telegram notify failed", e));
+        body: JSON.stringify({ chat_id: ADMIN_CHAT_ID, text: text, parse_mode: 'Markdown' })
+      }).catch(e => console.error("Telegram error", e));
     }
 
-    function showWithdrawDetails(username, amount, address) {
-      document.getElementById('wd-user').innerText = username;
-      document.getElementById('wd-amount').innerText = amount;
-      document.getElementById('wd-address').innerText = address;
-      document.getElementById('withdraw-details').style.display = 'block';
-    }
+    // استرجاع البيانات عند التشغيل
+    window.onload = () => {
+      if (localStorage.getItem('game_balance')) balance = parseFloat(localStorage.getItem('game_balance'));
+      if (localStorage.getItem('game_energy')) energy = parseInt(localStorage.getItem('game_energy'));
+      if (localStorage.getItem('game_power')) clickPower = parseInt(localStorage.getItem('game_power'));
+      if (localStorage.getItem('game_monster_idx')) currentMonsterIndex = parseInt(localStorage.getItem('game_monster_idx'));
+      if (localStorage.getItem('game_monster_hp')) monsterHp = parseInt(localStorage.getItem('game_monster_hp'));
+      
+      const savedCount = localStorage.getItem('adsgram_daily_count');
+      if (savedCount) adsgramCount = parseInt(savedCount);
 
-    window.onload = loadSavedData;
+      // استرجاع تفاصيل السحب الأخير إن وجدت
+      const lastWd = localStorage.getItem('last_withdrawal_data');
+      if (lastWd) {
+        const d = JSON.parse(lastWd);
+        document.getElementById('wd-user').innerText = d.user;
+        document.getElementById('wd-amount').innerText = d.amount;
+        document.getElementById('wd-address').innerText = d.address;
+        document.getElementById('withdraw-details').style.display = 'block';
+      }
+
+      updateUI();
+      
+      // تعبئة الطاقة التلقائية بمرور الوقت (كل دقيقة 2 طاقة)
+      setInterval(() => {
+        if (energy < 100) {
+          energy = Math.min(100, energy + 2);
+          updateUI();
+        }
+      }, 60000);
+    };
   </script>
 </body>
 </html>
